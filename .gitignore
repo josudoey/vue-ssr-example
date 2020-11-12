@@ -1,0 +1,6 @@
+*~
+*.swp
+*.swo
+node_modules
+package-lock.json
+.DS_Store
