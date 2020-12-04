@@ -2,9 +2,9 @@ import Koa from 'koa'
 import http from 'http'
 import renderer from './app/renderer.js'
 import staticCache from 'koa-static-cache'
-
+import expose from '_vue/expose.js'
 const app = new Koa()
-const distStaticCache = staticCache('./dist/static', {
+const distStaticCache = staticCache(expose.dist.staitc, {
   maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
   dynamic: true
 })

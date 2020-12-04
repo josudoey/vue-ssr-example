@@ -8,7 +8,7 @@ const publicPath = '/b/'
 const outputPath = path.join(distPath, publicPath)
 
 module.exports = Object.assign(baseConfig, {
-  entry: path.resolve(__dirname, './vue/entry.mjs'),
+  entry: path.resolve(__dirname, '../ssr-client.mjs'),
   output: {
     path: outputPath,
     publicPath: publicPath,

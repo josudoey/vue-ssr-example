@@ -7,7 +7,7 @@ const distPath = path.resolve(projectPath, 'dist')
 const publicPath = '/b/'
 const outputPath = distPath
 module.exports = Object.assign(baseConfig, {
-  entry: path.resolve(__dirname, './vue/renderer.mjs'),
+  entry: path.resolve(__dirname, '../ssr-server.mjs'),
   target: 'node',
   mode: 'development',
   devtool: 'source-map',
@@ -22,6 +22,8 @@ module.exports = Object.assign(baseConfig, {
     allowlist: /\.css$/
   }),
   plugins: [
-    new VueSSRServerPlugin()
+    new VueSSRServerPlugin({
+      filename: 'vue-ssr-server-bundle.json'
+    })
   ]
 })

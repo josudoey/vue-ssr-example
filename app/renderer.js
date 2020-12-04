@@ -1,6 +1,6 @@
 const { createBundleRenderer } = require('vue-server-renderer')
-const bundle = require('../dist/vue-ssr-server-bundle.json')
-const clientManifest = require('../dist/static/b/vue-ssr-client-manifest.json')
+const bundle = require('_vue/dist/vue-ssr-server-bundle.json')
+const clientManifest = require('_vue/dist/static/b/vue-ssr-client-manifest.json')
 module.exports = createBundleRenderer(bundle, {
   runInNewContext: false,
   clientManifest: clientManifest,

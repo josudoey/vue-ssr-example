@@ -8,27 +8,25 @@ export default {
 </div>`,
   data: function () {
     return {
-      name: 'hello',
-      now: Date.now(),
-      url: 'world'
+      now: Date.now()
     }
   },
   beforeCreate: function () {
-    console.log('beforeCreate')
+    console.log('index: beforeCreate')
   },
   created: function () {
-    console.log('created')
+    console.log('index: created')
   },
   beforeMount: function () {
-    console.log('beforeMount')
+    console.log('index: eforeMount')
   },
   mounted: function () {
-    console.log('mounted')
+    console.log('index: mounted')
   },
   beforeDestroy: function () {
-    console.log('beforeDestroy')
+    console.log('index: beforeDestroy')
   },
   destroyed: function () {
-    console.log('destroyed')
+    console.log('index: destroyed')
   }
 }
