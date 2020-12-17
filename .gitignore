@@ -6,6 +6,8 @@ package-lock.json
 .DS_Store
 dist
 # Yarn
+yarn-error.log
+yarn.lock
 /.yarn/*
 !/.yarn/plugins/
 !/.yarn/releases/

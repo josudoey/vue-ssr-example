@@ -1,36 +1,52 @@
 import Koa from 'koa'
+import KoaRouter from 'koa-router'
 import http from 'http'
-import renderer from './app/renderer.js'
 import staticCache from 'koa-static-cache'
-import expose from '_vue/expose.js'
+import expose from '~webpack/expose.js'
 const app = new Koa()
-const distStaticCache = staticCache(expose.dist.staitc, {
+const distStaticCache = staticCache(expose.contentBase, {
+  prefix: expose.publicPath,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 1 month
   dynamic: true
 })
 app.use(distStaticCache)
-app.use(async (ctx) => {
+
+const router = new KoaRouter()
+const { bundleRenderer, routes } = expose
+const renderer = async (ctx) => {
   try {
+    console.log(ctx.state)
     const html = await new Promise(function (resolve, reject) {
-      renderer.renderToString({
-        url: ctx.url
-      }, (err, html) => {
+      bundleRenderer.renderToString(ctx, (err, html) => {
         if (err) {
           return reject(err)
         }
+        console.log(ctx.meta)
         resolve(html)
       })
     })
+    console.log(ctx.state)
     ctx.body = html
   } catch (err) {
-    console.error(err)
     if (err.code === 404) {
       ctx.status = 404
       return
     }
     ctx.status = 500
   }
+}
+
+for (const route of routes) {
+  router.get(route.path, renderer)
+}
+
+router.get('/base64', function (ctx) {
+  ctx.status = 200
+  ctx.body = {
+    value: Buffer.from(ctx.query.v).toString('base64')
+  }
 })
+app.use(router.routes())
 
 const server = http.createServer(app.callback())
 

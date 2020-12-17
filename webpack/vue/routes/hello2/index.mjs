@@ -1,9 +1,9 @@
-import './debug.mjs'
+console.log('hello2')
 export default {
   template: `<div>
   this hello2 page server time: {{now}}
   <br />
-  <router-link :to="{name:'index'}">index</router-link>
+  <router-link :to="{name:'home'}">index</router-link>
   <router-link :to="{name:'hello3',params:{id:now}}">hello3</router-link>
 </div>`,
   data: function () {

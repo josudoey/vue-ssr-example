@@ -1,7 +1,22 @@
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import template from './template.html'
 export default {
-  template: '<div id="app"><transition><router-view></router-view></transition></div>',
+  template: template,
   data: function () {
-    return {}
+    return {
+    }
+  },
+  serverPrefetch: async function () {
+    console.log('layout: server side only')
+  },
+  metaInfo () {
+    return {
+      titleTemplate: '%s'
+    }
+  },
+  asyncData: async function ({ store, route }) {
+
   },
   beforeCreate: function () {
     console.log('layout: beforeCreate')

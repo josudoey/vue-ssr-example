@@ -1,0 +1,12 @@
+.red {
+  color: red;
+}
+
+.center {
+  text-align: center;
+}
+
+body {
+  border-style: solid;
+  background: url(./image.png);
+}
