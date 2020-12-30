@@ -1,0 +1,8 @@
+div
+  p this {{text}} is: {{now}}
+  br
+  p.pb-0(:class='[style.red]') red text class name: {{style.red}}
+  div(:class='[style.exampleImg]')
+  p example image
+  br
+  b-button(@click='makeToast(true)') Show Toast (appended)

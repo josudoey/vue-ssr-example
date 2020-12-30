@@ -1,22 +1,35 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import template from './template.html'
+import './style.css'
+import sidenav from './sidenav'
+import * as auth from '../store/auth'
 export default {
-  template: template,
+  template: require('./template.pug'),
+  computed: {
+    ...auth.mapState(['uid'])
+  },
   data: function () {
     return {
     }
   },
+  components: {
+    sidenav: sidenav
+  },
+  watch: {
+    $route: function () {
+      this.$refs.sidenav.close()
+    }
+  },
+  methods: {
+
+  },
   serverPrefetch: async function () {
-    console.log('layout: server side only')
+    console.log('layout: serverPrefetch (server side only)')
   },
   metaInfo () {
     return {
       titleTemplate: '%s'
     }
-  },
-  asyncData: async function ({ store, route }) {
-
   },
   beforeCreate: function () {
     console.log('layout: beforeCreate')

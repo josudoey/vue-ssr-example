@@ -1,0 +1,16 @@
+body {
+  min-height: 100%;
+}
+
+.tooltip.b-tooltip {
+  display: block;
+  opacity: .5;
+}
+
+.table thead th {
+  vertical-align: middle;
+}
+
+.b-table td {
+  vertical-align: middle;
+}

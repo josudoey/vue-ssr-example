@@ -1,27 +1,25 @@
-import * as style from './style.css'
+import * as style from './module.css'
 import template from './template.pug'
 console.log('home')
 export default {
   template: template,
   data: function () {
-    console.log('red', style.red)
     return {
       style: style,
+      text: 'server time',
       now: Date.now()
     }
   },
-  metaInfo () {
-    return {
-      title: 'home'
-    }
+  beforeRouteEnter: function (to, from, next) {
+    console.log(`${to.name} beforeRouteEnter`)
+    next()
   },
   methods: {
-    makeToast (append = false) {
-      this.toastCount++
-      this.$bvToast.toast(`This is toast number ${this.toastCount}`, {
+    makeToast () {
+      this.$bvToast.toast('make toast', {
         title: 'BootstrapVue Toast',
         autoHideDelay: 5000,
-        appendToast: append
+        appendToast: true
       })
     }
   },
@@ -33,6 +31,7 @@ export default {
   },
   beforeMount: function () {
     console.log('home: beforeMount')
+    this.text = 'client time'
   },
   mounted: function () {
     console.log('home: mounted')

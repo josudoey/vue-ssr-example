@@ -1,16 +1,22 @@
 const nodeExternals = require('webpack-node-externals')
-const baseConfig = require('./config.common')
-const VueSSRServerPlugin = require('vue-server-renderer/server-plugin')
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const baseConfig = require('./config.common')
+const vueSSRServerPlugin = require('./vue-server-renderer/server-plugin')
+const expose = require('./expose')
+const distPath = expose.vueSSRServerPath
+const outputPath = distPath
+const projectPath = __dirname
 class ServerMiniCssExtractPlugin extends MiniCssExtractPlugin {
   getCssChunkObject (mainChunk) {
     return {}
   }
 }
-module.exports = Object.assign(baseConfig, {
-  entry: path.resolve(__dirname, './vue/ssr-server-entry.mjs'),
+module.exports = Object.assign({}, baseConfig, {
+  entry: path.resolve(__dirname, './vue/ssr-outlet/server-entry.mjs'),
   output: {
+    path: outputPath,
     libraryTarget: 'commonjs2'
   },
   externals: nodeExternals({
@@ -19,32 +25,9 @@ module.exports = Object.assign(baseConfig, {
   target: 'node',
   mode: 'production',
   devtool: false,
-  resolve: {
-    alias: {
-      vue$: 'vue/dist/vue.esm.js'
-    }
-  },
   module: {
-    rules: [{
-      test: /\.(png|jpe?g|gif|svg)$/,
-      loader: 'file-loader',
-      options: {
-        outputPath: 'img',
-        publicPath: '../img',
-        useRelativePath: false,
-        name: '[hash].[ext]'
-      }
-    }, {
-      test: /\.(woff2?|eot|ttf|otf)$/,
-      loader: 'file-loader',
-      options: {
-        outputPath: 'fonts',
-        publicPath: '../fonts',
-        useRelativePath: false,
-        name: '[hash].[ext]'
-      }
-    }, {
-      test: /style\.css$/,
+    rules: baseConfig.module.rules.slice().concat([{
+      test: /module\.css$/,
       use: [{
         loader: ServerMiniCssExtractPlugin.loader,
         options: {
@@ -65,7 +48,7 @@ module.exports = Object.assign(baseConfig, {
       }]
     }, {
       test: /\.css$/,
-      exclude: /style\.css$/,
+      exclude: /module\.css$/,
       use: [{
         loader: ServerMiniCssExtractPlugin.loader,
         options: {
@@ -77,55 +60,18 @@ module.exports = Object.assign(baseConfig, {
           importLoaders: 1
         }
       }]
-    }, {
-      test: /\.html$/,
-      loader: 'html-loader',
-      options: {
-        minimize: true
-      }
-    }, {
-      test: /render.pug$/,
-      use: [{
-        loader: 'pug-loader'
-      }]
-    }, {
-      test: /template.pug$/,
-      use: [{
-        loader: 'html-loader',
-        options: {
-          minimize: {
-            collapseBooleanAttributes: true
-          }
-        }
-      }, {
-        loader: 'pug-html-loader',
-        options: {
-          doctype: 'html'
-        }
-      }]
-    }, {
-      test: /\.m?js$/,
-      exclude: /(node_modules|bower_components)/,
-      use: [
-        'cache-loader',
-        'thread-loader',
-        {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env'],
-            plugins: [
-              '@babel/plugin-syntax-dynamic-import',
-              '@babel/plugin-transform-runtime'
-            ]
-          }
-        }]
-    }]
+    }])
   },
-  plugins: [
+  plugins: baseConfig.plugins.slice().concat([
     new ServerMiniCssExtractPlugin({
     }),
-    new VueSSRServerPlugin({
-      filename: 'vue-ssr-server-bundle.json'
-    })
-  ]
+    vueSSRServerPlugin
+  ])
 })
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.plugins.push(new CleanWebpackPlugin({
+    root: projectPath,
+    cleanOnceBeforeBuildPatterns: [distPath]
+  }))
+}

@@ -7,7 +7,8 @@
   ],
   "scripts": {
     "build": "yarn workspace ~webpack run install",
-    "dev": "NODE_ENV=development nodemon -e js,mjs,html,pug index.mjs"
+    "dev": "NODE_ENV=development nodemon -e js,mjs,css,html,pug index.mjs",
+    "start": "npm run build;NODE_ENV=production node index.mjs"
   },
   "repository": {
     "type": "git",
@@ -30,9 +31,15 @@
     "nodemon": "^2.0.6"
   },
   "dependencies": {
+    "basic-auth": "^2.0.1",
+    "csrf": "^3.1.0",
     "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-compose": "^4.1.0",
     "koa-router": "^10.0.0",
+    "koa-session": "^6.1.0",
     "koa-static-cache": "^5.1.4",
+    "lodash": "^4.17.20",
     "~webpack": "workspace:webpack"
   }
 }

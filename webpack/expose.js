@@ -1,25 +1,36 @@
-const { createBundleRenderer } = require('vue-server-renderer')
 const path = require('path')
-const bundle = require('./dist/vue-ssr-server-bundle.json')
-const clientManifest = require('./dist/vue-ssr-client/manifest.json')
-const routes = require('./vue/routes/index.js')
-const publicPath = clientManifest.publicPath
+const publicPath = '/_/'
 module.exports = {
-  routes: routes,
-  contentBase: path.join(__dirname, 'dist', 'vue-ssr-client', publicPath),
-  bundleRenderer: createBundleRenderer(bundle, {
-    runInNewContext: false,
-    clientManifest: clientManifest,
-    shouldPreload: (file, type) => {
-      return true
-      // if (type === 'script' || type === 'style') {
-      //   return false
-      // }
-      // return true
+  routes: require('./vue/routes.js'),
+  publicPath: publicPath,
+  vueSSRClientPath: path.join(__dirname, 'dist', 'vue-ssr-client'),
+  vueSSRServerPath: path.join(__dirname, 'dist', 'vue-ssr-server'),
+  resolve: {
+    production: {
+      manifest: function () {
+        return Promise.resolve(require('./dist/vue-ssr-client/manifest.json'))
+      },
+      bundle: function () {
+        return Promise.resolve(require('./dist/vue-ssr-server/bundle.json'))
+      }
     },
-    shouldPrefetch: (file, type) => {
-      return false
-    },
-    template: '<!doctype html><html><head>{{{ meta.inject().title.text() }}}{{{ meta.inject().meta.text() }}}</head><body><!--vue-ssr-outlet--></body></html>'
-  })
+    development: {
+      manifest: function () {
+        return new Promise(function (resolve) {
+          const middleware = require('./dev-middleware/vue-ssr-client')
+          middleware.waitUntilValid(function () {
+            resolve(middleware.manifest)
+          })
+        })
+      },
+      bundle: function () {
+        return new Promise(function (resolve) {
+          const middleware = require('./dev-middleware/vue-ssr-server')
+          middleware.waitUntilValid(function () {
+            resolve(middleware.bundle)
+          })
+        })
+      }
+    }
+  }
 }
