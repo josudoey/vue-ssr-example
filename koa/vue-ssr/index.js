@@ -1,4 +1,4 @@
-export function setStoreState (name, action) {
+module.exports.setStoreState = function (name, action) {
   return async function (ctx, next) {
     await action(ctx, function () {})
     ctx.state[name] = ctx.body
@@ -6,7 +6,7 @@ export function setStoreState (name, action) {
   }
 }
 
-export function after (action) {
+module.exports.after = function (action) {
   return async function (ctx, next) {
     await next()
     if (ctx.type === 'text/html') {

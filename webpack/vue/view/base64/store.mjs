@@ -69,6 +69,7 @@ export function register ($store) {
     return
   }
   const serverState = Object.assign({}, store.state(), $store.state[name])
+  delete $store.state[name]
   $store.registerModule(name, store)
   $store._modules.get([name]).context.commit('setResult', serverState)
 }

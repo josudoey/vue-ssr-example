@@ -1,11 +1,8 @@
-import compose from 'koa-compose'
-import expose from '~webpack/expose.js'
-import { createBundleRenderer } from '~webpack/vue-server-renderer/index.js'
-import vueSSRClientMiddleware from '~webpack/dev-middleware/vue-ssr-client.js'
-import create from './create.mjs'
-import once from 'lodash/once.js'
-import router from '../router.mjs'
-
+const { createBundleRenderer } = require('~webpack/vue-server-renderer/index.js')
+const vueSSRClientMiddleware = require('~webpack/dev-middleware/vue-ssr-client.js')
+const create = require('./create.js')
+const once = require('lodash/once.js')
+const expose = require('~webpack/expose.js')
 const wrap = function (middleware) {
   return async function (ctx, next) {
     const { req, res } = ctx
@@ -26,8 +23,7 @@ const wrap = function (middleware) {
     await next()
   }
 }
-
-const createMiddleware = once(async function () {
+const createRenderer = once(async function () {
   const [manifest, bundle] = await Promise.all([
     expose.resolve.development.manifest(),
     expose.resolve.development.bundle()
@@ -36,15 +32,13 @@ const createMiddleware = once(async function () {
     clientManifest: manifest
   })
   const renderer = create(bundleRenderer)
-  for (const route of expose.routes) {
-    router.get(route.path, renderer)
-  }
-  return compose([wrap(vueSSRClientMiddleware), router.routes()])
+  return renderer
 })
 
-let middleware = async function (ctx) {
-  middleware = await createMiddleware()
-  await middleware(ctx)
+module.exports = async function (ctx, next) {
+  const renderer = await createRenderer()
+  await renderer(ctx, next)
 }
 
-export default middleware
+module.exports.static = wrap(vueSSRClientMiddleware)
+module.exports.routes = expose.routes

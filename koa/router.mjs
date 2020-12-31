@@ -1,10 +1,9 @@
 import KoaRouter from 'koa-router'
-import KoaSession from 'koa-session'
 import bodyParser from 'koa-bodyparser'
 import * as auth from './route/auth.mjs'
 import * as base64 from './route/base64.mjs'
 import * as page from './route/page.mjs'
-import * as vueSSR from './vue-ssr/index.mjs'
+import vueSSR from './vue-ssr/index.js'
 import * as xsrfToken from './route/xsrf-token.mjs'
 
 const router = new KoaRouter()

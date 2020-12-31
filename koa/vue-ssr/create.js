@@ -1,4 +1,4 @@
-export default function (bundleRenderer) {
+module.exports = function (bundleRenderer) {
   return async (ctx, next) => {
     try {
       const html = await new Promise(function (resolve, reject) {
