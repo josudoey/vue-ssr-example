@@ -31,8 +31,7 @@ const createRenderer = once(async function () {
   const bundleRenderer = createBundleRenderer(bundle, {
     clientManifest: manifest
   })
-  const renderer = create(bundleRenderer)
-  return renderer
+  return create(bundleRenderer)
 })
 
 module.exports = async function (ctx, next) {

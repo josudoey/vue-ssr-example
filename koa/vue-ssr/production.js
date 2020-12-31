@@ -1,6 +1,5 @@
 const path = require('path')
 const staticCache = require('koa-static-cache')
-const compose = require('koa-compose')
 const expose = require('~webpack/expose.js')
 const create = require('./create.js')
 const once = require('lodash/once.js')
