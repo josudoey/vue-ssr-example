@@ -13,12 +13,11 @@ module.exports = function (bundleRenderer) {
       ctx.type = 'text/html'
       ctx.body = html
     } catch (err) {
-      console.log(err)
       if (err.code === 404) {
-        ctx.status = 404
-        return
+        return ctx.throw(404)
       }
-      ctx.status = 500
+      console.log(err)
+      return ctx.throw(500, 'Internal Server Error')
     }
   }
 }

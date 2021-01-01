@@ -23,6 +23,7 @@ const wrap = function (middleware) {
     await next()
   }
 }
+
 const createRenderer = once(async function () {
   const [manifest, bundle] = await Promise.all([
     expose.resolve.development.manifest(),

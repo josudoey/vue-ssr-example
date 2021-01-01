@@ -28,9 +28,8 @@ export default function (state) {
     routes: routes
   })
 
-  const store = createStore()
+  const store = createStore(state)
   VuexRouterSync.sync(store, router)
-  store.replaceState(state)
 
   router.beforeEach((to, from, next) => {
     console.log('vue-router beforeEach')

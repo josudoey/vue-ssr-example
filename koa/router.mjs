@@ -15,11 +15,11 @@ router
   .use(auth.state)
   .use(xsrfToken.verify)
   .use(vueSSR.after(xsrfToken.create))
-  .get('/auth/state', auth.get)
-  .post('/auth', auth.basic)
-  .get('/auth/revoke', auth.revoke)
+  .get('/_/auth/state', auth.get)
+  .post('/_/auth', auth.basic)
+  .get('/_/auth/revoke', auth.revoke)
   .get('/sign-out', page.signOut)
-  .get('/api/base64', base64.encode)
+  .get('/_/base64', base64.encode)
   .get('/base64', vueSSR.setStoreState('base64', base64.encode))
 
 export default router

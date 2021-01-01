@@ -2,7 +2,7 @@ module.exports.setStoreState = function (name, action) {
   return async function (ctx, next) {
     await action(ctx, function () {})
     ctx.state[name] = ctx.body
-    await next()
+    return next()
   }
 }
 

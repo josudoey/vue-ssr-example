@@ -17,7 +17,7 @@ const store = {
 
 const actions = store.actions = {}
 actions.signIn = async function ({ commit }, { user, password }) {
-  const res = await axios.post('/auth', {}, {
+  const res = await axios.post('/_/auth', {}, {
     auth: {
       username: user,
       password: password
@@ -43,8 +43,10 @@ export function register ($store) {
   if ($store.hasModule(name)) {
     return
   }
+  console.log('auth: registerModule')
   $store.state[name] = Object.assign({}, store.state(), $store.state[name])
   $store.registerModule(name, store, {
     preserveState: true
   })
+  console.log($store.state.auth)
 }

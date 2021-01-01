@@ -26,7 +26,7 @@ actions.encode = async function ({ state, commit, rootState }, text) {
 
   const res = await axios({
     method: 'GET',
-    url: '/api/base64',
+    url: '/_/base64',
     params: {
       v: text
     }

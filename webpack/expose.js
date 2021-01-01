@@ -1,5 +1,5 @@
 const path = require('path')
-const publicPath = '/_/'
+const publicPath = '/~/'
 module.exports = {
   routes: require('./vue/routes.js'),
   publicPath: publicPath,
