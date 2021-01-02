@@ -1,4 +1,3 @@
-const template = require('./template')
 const { createBundleRenderer } = require('vue-server-renderer')
 module.exports = {
   createBundleRenderer: function (bundle, options) {
@@ -11,7 +10,7 @@ module.exports = {
       shouldPrefetch: (file, type) => {
         return false
       },
-      template: template
+      template: '<!DOCTYPE html><html><head>{{{ meta.inject().meta.text({}) }}}{{{ meta.inject().title.text() }}}</head><body><!--vue-ssr-outlet--></body></html>'
     }, options))
   }
 }

@@ -16,6 +16,14 @@ export default {
       input: $route.query.v
     }
   },
+  metaInfo: function () {
+    return {
+      script: [{
+        innerHTML: 'console.log("base64: meta info script");',
+        type: 'text/javascript'
+      }]
+    }
+  },
   beforeRouteEnter: function (to, from, next) {
     console.log(`${to.name}: beforeRouteEnter`)
     next(function (vm) {

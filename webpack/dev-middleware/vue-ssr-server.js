@@ -4,7 +4,7 @@ const vueSSRServerPlugin = require('../vue-server-renderer/server-plugin')
 const config = require('../vue-ssr-server.js')
 const compiler = webpack(Object.assign({}, config, {
   mode: 'development',
-  devtool: 'source-map	'
+  devtool: 'eval'
 }))
 module.exports = middleware(compiler, {
   serverSideRender: true

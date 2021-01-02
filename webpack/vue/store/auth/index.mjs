@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Vuex from 'vuex'
 const name = 'auth'
 const mapActions = Vuex.mapActions.bind(null, name)
@@ -16,8 +15,10 @@ const store = {
 }
 
 const actions = store.actions = {}
-actions.signIn = async function ({ commit }, { user, password }) {
-  const res = await axios.post('/_/auth', {}, {
+actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
+  const res = await rootGetters.api({
+    method: 'POST',
+    url: '/_/auth',
     auth: {
       username: user,
       password: password
@@ -43,10 +44,8 @@ export function register ($store) {
   if ($store.hasModule(name)) {
     return
   }
-  console.log('auth: registerModule')
   $store.state[name] = Object.assign({}, store.state(), $store.state[name])
   $store.registerModule(name, store, {
     preserveState: true
   })
-  console.log($store.state.auth)
 }

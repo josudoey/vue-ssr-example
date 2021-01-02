@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Vuex from 'vuex'
 const name = 'base64'
 const mapActions = Vuex.mapActions.bind(null, name)
@@ -17,14 +16,14 @@ const store = {
 }
 
 const actions = store.actions = {}
-actions.encode = async function ({ state, commit, rootState }, text) {
+actions.encode = async function ({ state, commit, rootGetters }, text) {
   let encoded = state.cache[text]
   if (encoded) {
     commit('setResult', encoded)
     return
   }
 
-  const res = await axios({
+  const res = await rootGetters.api({
     method: 'GET',
     url: '/_/base64',
     params: {
@@ -57,10 +56,6 @@ mutations.setCache = function (state, { text, result }) {
 mutations.setResult = function (state, { text, result }) {
   state.text = text
   state.result = result
-}
-
-store.getters = {
-
 }
 
 export default store
