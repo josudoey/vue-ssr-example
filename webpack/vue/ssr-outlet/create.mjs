@@ -31,23 +31,6 @@ export default function (state) {
   const store = createStore(state)
   VuexRouterSync.sync(store, router)
 
-  router.beforeEach((to, from, next) => {
-    console.log('vue-router beforeEach')
-    if (to.matched.some(record => record.meta.requiredAuth)) {
-      if (!store.state.auth.uid) {
-        next({
-          name: 'signIn',
-          query: {
-            redirect: to.fullPath
-          }
-        })
-        return
-      }
-      next()
-      return
-    }
-    next()
-  })
   const ssrOutlet = new Vue({
     ...component,
     router: router,

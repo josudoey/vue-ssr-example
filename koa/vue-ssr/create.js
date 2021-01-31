@@ -13,6 +13,10 @@ module.exports = function (bundleRenderer) {
       ctx.type = 'text/html'
       ctx.body = html
     } catch (err) {
+      if (err.code === 302) {
+        ctx.redirect(err.to.href)
+        return
+      }
       if (err.code === 404) {
         return ctx.throw(404)
       }
