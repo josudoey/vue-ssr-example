@@ -18,7 +18,7 @@ module.exports = {
         outputPath: 'img',
         publicPath: '../img',
         useRelativePath: false,
-        name: '[hash].[ext]'
+        name: '[contenthash]]sh].[ext]'
       }
     }, {
       test: /\.(woff2?|eot|ttf|otf)$/,
@@ -27,7 +27,7 @@ module.exports = {
         outputPath: 'fonts',
         publicPath: '../fonts',
         useRelativePath: false,
-        name: '[hash].[ext]'
+        name: '[contenthash]].[ext]'
       }
     }, {
       test: /\.html$/,
