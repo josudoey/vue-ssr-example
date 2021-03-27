@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "yarn workspace ~webpack run install",
-    "dev": "NODE_ENV=development nodemon -e js,mjs,css,html,pug index.mjs",
+    "dev": "NODE_ENV=development nodemon --trace-warnings -e js,mjs,css,html,pug index.mjs",
     "start": "npm run build;NODE_ENV=production node index.mjs",
     "upgrade": "yarn plugin import interactive-tools&&yarn upgrade-interactive"
   },
