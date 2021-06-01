@@ -1,7 +1,7 @@
-import tmeplate from './template.html'
+import template from './template.html'
 import * as auth from '../../store/auth/index.mjs'
 export default {
-  template: tmeplate,
+  template,
   data: function () {
     return {
       user: '',

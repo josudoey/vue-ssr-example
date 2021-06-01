@@ -1,10 +1,11 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './style.css'
+import template from './template.pug'
 import sidenav from './sidenav'
 import * as auth from '../store/auth'
 export default {
-  template: require('./template.pug'),
+  template,
   computed: {
     ...auth.mapState(['uid'])
   },
