@@ -1,15 +1,15 @@
 # Step1 setup env
 ```
- $ yarn
+ $ npm i
 ```
 
 
 # Step2 run dev
 ```
- $ yarn run dev
+ $ npm run dev
 ```
 
 # Step3 list workspace
 ```
- $ yarn run start
+ $ npm run start
 ```

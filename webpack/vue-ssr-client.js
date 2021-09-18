@@ -29,8 +29,8 @@ module.exports = Object.assign({}, baseConfig, {
       new TerserPlugin({}),
       new OptimizeCSSAssetsPlugin({
         assetNameRegExp: /\.css(\?.+)?$/g,
-        cssProcessor: require('cssnano'),
-        cssProcessorOptions: {
+        cssProcessor: require('clean-css'),
+        cssProcessorPluginOptions: {
           presets: ['default', { discardComments: { removeAll: true } }],
           autoprefixer: { disable: true },
           canPrint: true
