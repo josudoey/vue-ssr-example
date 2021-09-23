@@ -3,7 +3,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './style.css'
 import template from './template.pug'
 import sidenav from './sidenav'
-import * as auth from '../store/auth'
+import * as auth from '../store/auth/index.mjs'
 export default {
   template,
   computed: {

@@ -1,7 +1,7 @@
 import template from './template.pug'
 import layout from '../layout/index.js'
 export default {
-  template: template,
+  template,
   components: {
     layout: layout
   },
@@ -10,7 +10,7 @@ export default {
     }
   },
   metaInfo () {
-    return Object.assign({
+    return {
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no' }
@@ -24,13 +24,14 @@ export default {
       afterNavigation (metaInfo) {
         console.log(metaInfo)
         console.log('ssr-outlet: metaInfo afterNavigation')
-      }
-    }, this.$route.meta)
+      },
+      ...this.$route.meta
+    }
   },
-  beforeCreate: function () {
+  beforeCreate () {
 
   },
-  mounted: function () {
+  mounted () {
 
   }
 }

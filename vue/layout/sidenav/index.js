@@ -1,6 +1,7 @@
+import template from './template.pug'
 import './style.css'
 export default {
-  template: require('./template.pug'),
+  template,
   data: function () {
     return {
       show: false

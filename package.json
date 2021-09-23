@@ -2,16 +2,12 @@
   "name": "vue-ssr-example",
   "version": "1.0.0",
   "description": "example project",
-  "workspaces": [
-    "webpack"
-  ],
   "scripts": {
-    "build": "cd ./webpack;npm run install",
-    "build:client": "cd ./webpack;npm run build:client",
-    "build:server": "cd ./webpack;npm run build:server",
-    "dev": "NODE_ENV=development nodemon --trace-warnings -e js,mjs,css,html,pug index.mjs",
-    "start": "npm run build;NODE_ENV=production node index.mjs",
-    "upgrade": "yarn plugin import interactive-tools&&yarn upgrade-interactive"
+    "build:ssr": "NODE_ENV=production webpack --config ./webpack.config.ssr.js",
+    "build:asset": "NODE_ENV=production webpack --config ./webpack.config.asset.js",
+    "build": "npm run build:asset;npm run build:ssr",
+    "start": "NODE_ENV=production node ./main.mjs",
+    "dev": "nodemon ./dev.mjs --trace-warnings -e js,mjs,css,html,pug --ignore ./dist/* --ignore ./dist.dev/*"
   },
   "repository": {
     "type": "git",
@@ -34,14 +30,33 @@
     "nodemon": "^2.0.12"
   },
   "dependencies": {
+    "axios": "^0.21.4",
+    "babel-loader": "^8.2.2",
     "basic-auth": "^2.0.1",
+    "bootstrap-vue": "^2.21.2",
     "csrf": "^3.1.0",
+    "css-loader": "^6.3.0",
+    "css-minimizer-webpack-plugin": "^3.0.2",
+    "html-loader": "^2.1.2",
+    "jquery": "^3.6.0",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
     "koa-session": "^6.2.0",
     "koa-static-cache": "^5.1.4",
-    "lodash": "^4.17.21",
-    "~webpack": "file:webpack"
+    "mini-css-extract-plugin": "^2.3.0",
+    "pug": "^3.0.2",
+    "pug-html-loader": "git+https://github.com/josudoey/pug-html-loader.git",
+    "pug-loader": "^2.4.0",
+    "terser-webpack-plugin": "^5.2.4",
+    "vue": "^2.6.14",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.5.2",
+    "vue-server-renderer": "^2.6.14",
+    "vuex": "^3.6.2",
+    "vuex-router-sync": "^5.0.0",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0",
+    "webpack-manifest-plugin": "^4.0.2"
   }
 }
