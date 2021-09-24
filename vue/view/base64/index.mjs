@@ -21,7 +21,7 @@ export default {
   metaInfo: function () {
     return {
       script: [{
-        innerHTML: 'console.log("base64: meta info script");',
+        innerHTML: 'console.log("base64: metaInfo script innerHTML");',
         type: 'text/javascript'
       }]
     }

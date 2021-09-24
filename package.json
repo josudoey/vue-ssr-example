@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "example project",
   "scripts": {
-    "build:ssr": "NODE_ENV=production webpack --config ./webpack.config.ssr.js",
-    "build:asset": "NODE_ENV=production webpack --config ./webpack.config.asset.js",
+    "build:ssr": "NODE_ENV=production webpack --config ./vue/webpack.config.ssr.js",
+    "build:asset": "NODE_ENV=production webpack --config ./vue/webpack.config.asset.js",
     "build": "npm run build:asset;npm run build:ssr",
     "start": "NODE_ENV=production node ./main.mjs",
-    "dev": "DEBUG=app:* nodemon ./dev.mjs --trace-warnings -e js,mjs,css,html,pug --ignore ./dist/* --ignore ./dist.dev/*"
+    "dev": "DEBUG=app:* nodemon ./dev.mjs --trace-warnings -e js,mjs,css,html,pug --ignore ./vue/dist/* --ignore ./vue/dist.dev/*"
   },
   "repository": {
     "type": "git",
@@ -27,7 +27,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^5.0.0",
-    "nodemon": "^2.0.12"
+    "nodemon": "^2.0.13"
   },
   "dependencies": {
     "axios": "^0.21.4",
@@ -39,7 +39,7 @@
     "css-minimizer-webpack-plugin": "^3.0.2",
     "html-loader": "^2.1.2",
     "jquery": "^3.6.0",
-    "koa": "^2.13.1",
+    "koa": "^2.13.3",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
     "koa-session": "^6.2.0",

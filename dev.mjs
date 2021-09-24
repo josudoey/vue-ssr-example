@@ -1,6 +1,6 @@
 import webpack from 'webpack'
-import ssrConfig from './webpack.config.ssr.js'
-import assetConfig from './webpack.config.asset.js'
+import ssrConfig from './vue/webpack.config.ssr.js'
+import assetConfig from './vue/webpack.config.asset.js'
 
 process.on('uncaughtException', function (err) {
   console.trace(err)
@@ -14,7 +14,7 @@ process.on('unhandledRejection', function (err) {
   await new Promise(function (resolve, reject) {
     const override = {
       mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-      devtool: 'eval'
+      devtool: 'source-map'
     }
 
     const compiler = webpack([

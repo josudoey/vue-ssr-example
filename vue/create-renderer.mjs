@@ -1,5 +1,6 @@
 import VueServerRenderer from 'vue-server-renderer'
-export default function (clientManifest) {
+
+const createRenderer = function (clientManifest) {
   const renderer = VueServerRenderer.createRenderer({
     template: '<!DOCTYPE html><html><head></head><body><!--vue-ssr-outlet--></body></html>',
     clientManifest,
@@ -14,3 +15,5 @@ export default function (clientManifest) {
   })
   return renderer
 }
+
+export default createRenderer

@@ -2,35 +2,14 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const { WebpackManifestPlugin, getCompilerHooks } = require('webpack-manifest-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
-const { assetOutputPath, manifestPath, publicPath } = require('./env')
-
-class ManifestHashPlugin {
-  apply (compiler) {
-    const self = this
-    compiler.hooks.thisCompilation.tap(self.constructor.name, (compilation) => {
-      compilation.hooks.afterHash.tap(self.constructor.name, () => {
-        const stats = compilation.getStats()
-        self.hash = stats.hash
-      })
-    })
-
-    const { beforeEmit } = getCompilerHooks(compiler)
-    beforeEmit.tap(this.constructor.name, (manifest) => {
-      return {
-        ...manifest,
-        hash: self.hash
-      }
-    })
-  }
-}
+const { assetOutputPath, publicPath } = require('./env')
 
 module.exports = function (env) {
   const config = {
     target: 'web',
     mode: 'production',
-    entry: path.resolve(__dirname, './vue/outlet/asset/entry.mjs'),
+    entry: path.resolve(__dirname, './outlet/asset/entry.mjs'),
     resolve: {
       alias: {
         vue$: 'vue/dist/vue.esm.js',
@@ -114,7 +93,7 @@ module.exports = function (env) {
               namedExport: true,
               localIdentName: '__[hash:base64:5]'
             },
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }, {
@@ -127,16 +106,12 @@ module.exports = function (env) {
         }, {
           loader: require.resolve('css-loader'),
           options: {
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }]
     },
     plugins: [
-      new WebpackManifestPlugin({
-        fileName: manifestPath
-      }),
-      new ManifestHashPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'

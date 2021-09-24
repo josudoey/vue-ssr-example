@@ -12,9 +12,9 @@ module.exports = function (env) {
     externals: [
       'axios',
       'vue-router',
-      'vue-server-renderer'
+      'debug'
     ],
-    entry: path.resolve(__dirname, './vue/outlet/ssr/entry.mjs'),
+    entry: path.resolve(__dirname, './outlet/ssr/entry.mjs'),
     output: {
       clean: true,
       path: ssrOutputPath,
@@ -87,7 +87,7 @@ module.exports = function (env) {
               namedExport: true,
               localIdentName: '__[hash:base64:5]'
             },
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }, {
@@ -101,7 +101,7 @@ module.exports = function (env) {
         }, {
           loader: require.resolve('css-loader'),
           options: {
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }]

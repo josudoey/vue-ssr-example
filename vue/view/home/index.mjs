@@ -1,4 +1,5 @@
-import * as style from './module.css'
+import * as css from './module.css'
+import './style.css'
 import template from './template.pug'
 import createDebug from 'debug'
 const debug = createDebug('app:view:home')
@@ -6,10 +7,12 @@ debug('home module loaded')
 export default {
   template: template,
   data: function () {
+    const now = Date.now()
+    debug(`now ${now}`)
     return {
-      style: style,
       text: 'server time',
-      now: Date.now()
+      css: css,
+      now: now
     }
   },
   beforeRouteEnter: function (to, from, next) {
@@ -33,7 +36,7 @@ export default {
   },
   beforeMount: function () {
     debug('home: beforeMount')
-    this.text = 'client time'
+    this.text = 'browser time'
   },
   mounted: function () {
     debug('home: mounted')
