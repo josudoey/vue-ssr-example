@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const { WebpackManifestPlugin, getCompilerHooks } = require('webpack-manifest-plugin')
+const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
 const { assetOutputPath, manifestPath, publicPath } = require('./env')
 
 class ManifestHashPlugin {
@@ -29,7 +30,7 @@ module.exports = function (env) {
   const config = {
     target: 'web',
     mode: 'production',
-    entry: path.join(__dirname, './vue/outlet/asset.mjs'),
+    entry: path.resolve(__dirname, './vue/outlet/asset/entry.mjs'),
     resolve: {
       alias: {
         vue$: 'vue/dist/vue.esm.js',
@@ -38,7 +39,7 @@ module.exports = function (env) {
     },
     output: {
       clean: true,
-      assetModuleFilename: '_/[contenthash].[ext]',
+      assetModuleFilename: '_/[contenthash][ext]',
       filename: '[contenthash].js',
       chunkFilename: '[contenthash].js',
       path: assetOutputPath,
@@ -139,6 +140,10 @@ module.exports = function (env) {
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'
+      }),
+      // see https://ssr.vuejs.org/guide/build-config.html#client-config
+      new VueSSRClientPlugin({
+        filename: '../vue-ssr-client-manifest.json'
       })
     ]
   }

@@ -5,11 +5,12 @@ import vueRoutes from './vue/routes.js'
 import router from './koa/router.mjs'
 import app from './koa/app.mjs'
 import ssrOutlet from './ssr-outlet.mjs'
+import * as xsrfToken from './koa/route/xsrf-token.mjs'
 
 const { publicPath, assetOutputPath } = env
 ;(async function main () {
   for (const route of vueRoutes) {
-    router.get(route.path, ssrOutlet)
+    router.get(route.path, xsrfToken.create, ssrOutlet)
   }
   app.use(staticCache(assetOutputPath, {
     prefix: publicPath,

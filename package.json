@@ -7,7 +7,7 @@
     "build:asset": "NODE_ENV=production webpack --config ./webpack.config.asset.js",
     "build": "npm run build:asset;npm run build:ssr",
     "start": "NODE_ENV=production node ./main.mjs",
-    "dev": "nodemon ./dev.mjs --trace-warnings -e js,mjs,css,html,pug --ignore ./dist/* --ignore ./dist.dev/*"
+    "dev": "DEBUG=app:* nodemon ./dev.mjs --trace-warnings -e js,mjs,css,html,pug --ignore ./dist/* --ignore ./dist.dev/*"
   },
   "repository": {
     "type": "git",

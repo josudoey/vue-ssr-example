@@ -1,6 +1,7 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
+
 const env = require('./env.js')
 const { ssrOutputPath } = env
 
@@ -13,8 +14,9 @@ module.exports = function (env) {
       'vue-router',
       'vue-server-renderer'
     ],
-    entry: path.resolve(__dirname, './vue/outlet/ssr.mjs'),
+    entry: path.resolve(__dirname, './vue/outlet/ssr/entry.mjs'),
     output: {
+      clean: true,
       path: ssrOutputPath,
       libraryTarget: 'commonjs2'
     },

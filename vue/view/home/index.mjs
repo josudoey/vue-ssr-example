@@ -1,6 +1,8 @@
 import * as style from './module.css'
 import template from './template.pug'
-console.log('home')
+import createDebug from 'debug'
+const debug = createDebug('app:view:home')
+debug('home module loaded')
 export default {
   template: template,
   data: function () {
@@ -11,7 +13,7 @@ export default {
     }
   },
   beforeRouteEnter: function (to, from, next) {
-    console.log(`${to.name} beforeRouteEnter`)
+    debug(`${to.name} beforeRouteEnter`)
     next()
   },
   methods: {
@@ -24,22 +26,22 @@ export default {
     }
   },
   beforeCreate: function () {
-    console.log('home: beforeCreate')
+    debug('home: beforeCreate')
   },
   created: function () {
-    console.log('home: created')
+    debug('home: created')
   },
   beforeMount: function () {
-    console.log('home: beforeMount')
+    debug('home: beforeMount')
     this.text = 'client time'
   },
   mounted: function () {
-    console.log('home: mounted')
+    debug('home: mounted')
   },
   beforeDestroy: function () {
-    console.log('home: beforeDestroy')
+    debug('home: beforeDestroy')
   },
   destroyed: function () {
-    console.log('home: destroyed')
+    debug('home: destroyed')
   }
 }

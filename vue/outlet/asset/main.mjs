@@ -1,25 +1,29 @@
-// see https://getbootstrap.com/docs/5.1/getting-started/webpack/#importing-compiled-css
-import 'bootstrap/dist/css/bootstrap.min.css'
+// see https://getbootstrap.com/docs/4.6/getting-started/webpack/#importing-compiled-css
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import VuexRouterSync from 'vuex-router-sync'
 import Vue from 'vue'
 import Router from 'vue-router'
-import routes from '../routes.js'
+import routes from '../../routes.js'
 import VueMeta from 'vue-meta'
 import BootstrapVue from 'bootstrap-vue'
-import mixin from '../mixin/index.mjs'
-import { createStore } from '../store/index.mjs'
-import outlet from './index.mjs'
+import mixin from '../../mixin/index.mjs'
+import { createStore } from '../../store/index.mjs'
+import outlet from '../index.mjs'
+import createDebug from 'debug'
+const debug = createDebug('app:outlet:asset')
 Vue.use(Router)
 Vue.use(VueMeta, {
-  refreshOnceOnNavigation: true
+  refreshOnceOnNavigation: false
 })
 Vue.use(BootstrapVue)
 Vue.mixin(mixin)
 
 const createApp = function (state) {
   const router = new Router({
+    routes,
     mode: 'history',
     base: '/',
     linkActiveClass: 'active',
@@ -28,8 +32,7 @@ const createApp = function (state) {
         return savedPosition
       }
       return { x: 0, y: 0 }
-    },
-    routes: routes
+    }
   })
 
   const store = createStore(state)
@@ -60,7 +63,7 @@ const createApp = function (state) {
 
   // https://ssr.vuejs.org/zh/guide/data.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96-client-data-fetching
   router.onReady(() => {
-    console.log('vue-router onReady')
+    debug('vue-router onReady')
     vm.$mount('[data-server-rendered]', true)
   })
 

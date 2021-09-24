@@ -1,5 +1,8 @@
 import template from './template.html'
 import * as auth from '../../store/auth/index.mjs'
+import createDebug from 'debug'
+const debug = createDebug('app:sign-in')
+
 export default {
   template,
   data: function () {
@@ -15,7 +18,7 @@ export default {
     ])
   },
   created: function () {
-    console.log(`${this.$route.name}: created`)
+    debug(`${this.$route.name}: created`)
     this.redirect()
   },
   methods: {

@@ -1,5 +1,7 @@
+import createDebug from 'debug'
 import template from './template.pug'
 import * as base64Store from './store.mjs'
+const debug = createDebug('app:view:base64')
 export default {
   template: template,
   computed: {
@@ -11,7 +13,7 @@ export default {
   data: function () {
     const { $route } = this
     const name = $route.name
-    console.log(`${name}: data`)
+    debug(`${name}: data`)
     return {
       input: $route.query.v
     }
@@ -25,17 +27,17 @@ export default {
     }
   },
   beforeRouteEnter: function (to, from, next) {
-    console.log(`${to.name}: beforeRouteEnter`)
+    debug(`${to.name}: beforeRouteEnter`)
     next(function (vm) {
-      console.log(`${vm.$route.name}: beforeRouteEnter next`)
+      debug(`${vm.$route.name}: beforeRouteEnter next`)
     })
   },
   beforeRouteUpdate (to, from, next) {
-    console.log(`${to.name}: beforeRouteUpdate`)
+    debug(`${to.name}: beforeRouteUpdate`)
     next()
   },
   beforeRouteLeave (to, from, next) {
-    console.log(`${to.name}: beforeRouteLeave`)
+    debug(`${to.name}: beforeRouteLeave`)
     next()
   },
   methods: {
@@ -43,11 +45,11 @@ export default {
   },
   watch: {
     $route: async function (val, old) {
-      console.log(`${this.$route.name} watch.$route`)
+      debug(`${this.$route.name} watch.$route`)
       this.encode(this.input)
     },
     input: async function (val, old) {
-      console.log(`${this.$route.name} watch.input val: ${val} old: ${old}`)
+      debug(`${this.$route.name} watch.input val: ${val} old: ${old}`)
       const $route = this.$route
       if ($route.query.v === this.input) {
         return
@@ -60,26 +62,26 @@ export default {
     }
   },
   beforeCreate: function () {
-    console.log(`${this.$route.name}: beforeCreate`)
+    debug(`${this.$route.name}: beforeCreate`)
     base64Store.register(this.$store)
   },
   created: function () {
-    console.log(`${this.$route.name}: created`)
+    debug(`${this.$route.name}: created`)
   },
   beforeMount: function () {
-    console.log(`${this.$route.name}: beforeMount`)
+    debug(`${this.$route.name}: beforeMount`)
     if (this.text === this.input) {
       return
     }
     this.encode(this.input)
   },
   mounted: function () {
-    console.log(`${this.$route.name}: mounted`)
+    debug(`${this.$route.name}: mounted`)
   },
   beforeDestroy: function () {
-    console.log(`${this.$route.name}: beforeDestroy`)
+    debug(`${this.$route.name}: beforeDestroy`)
   },
   destroyed: function () {
-    console.log(`${this.$route.name}: destroyed`)
+    debug(`${this.$route.name}: destroyed`)
   }
 }

@@ -1,9 +1,9 @@
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
 import './style.css'
 import template from './template.pug'
 import sidenav from './sidenav'
 import * as auth from '../store/auth/index.mjs'
+import createDebug from 'debug'
+const debug = createDebug('app:layout')
 export default {
   template,
   computed: {
@@ -25,7 +25,7 @@ export default {
 
   },
   serverPrefetch: async function () {
-    console.log('layout: serverPrefetch (server side only)')
+    debug('layout: serverPrefetch (server side only)')
   },
   metaInfo () {
     return {
@@ -33,21 +33,21 @@ export default {
     }
   },
   beforeCreate: function () {
-    console.log('layout: beforeCreate')
+    debug('layout: beforeCreate')
   },
   created: function () {
-    console.log('layout: created')
+    debug('layout: created')
   },
   beforeMount: function () {
-    console.log('layout: beforeMount')
+    debug('layout: beforeMount')
   },
   mounted: function () {
-    console.log('layout: mounted')
+    debug('layout: mounted')
   },
   beforeDestroy: function () {
-    console.log('layout: beforeDestroy')
+    debug('layout: beforeDestroy')
   },
   destroyed: function () {
-    console.log('layout: destroyed')
+    debug('layout: destroyed')
   }
 }
