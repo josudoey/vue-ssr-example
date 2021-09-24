@@ -1,11 +1,12 @@
 import * as css from './module.css'
 import './style.css'
-import template from './template.pug'
+import { render, staticRenderFns } from './render.pug'
 import createDebug from 'debug'
 const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
-  template: template,
+  render,
+  staticRenderFns,
   data: function () {
     const now = Date.now()
     debug(`now ${now}`)

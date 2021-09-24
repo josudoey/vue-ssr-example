@@ -63,7 +63,17 @@ module.exports = function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('pug-loader')
+          loader: require.resolve('vue-loader/lib/loaders/templateLoader.js'),
+          options: {
+            minimize: {
+              collapseBooleanAttributes: true
+            }
+          }
+        }, {
+          loader: require.resolve('pug-html-loader'),
+          options: {
+            doctype: 'html'
+          }
         }]
       }, {
         test: /template.pug$/,
