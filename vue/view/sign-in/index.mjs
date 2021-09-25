@@ -23,9 +23,7 @@ export default {
       }
 
       if (this.$route.query.redirect) {
-        this.$router.push({
-          path: this.$route.query.redirect
-        })
+        this.$router.push(this.$route.query.redirect)
         return
       }
 

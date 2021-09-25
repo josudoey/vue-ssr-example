@@ -4,7 +4,6 @@ import env from './vue/env.js'
 import vueRoutes from './vue/routes.js'
 import koaRouter from './koa/router.mjs'
 import app from './koa/app.mjs'
-import KoaRouter from 'koa-router'
 
 import koaSSROutlet from './koa-ssr-outlet.mjs'
 import * as xsrfToken from './koa/route/xsrf-token.mjs'
@@ -17,16 +16,13 @@ const { publicPath, assetOutputPath } = env
     dynamic: true
   }))
 
-  const ssrRouter = new KoaRouter()
+  // const ssrRouter = new KoaRouter()
   for (const route of vueRoutes) {
-    ssrRouter.use(xsrfToken.create)
-    ssrRouter.get(route.name, route.path, koaSSROutlet)
+    koaRouter.use(xsrfToken.create)
+    koaRouter.get(route.name, route.path, koaSSROutlet)
   }
-  ssrRouter.use(koaRouter.routes())
 
   app
-    .use(ssrRouter.routes())
-    .use(ssrRouter.allowedMethods())
     .use(koaRouter.routes())
     .use(koaRouter.allowedMethods())
 

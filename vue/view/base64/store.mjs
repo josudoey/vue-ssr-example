@@ -5,8 +5,9 @@ const mapActions = Vuex.mapActions.bind(null, name)
 const mapState = Vuex.mapState.bind(null, name)
 const mapMutations = Vuex.mapMutations.bind(null, name)
 const mapGetters = Vuex.mapGetters.bind(null, name)
-export { name, mapActions, mapState, mapMutations, mapGetters }
 const debug = createDebug('app:store:base64')
+debug('import')
+
 const store = {
   namespaced: true,
   state: () => {
@@ -20,16 +21,16 @@ const store = {
 const actions = store.actions = {}
 actions.encode = async function ({ state, commit, rootGetters }, text) {
   debug('encode')
-  let encoded = rootGetters.cache.get(text)
-  if (encoded) {
-    debug('cache', encoded)
-    commit('setResult', encoded)
+  let result = rootGetters.cache.get(text)
+  if (result) {
+    debug('cache', result)
+    commit('setResult', result)
     return
   }
 
   const res = await rootGetters.api({
     method: 'GET',
-    url: '/base64',
+    url: '/_/base64',
     params: {
       v: text
     }
@@ -38,18 +39,19 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
     return
   }
 
-  encoded = {
+  result = {
     text: text,
     result: res.data.result
   }
 
-  rootGetters.cache.set(text, encoded)
+  rootGetters.cache.set(text, result)
   if (text === state.text) {
     return
   }
-  commit('setResult', encoded)
+  commit('setResult', result)
   return res.data
 }
+
 const mutations = store.mutations = {}
 
 mutations.setResult = function (state, { text, result }) {
@@ -59,6 +61,8 @@ mutations.setResult = function (state, { text, result }) {
 }
 
 export default store
+export { name, mapActions, mapState, mapMutations, mapGetters }
+export { actions }
 export function register ($store) {
   debug('register')
   if ($store.hasModule(name)) {

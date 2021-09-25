@@ -19,7 +19,6 @@ module.exports = [{
   component: () => import('./view/base64/index.mjs'),
   meta: {
     title: 'Base64 編碼',
-    requiredAuth: true,
-    serverPrecommit: 'base64/setResult'
+    requiredAuth: true
   }
 }]

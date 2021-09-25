@@ -2,8 +2,12 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import LRU from 'lru-cache'
+import createDebug from 'debug'
+const debug = createDebug('app:store')
 Vue.use(Vuex)
+
 export function createStore (state) {
+  debug('createStore')
   const cache = new LRU({
     max: 10
   })

@@ -1,9 +1,10 @@
-import template from './template.pug'
+import { render, staticRenderFns } from './render.pug'
 import layout from '../layout/index.js'
 import createDebug from 'debug'
 const debug = createDebug('app:outlet')
 export default {
-  template,
+  render,
+  staticRenderFns,
   components: {
     layout: layout
   },

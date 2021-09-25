@@ -29,6 +29,7 @@ export default {
   },
   watch: {
     $route: function () {
+      this.$refs.sidenav.close()
     }
   },
   methods: {
@@ -40,7 +41,7 @@ export default {
   // Server-side only
   // This will be called by the server renderer automatically
   serverPrefetch: async function () {
-    debug('layout: serverPrefetch (server side only)')
+    debug('serverPrefetch (server side only)')
 
     // return the Promise from the action
     // so that the component waits before rendering

@@ -32,8 +32,19 @@ export default {
       }]
     }
   },
-  beforeRouteEnter: function (to, from, next) {
+  // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
+  // Server-side only
+  // This will be called by the server renderer automatically
+  serverPrefetch: async function (vm) {
+    debug('serverPrefetch (server side only)')
+
+    // return the Promise from the action
+    // so that the component waits before rendering
+    return this.encode(this.input)
+  },
+  beforeRouteEnter (to, from, next) {
     debug(`${to.name}: beforeRouteEnter`)
+
     next(function (vm) {
       debug(`${vm.$route.name}: beforeRouteEnter next`)
     })

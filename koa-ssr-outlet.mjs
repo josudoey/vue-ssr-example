@@ -46,10 +46,7 @@ export default async function (ctx, next) {
 
       debug('rendered')
       const meta = vm.$route.meta
-      if (meta && meta.serverPrecommit) {
-        debug('store commit', meta.serverPrecommit)
-        vm.$store.commit(meta.serverPrecommit, ctx.body)
-      }
+      debug('meta', meta)
     }
   })
   debug('renderToString done')
