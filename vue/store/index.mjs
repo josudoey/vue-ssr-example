@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as auth from './auth/index.mjs'
 import axios from 'axios'
 Vue.use(Vuex)
 export function createStore (state) {
@@ -24,6 +23,5 @@ export function createStore (state) {
     }
   })
   store.replaceState(state)
-  auth.register(store)
   return store
 }

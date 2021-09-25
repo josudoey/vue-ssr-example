@@ -2,13 +2,14 @@ import * as css from './module.css'
 import './style.css'
 import { render, staticRenderFns } from './render.pug'
 import createDebug from 'debug'
+
 const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
   render,
   staticRenderFns,
   // see https://vuejs.org/v2/api/#provide-inject
-  inject: ['toggleSidenav'],
+  inject: ['auth', 'toggleSidenav'],
   data: function () {
     const now = Date.now()
     debug(`now ${now}`)
@@ -32,22 +33,22 @@ export default {
     }
   },
   beforeCreate: function () {
-    debug('home: beforeCreate')
+    debug('beforeCreate')
   },
   created: function () {
-    debug('home: created')
+    debug('created')
   },
   beforeMount: function () {
     debug('home: beforeMount')
     this.text = 'browser time'
   },
   mounted: function () {
-    debug('home: mounted')
+    debug('mounted')
   },
   beforeDestroy: function () {
-    debug('home: beforeDestroy')
+    debug('beforeDestroy')
   },
   destroyed: function () {
-    debug('home: destroyed')
+    debug('destroyed')
   }
 }

@@ -7,7 +7,10 @@ const debug = createDebug('app:layout')
 export default {
   template,
   provide () {
+    debug('provide')
+    auth.register(this.$store)
     return {
+      auth: this.$store.state.auth,
       toggleSidenav: this.toggleSidenav
     }
   },
@@ -30,8 +33,18 @@ export default {
       this.$refs.sidenav.toggle()
     }
   },
+  // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
+  // Server-side only
+  // This will be called by the server renderer automatically
   serverPrefetch: async function () {
     debug('layout: serverPrefetch (server side only)')
+    // this.$store.registerModule('auth', auth)
+
+    // return the Promise from the action
+    // so that the component waits before rendering
+  },
+  mounted: function () {
+    debug('mounted')
   },
   metaInfo () {
     return {
@@ -39,21 +52,18 @@ export default {
     }
   },
   beforeCreate: function () {
-    debug('layout: beforeCreate')
+    debug('beforeCreate')
   },
   created: function () {
-    debug('layout: created')
+    debug('created')
   },
   beforeMount: function () {
-    debug('layout: beforeMount')
-  },
-  mounted: function () {
-    debug('layout: mounted')
+    debug('beforeMount')
   },
   beforeDestroy: function () {
-    debug('layout: beforeDestroy')
+    debug('beforeDestroy')
   },
   destroyed: function () {
-    debug('layout: destroyed')
+    debug('destroyed')
   }
 }
