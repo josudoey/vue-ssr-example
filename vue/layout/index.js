@@ -6,6 +6,11 @@ import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
   template,
+  provide () {
+    return {
+      toggleSidenav: this.toggleSidenav
+    }
+  },
   computed: {
     ...auth.mapState(['uid'])
   },
@@ -18,11 +23,12 @@ export default {
   },
   watch: {
     $route: function () {
-      this.$refs.sidenav.close()
     }
   },
   methods: {
-
+    toggleSidenav () {
+      this.$refs.sidenav.toggle()
+    }
   },
   serverPrefetch: async function () {
     debug('layout: serverPrefetch (server side only)')
