@@ -1,6 +1,6 @@
 import './style.css'
 import template from './template.pug'
-import sidenav from './sidenav'
+import sidenav from './sidenav/index.mjs'
 import * as auth from '../store/auth/index.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')

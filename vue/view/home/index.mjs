@@ -2,6 +2,10 @@ import * as css from './module.css'
 import './style.css'
 import { render, staticRenderFns } from './render.pug'
 import createDebug from 'debug'
+import {
+  toggle as toggleSidenav,
+  close as closeSidenav
+} from '../../layout/sidenav/index.mjs'
 const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
@@ -27,7 +31,9 @@ export default {
         autoHideDelay: 5000,
         appendToast: true
       })
-    }
+    },
+    toggleSidenav,
+    closeSidenav
   },
   beforeCreate: function () {
     debug('home: beforeCreate')
