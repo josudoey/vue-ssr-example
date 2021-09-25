@@ -17,6 +17,6 @@ router
   .post('/_/auth', auth.basic)
   .get('/_/auth/revoke', auth.revoke)
   .get('/sign-out', page.signOut)
-  .get('/_/base64', base64.encode)
+  .get('base64', '/base64', base64.encode)
 
 export default router

@@ -1,7 +1,7 @@
 import './style.css'
 import template from './template.pug'
 import sidenav from './sidenav/index.mjs'
-import * as auth from '../store/auth/index.mjs'
+import * as auth from './auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
@@ -10,6 +10,9 @@ export default {
     debug('provide')
     auth.register(this.$store)
     return {
+      ...auth.mapActions({
+        authSignIn: 'signIn'
+      }),
       auth: this.$store.state.auth,
       toggleSidenav: this.toggleSidenav
     }
@@ -38,7 +41,6 @@ export default {
   // This will be called by the server renderer automatically
   serverPrefetch: async function () {
     debug('layout: serverPrefetch (server side only)')
-    // this.$store.registerModule('auth', auth)
 
     // return the Promise from the action
     // so that the component waits before rendering

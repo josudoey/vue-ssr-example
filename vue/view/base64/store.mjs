@@ -1,31 +1,35 @@
 import Vuex from 'vuex'
+import createDebug from 'debug'
 const name = 'base64'
 const mapActions = Vuex.mapActions.bind(null, name)
 const mapState = Vuex.mapState.bind(null, name)
 const mapMutations = Vuex.mapMutations.bind(null, name)
 const mapGetters = Vuex.mapGetters.bind(null, name)
 export { name, mapActions, mapState, mapMutations, mapGetters }
-
+const debug = createDebug('app:store:base64')
 const store = {
   namespaced: true,
-  state: () => ({
-    cache: {},
-    text: '',
-    result: ''
-  })
+  state: () => {
+    return {
+      text: '',
+      result: ''
+    }
+  }
 }
 
 const actions = store.actions = {}
 actions.encode = async function ({ state, commit, rootGetters }, text) {
-  let encoded = state.cache[text]
+  debug('encode')
+  let encoded = rootGetters.cache.get(text)
   if (encoded) {
+    debug('cache', encoded)
     commit('setResult', encoded)
     return
   }
 
   const res = await rootGetters.api({
     method: 'GET',
-    url: '/_/base64',
+    url: '/base64',
     params: {
       v: text
     }
@@ -38,7 +42,8 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
     text: text,
     result: res.data.result
   }
-  commit('setCache', encoded)
+
+  rootGetters.cache.set(text, encoded)
   if (text === state.text) {
     return
   }
@@ -46,25 +51,31 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
   return res.data
 }
 const mutations = store.mutations = {}
-mutations.setCache = function (state, { text, result }) {
-  state.cache[text] = {
-    text: text,
-    result: result
-  }
-}
 
 mutations.setResult = function (state, { text, result }) {
+  debug('setResult')
   state.text = text
   state.result = result
 }
 
 export default store
 export function register ($store) {
+  debug('register')
   if ($store.hasModule(name)) {
     return
   }
-  const serverState = Object.assign({}, store.state(), $store.state[name])
-  delete $store.state[name]
-  $store.registerModule(name, store)
-  $store._modules.get([name]).context.commit('setResult', serverState)
+  const opts = {}
+  if ($store.state[name]) {
+    opts.preserveState = true
+  }
+  $store.registerModule(name, store, opts)
+}
+
+// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
+export function unregister ($store) {
+  debug('unregister')
+  if (!$store.hasModule(name)) {
+    return
+  }
+  $store.unregisterModule(name)
 }

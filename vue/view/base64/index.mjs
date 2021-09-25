@@ -5,6 +5,10 @@ const debug = createDebug('app:view:base64')
 export default {
   render,
   staticRenderFns,
+  provide () {
+    debug('provide')
+    base64Store.register(this.$store)
+  },
   computed: {
     ...base64Store.mapState([
       'text',
@@ -21,6 +25,7 @@ export default {
   },
   metaInfo: function () {
     return {
+      serverPrecommit: 'base64/setResult',
       script: [{
         innerHTML: 'console.log("base64: metaInfo script innerHTML");',
         type: 'text/javascript'
@@ -64,7 +69,6 @@ export default {
   },
   beforeCreate: function () {
     debug(`${this.$route.name}: beforeCreate`)
-    base64Store.register(this.$store)
   },
   created: function () {
     debug(`${this.$route.name}: created`)
@@ -84,5 +88,6 @@ export default {
   },
   destroyed: function () {
     debug(`${this.$route.name}: destroyed`)
+    base64Store.unregister(this.$store)
   }
 }

@@ -25,7 +25,7 @@ export default {
       title: '預設標題',
       titleTemplate: '%s',
       afterNavigation (metaInfo) {
-        debug('ssr-outlet: metaInfo afterNavigation', metaInfo)
+        debug('metaInfo afterNavigation', metaInfo)
       },
       ...this.$route.meta
     }

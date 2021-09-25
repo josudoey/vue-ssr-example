@@ -1,8 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import LRU from 'lru-cache'
 Vue.use(Vuex)
 export function createStore (state) {
+  const cache = new LRU({
+    max: 10
+  })
   const api = axios.create({
     baseURL: '/',
     headers: {
@@ -19,6 +23,9 @@ export function createStore (state) {
     getters: {
       api: function () {
         return api
+      },
+      cache: function () {
+        return cache
       }
     }
   })

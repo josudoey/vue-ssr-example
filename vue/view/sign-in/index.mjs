@@ -1,10 +1,10 @@
 import template from './template.html'
-import * as auth from '../../store/auth/index.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:sign-in')
 
 export default {
   template,
+  inject: ['auth', 'authSignIn'],
   data: function () {
     return {
       user: '',
@@ -12,21 +12,13 @@ export default {
       disableSignIn: false
     }
   },
-  computed: {
-    ...auth.mapState([
-      'uid'
-    ])
-  },
   created: function () {
     debug(`${this.$route.name}: created`)
     this.redirect()
   },
   methods: {
-    ...auth.mapActions({
-      authSignIn: 'signIn'
-    }),
     redirect: function () {
-      if (!this.uid) {
+      if (!this.auth.uid) {
         return
       }
 
