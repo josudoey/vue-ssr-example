@@ -10,10 +10,16 @@ module.exports = function (env) {
     target: 'node',
     externalsType: 'node-commonjs',
     externals: [
-      'axios',
       'vue-router',
       'debug'
     ],
+    resolve: {
+      alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
+        axios: false, // return module.exports = {}
+        vue$: 'vue/dist/vue.esm.js',
+        vuex$: 'vuex/dist/vuex.esm.js'
+      }
+    },
     entry: path.resolve(__dirname, './outlet/ssr/entry.mjs'),
     output: {
       clean: true,
@@ -22,12 +28,6 @@ module.exports = function (env) {
     },
     mode: 'production',
     devtool: false,
-    resolve: {
-      alias: {
-        vue$: 'vue/dist/vue.esm.js',
-        vuex$: 'vuex/dist/vuex.esm.js'
-      }
-    },
     plugins: [
       new webpack.DefinePlugin({}),
       new MiniCssExtractPlugin({})
