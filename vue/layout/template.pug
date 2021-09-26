@@ -3,8 +3,9 @@ div
     sidenav(ref="sidenav")
       .list-group
         .list-group-item.border-bottom.rounded-0 Hi! {{$store.state.auth.uid}}
-        router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'home'}" exact) home
+        router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'home'}" exact) Home
         router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'base64',query:{v:'base64'}}") Base64
+        router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'note'}") Note
         a.list-group-item.list-group-item-action.border-bottom.rounded-0(href="/sign-out") Sign Out
     nav.navbar.navbar-dark.bg-dark
       slot(name="navbar-toggler")

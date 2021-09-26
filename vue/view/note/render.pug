@@ -1,0 +1,25 @@
+.contaner
+  .float-right
+      b-pagination(v-if="items.length" align="right" size="sm" :total-rows="total" v-model="currentPage" :per-page="limit" @change="changePage")
+      span(v-if="total") Displaying {{skip+1}} to {{skip+count}} of {{total}} items
+      span(v-else) Displaying 0 items
+  form.form-inline(@submit.prevent='setListParams({q:keyword,skip:0,limit:limit});changeRoute()')
+    input.form-control(type='textbox', v-model='keyword', placeholder='search')
+  form.form-inline(@submit.prevent='create')
+    input.form-control(type='textbox', v-model='text', placeholder='')
+    .btn.btn-sm.btn-primary(@click="create") 新增
+  b-table(primary-key="id" style="font-size: 14px;" hover :fields=`[
+    { key:'action', label:'', thStyle:'width:10%;min-width:90px;' },
+    { key:'id', label:'id', thStyle:'width:10%;min-width:90px;' },
+    { key:'text', label:'text', thStyle:'width:60%;min-width:90px;' },
+    { key:'createdAt', label:'創建時間', thStyle:'width:10%;min-width:90px;' },
+    { key:'updatedAt', label:'更新時間', thStyle:'width:10%;min-width:90px;' }
+    ]` :items="items")
+    template(slot="table-colgroup")
+      col(style="width:10%;")
+    template(v-slot:cell(action)="data")
+      .btn.btn-sm.btn-secondary(@click="save(data.item)") 更新
+      .btn.btn-sm.btn-danger(@click="remove(data.item)") 刪除
+    template(v-slot:cell(text)="data")
+      form.form-inline(@submit.prevent='save(data.item)')
+        input.form-control(type='textbox', v-model='data.item.text')

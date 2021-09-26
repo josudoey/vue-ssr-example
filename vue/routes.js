@@ -21,4 +21,12 @@ module.exports = [{
     title: 'Base64 編碼',
     requiredAuth: true
   }
+}, {
+  name: 'note',
+  path: '/note',
+  component: () => import('./view/note/index.mjs'),
+  meta: {
+    title: 'Note',
+    requiredAuth: true
+  }
 }]

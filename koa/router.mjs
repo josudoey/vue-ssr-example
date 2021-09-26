@@ -3,6 +3,7 @@ import bodyParser from 'koa-bodyparser'
 import * as auth from './route/auth.mjs'
 import * as base64 from './route/base64.mjs'
 import * as page from './route/page.mjs'
+import * as note from './route/note.mjs'
 import * as xsrfToken from './route/xsrf-token.mjs'
 
 const router = new KoaRouter()
@@ -18,5 +19,9 @@ router
   .get('authRevoke', '/_/auth/revoke', auth.revoke)
   .get('signOut', '/sign-out', page.signOut)
   .get('base64', '/_/base64', base64.encode)
+  .get('noteList', '/_/note', note.List)
+  .post('noteInsert', '/_/note', note.Insert)
+  .put('noteUpdate', '/_/note/:id', note.Update)
+  .delete('noteDelete', '/_/note/:id', note.Delete)
 
 export default router
