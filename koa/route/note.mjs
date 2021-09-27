@@ -17,6 +17,26 @@ const setNoteItems = function (ctx, items) {
   }
 }
 
+export async function List (ctx, next) {
+  debug('List')
+  const { query } = ctx
+  const skip = Math.max(parseInt(query.skip || 0), 0)
+  const limit = Math.max(parseInt(query.limit) || 25, 1)
+  let items = getNote(ctx).items
+  if (query.q) {
+    items = items.filter(function (i) {
+      return i.text.indexOf(query.q) >= 0
+    })
+  }
+  ctx.status = 200
+  ctx.body = {
+    start: skip,
+    limit: limit,
+    total: items.length,
+    items: items.slice(skip, skip + limit)
+  }
+}
+
 export async function Insert (ctx, next) {
   debug('Insert')
   const newData = ctx.request.body
@@ -33,21 +53,6 @@ export async function Insert (ctx, next) {
   setNoteItems(ctx, items)
   ctx.status = 200
   ctx.body = newData
-}
-
-export async function List (ctx, next) {
-  debug('List')
-  const { query } = ctx
-  const skip = Math.max(parseInt(query.skip || 0), 0)
-  const limit = Math.max(parseInt(query.limit) || 25, 1)
-  const items = getNote(ctx).items
-  ctx.status = 200
-  ctx.body = {
-    start: skip,
-    limit: limit,
-    total: items.length,
-    items: items.slice(skip, skip + limit)
-  }
 }
 
 export async function Update (ctx, next) {

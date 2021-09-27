@@ -2,7 +2,6 @@
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-
 import createApp from '../create-app.mjs'
 import VuexRouterSync from 'vuex-router-sync'
 
@@ -18,7 +17,6 @@ const main = function (state) {
     debug('vue-router onReady')
     vm.$mount('[data-server-rendered]', true)
   })
-
   return vm
 }
 

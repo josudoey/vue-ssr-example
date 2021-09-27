@@ -1,6 +1,7 @@
+import * as storeModule from './store.mjs'
 import { render, staticRenderFns } from './render.pug'
 import createDebug from 'debug'
-import * as storeModule from './store.mjs'
+import { show as modalEditorShow } from './modal-editor/index.mjs'
 
 const debug = createDebug('app:view:note')
 export default {
@@ -10,7 +11,6 @@ export default {
   data () {
     return {
       keyword: '',
-      text: '',
       currentPage: 1
     }
   },
@@ -48,20 +48,19 @@ export default {
     })
   },
   mounted () {
-    this.fetch()
     debug('mounted')
+    this.fetch()
   },
   methods: {
     ...storeModule.mapActions({
       list: 'list',
-      insert: 'insert',
-      update: 'update',
       delete: 'delete'
     }),
     ...storeModule.mapMutations({
       setListParams: 'setListParams'
     }),
     async fetch () {
+      debug('fetch')
       const { keyword, skip, limit } = this
       await this.list({
         q: keyword,
@@ -70,44 +69,21 @@ export default {
       })
       this.currentPage = parseInt(this.start / this.limit) + 1
     },
-    async create () {
-      try {
-        const newData = await this.insert({
-          text: this.text
-        })
-        this.text = ''
-        this.$bvToast.toast(`已新增 [${newData.id}]`, {
-          title: '新增成功',
-          autoHideDelay: 5000,
-          appendToast: true
-        })
-      } catch (err) {
-        this.$bvToast.toast(err.message, {
-          title: '新增失敗',
-          autoHideDelay: 5000,
-          appendToast: true
-        })
-      }
-
-      this.fetch()
+    async showCreateModal () {
+      debug('showCreateModal')
+      const self = this
+      const modal = modalEditorShow(this, {})
+      modal.$on('ok', function () {
+        self.fetch()
+      })
     },
-    async save (item) {
-      try {
-        const newData = await this.update(item)
-        this.$bvToast.toast(`已更新 [${newData.id}]`, {
-          title: '更新成功',
-          autoHideDelay: 5000,
-          appendToast: true
-        })
-      } catch (err) {
-        this.$bvToast.toast(err.message, {
-          title: '更新失敗',
-          autoHideDelay: 5000,
-          appendToast: true
-        })
-      }
-
-      this.fetch()
+    async showUpdateModal (item) {
+      debug('showUpdateModal')
+      const self = this
+      const modal = modalEditorShow(this, item)
+      modal.$on('ok', function () {
+        self.fetch()
+      })
     },
     async remove (item) {
       try {

@@ -1,0 +1,10 @@
+mixin body
+  form.form-inline(@submit.prevent='ok')
+    b-form-input(type="text" v-model="text" placeholder="記事文字")
+
+b-modal(ref="modal" @ok="ok" size="lg" @shown="shown"  @hidden="$nextTick($destroy)" centered)
+  template(v-slot:modal-title) {{actionName}} {{id}}
+  template(v-slot:modal-footer)
+    .btn.btn-secondary(@click="$refs.modal.hide") 取消
+    .btn.btn-primary(@click="ok") {{actionName}}
+  +body
