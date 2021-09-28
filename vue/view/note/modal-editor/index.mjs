@@ -1,14 +1,28 @@
+import 'flatpickr/dist/flatpickr.css'
+import flatPickr from 'vue-flatpickr-component'
+
 import * as storeModule from '../store.mjs'
 import { render, staticRenderFns } from './render.pug'
 import createDebug from 'debug'
-
+import { MandarinTraditional as zhTW } from 'flatpickr/dist/l10n/zh-tw.js'
 const debug = createDebug('app:view:note:modal-create')
 
 const componentConfig = {
   render,
   staticRenderFns,
+  components: {
+    flatPickr
+  },
   data () {
     return {
+      config: {
+        wrap: true, // set wrap to true only when using 'input-group'
+        // altFormat: 'M j, Y',
+        // altInput: true,
+        dateFormat: 'Y-m-d',
+        locale: zhTW // locale for this instance only
+      },
+      date: '',
       id: '',
       text: ''
     }
@@ -20,6 +34,8 @@ const componentConfig = {
   },
   created () {
     debug('created')
+  },
+  mounted () {
   },
   destroyed () {
     debug('destroyed')
@@ -33,12 +49,14 @@ const componentConfig = {
     async save () {
       if (!this.id) {
         return this.insert({
+          date: this.date,
           text: this.text
         })
       }
 
       return this.update({
         id: this.id,
+        date: this.date,
         text: this.text
       })
     },

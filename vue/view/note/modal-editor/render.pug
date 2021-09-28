@@ -1,6 +1,7 @@
 mixin body
   form.form-inline(@submit.prevent='ok')
-    b-form-input(type="text" v-model="text" placeholder="記事文字")
+    flat-pickr.form-control(v-model="date" :config="config" placeholder="日期" name="date")
+    b-form-input(:inline="true" type="text" v-model="text" placeholder="記事文字")
 
 b-modal(ref="modal" @ok="ok" size="lg" @shown="shown"  @hidden="$nextTick($destroy)" centered)
   template(v-slot:modal-title) {{actionName}} {{id}}

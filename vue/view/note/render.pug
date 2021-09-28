@@ -7,8 +7,9 @@
     input.form-control(type='textbox', v-model='keyword', placeholder='search')
   b-table(primary-key="id" style="font-size: 14px;" hover :fields=`[
     { key:'action', label:'', thStyle:'width:10%;min-width:90px;' },
-    { key:'id', label:'id', thStyle:'width:10%;min-width:90px;' },
-    { key:'text', label:'text', thStyle:'width:60%;min-width:90px;' },
+    { key:'id', label:'ID', thStyle:'width:10%;min-width:90px;' },
+    { key:'date', label:'日期', thStyle:'width:10%;min-width:90px;' },
+    { key:'text', label:'記事文字', thStyle:'width:50%;min-width:90px;' },
     { key:'createdAt', label:'創建時間', thStyle:'width:10%;min-width:90px;' },
     { key:'updatedAt', label:'更新時間', thStyle:'width:10%;min-width:90px;' }
     ]` :items="items")
