@@ -3,6 +3,7 @@ const debug = createDebug('app:hydration:base64')
 
 export async function encode ({ commit }, text) {
   debug('encode')
+  text = text || ''
   const encoded = Buffer.from(text).toString('base64')
   const result = {
     text: text,

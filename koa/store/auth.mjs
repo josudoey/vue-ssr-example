@@ -1,4 +1,6 @@
 import Vuex from 'vuex'
+import basicAuth from 'basic-auth'
+
 import createDebug from 'debug'
 const name = 'auth'
 const mapActions = Vuex.mapActions.bind(null, name)
@@ -6,34 +8,40 @@ const mapState = Vuex.mapState.bind(null, name)
 const mapMutations = Vuex.mapMutations.bind(null, name)
 const mapGetters = Vuex.mapGetters.bind(null, name)
 export { name, mapActions, mapState, mapMutations, mapGetters }
-const debug = createDebug('app:store:auth')
+const debug = createDebug('app:koa:store:auth')
 
-const store = {
+export const state = () => ({
+  uid: '',
+  expire: 0
+})
+
+export const store = {
   namespaced: true,
-  state: () => ({
-    uid: '',
-    expire: 0
-  })
+  state
 }
 
 export const actions = store.actions = {}
-actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
-  const res = await rootGetters.api({
-    method: 'POST',
-    url: '/_/auth',
-    auth: {
-      username: user,
-      password: password
-    }
-  })
-  if (res.status !== 200) {
+actions.signIn = async function ({ commit, rootGetters }) {
+  const ctx = rootGetters.context
+  const credentials = basicAuth(ctx.req)
+  if (!credentials) {
     return
   }
-  commit('setAuth', res.data)
-  return res.data
+  const auth = ctx.session.auth = {
+    uid: credentials.name,
+    expire: ctx.session._expire
+  }
+  return auth
+}
+
+actions.revoke = async function ({ commit, rootGetters }) {
+  const ctx = rootGetters.context
+  // see https://github.com/koajs/session#destroying-a-session
+  ctx.session = null
 }
 const mutations = store.mutations = {}
 mutations.setAuth = function (state, payload) {
+  debug('setAuth', payload)
   Object.assign(state, payload)
 }
 
