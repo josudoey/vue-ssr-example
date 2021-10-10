@@ -1,6 +1,5 @@
 import createDebug from 'debug'
 import crypto from 'crypto'
-// import * as actions from '~hydration/action/base64.mjs'
 const debug = createDebug('app:koa:note')
 
 const getNote = function (ctx) {
@@ -19,6 +18,10 @@ const setNoteItems = function (ctx, items) {
 
 export async function List (ctx, next) {
   debug('List')
+  await new Promise(function (resolve) {
+    setTimeout(resolve, 1000)
+  })
+  ctx.status = 200
   const { query } = ctx
   const skip = Math.max(parseInt(query.skip || 0), 0)
   const limit = Math.max(parseInt(query.limit) || 25, 1)

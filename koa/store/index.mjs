@@ -1,42 +1,53 @@
+import LRU from 'lru-cache'
 import createDebug from 'debug'
-import Vuex from 'vuex'
-import Vue from 'vue'
+import auth from './auth.mjs'
+import { createPrefetchAPI } from './api.mjs'
 const debug = createDebug('app:koa:store')
-Vue.use(Vuex)
-export function createKoaStore (ctx) {
-  const { session, state } = ctx
-  debug('createKoaStore')
-  const store = new Vuex.Store({
-    state: {},
-    actions: {},
-    mutations: {},
-    getters: {
-      context: function () {
-        return ctx
-      },
-      session: function () {
-        return session
-      }
-    }
-  })
-  store.replaceState({
-    ...state
-  })
-  return store
+
+export const modules = {
+  auth
 }
 
-const CONTEXT_STORE = Symbol('context#contextStore')
-export function extendKoaStore (context) {
-  if (context.hasOwnProperty(CONTEXT_STORE)) {
-    return
+export const actions = {}
+export const mutations = {}
+
+const createStore = function (ctx) {
+  debug('createStore')
+  const cache = new LRU({
+    max: 10
+  })
+  const api = createPrefetchAPI(ctx)
+  return {
+    modules,
+    actions,
+    mutations,
+    getters: {
+      cache () {
+        return cache
+      },
+      api () {
+        return api
+      },
+      context () {
+        return this
+      },
+      session () {
+        return this.session
+      }
+    }
   }
+}
+
+const CONTEXT_STORE = Symbol('context#store')
+
+export function extendKoaStore (context) {
   Object.defineProperties(context, {
-    $store: {
+    store: {
       get () {
         if (this[CONTEXT_STORE]) {
           return this[CONTEXT_STORE]
         }
-        this[CONTEXT_STORE] = createKoaStore(this)
+        this[CONTEXT_STORE] = createStore(this)
         return this[CONTEXT_STORE]
       },
       configurable: true

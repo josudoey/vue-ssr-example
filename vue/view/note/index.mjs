@@ -10,7 +10,7 @@ export default {
   watch: {},
   data () {
     return {
-      keyword: '',
+      keyword: '' || this.$route.query.q,
       currentPage: 1
     }
   },
@@ -25,31 +25,6 @@ export default {
     count () {
       return this.items.length
     }
-  },
-  provide () {
-    debug('provide')
-    storeModule.register(this.$store)
-    return {
-      note: this.$store.note
-    }
-  },
-  destroyed: function () {
-    debug(`${this.$route.name}: destroyed`)
-    storeModule.unregister(this.$store)
-  },
-  async created () {
-    debug('created')
-    const { q, skip, limit } = this.$route.query
-    this.keyword = q
-    this.setListParams({
-      q: q || '',
-      skip: parseInt(skip) || 0,
-      limit: parseInt(limit) || 5
-    })
-  },
-  mounted () {
-    debug('mounted')
-    this.fetch()
   },
   methods: {
     ...storeModule.mapActions({
@@ -121,7 +96,6 @@ export default {
           }
         }
       }
-      this.fetch()
 
       if ($router.resolve(to).href === $router.resolve($route).href) {
         return
@@ -138,6 +112,50 @@ export default {
       })
       this.changeRoute()
     }
-
+  },
+  async beforeRouteEnter (to, from, next) {
+    debug('beforeRouteEnter')
+    next(async function (vm) {
+      debug('beforeRouteEnter done')
+    })
+  },
+  provide () {
+    debug('provide')
+  },
+  async serverPrefetch (vm) {
+    debug('serverPrefetch')
+    storeModule.register(vm.$store)
+    const { q, skip, limit } = vm.$route.query
+    await vm.list({
+      q: q || '',
+      skip: parseInt(skip) || 0,
+      limit: parseInt(limit) || 5
+    })
+    this.currentPage = parseInt(this.start / this.limit) + 1
+  },
+  async created () {
+    debug('created')
+  },
+  beforeMount () {
+    debug('beforeMount')
+    const preserveState = storeModule.register(this.$store)
+    if (preserveState) {
+      return
+    }
+    this.fetch()
+  },
+  mounted () {
+    debug('mounted')
+  },
+  async beforeRouteUpdate (to, from, next) {
+    debug('beforeRouteUpdate')
+    await this.fetch()
+    next(async function (vm) {
+      debug('beforeRouteUpdate done')
+    })
+  },
+  destroyed: function () {
+    debug(`${this.$route.name}: destroyed`)
+    storeModule.unregister(this.$store)
   }
 }

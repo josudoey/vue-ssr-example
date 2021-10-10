@@ -1,20 +1,34 @@
-import * as auth from '../store/auth.mjs'
+// import * as auth from '../store/auth.mjs'
+import basicAuth from 'basic-auth'
+import createDebug from 'debug'
+const debug = createDebug('app:koa:store')
+
 export async function state (ctx, next) {
   ctx.state.auth = ctx.session.auth
-  auth.register(ctx.$store)
+  await next()
+}
+
+export async function required (ctx, next) {
+  if (!ctx.session.auth) {
+    ctx.status = 401
+    return
+  }
   await next()
 }
 
 export async function get (ctx, next) {
   ctx.status = 200
-  ctx.body = ctx.state.auth
+  ctx.body = ctx.session.auth
 }
 
 export async function basic (ctx, next) {
-  const auth = await ctx.$store.dispatch('auth/signIn')
-  if (!auth) {
-    ctx.status = 401
+  const credentials = basicAuth(ctx.req)
+  if (!credentials) {
     return
+  }
+  const auth = ctx.session.auth = {
+    uid: credentials.name,
+    expire: ctx.session._expire
   }
 
   ctx.status = 200
@@ -23,5 +37,6 @@ export async function basic (ctx, next) {
 
 export async function revoke (ctx, next) {
   ctx.status = 200
-  ctx.body = await ctx.$store.dispatch('auth/revoke')
+  ctx.session = null
+  ctx.body = {}
 }

@@ -18,8 +18,9 @@ export default async function (ctx, next) {
     return
   }
 
-  const vm = await createSSRApp(ctx.state)
-  const { $router } = vm
+  const vm = await createSSRApp(ctx.store)
+  const { $router, $store } = vm
+  $store.replaceState(ctx.state)
 
   const errOrRoute = await $router.push(ctx.url).catch((err) => err)
   // see https://router.vuejs.org/guide/advanced/navigation-failures.html#navigation-failures-s-properties
@@ -33,6 +34,7 @@ export default async function (ctx, next) {
     ctx.throw(errOrRoute)
     return
   }
+
   await new Promise((resolve) => {
     return vm.$router.onReady(resolve)
   })
@@ -46,7 +48,7 @@ export default async function (ctx, next) {
 
       debug('rendered')
       const meta = vm.$route.meta
-      debug('meta', meta)
+      debug('meta', meta.name)
     }
   })
   debug('renderToString done')

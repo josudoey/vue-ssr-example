@@ -1,10 +1,15 @@
 import createDebug from 'debug'
 const debug = createDebug('app:mixin')
 export default {
+  metaInfo (vm) {
+    return {
+      titleTemplate: '%s'
+    }
+  },
   beforeRouteEnter: function (to, from, next) {
-    debug(`${to.name}: beforeRouteEnter`)
+    debug(`beforeRouteEnter ${from.name} -> ${to.name}`)
     next(function (vm) {
-      debug(`mixin ${to.name}: beforeRouteEnter next`)
+      debug(`beforeRouteEnter next ${to.name}`)
     })
   }
 }

@@ -8,12 +8,14 @@ const mapGetters = Vuex.mapGetters.bind(null, name)
 export { name, mapActions, mapState, mapMutations, mapGetters }
 const debug = createDebug('app:store:auth')
 
+export const state = () => ({
+  uid: '',
+  expire: 0
+})
+
 const store = {
   namespaced: true,
-  state: () => ({
-    uid: '',
-    expire: 0
-  })
+  state
 }
 
 export const actions = store.actions = {}
@@ -44,17 +46,18 @@ store.getters = {
 export default store
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
-  debug('register')
-  if ($store.hasModule(name)) {
-    return
-  }
-  const opts = {
-    preserveState: true
-  }
+  debug('register', $store.hasModule(name))
   if (!$store.state[name]) {
     $store.state[name] = store.state()
   }
-  $store.registerModule(name, store, opts)
+
+  if ($store.hasModule(name)) {
+    return
+  }
+
+  $store.registerModule(name, store, {
+    preserveState: true
+  })
   debug('register done')
 }
 

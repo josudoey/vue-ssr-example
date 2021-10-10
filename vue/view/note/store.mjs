@@ -8,24 +8,23 @@ const mapGetters = Vuex.mapGetters.bind(null, name)
 const debug = createDebug('app:store:note')
 debug('import')
 
-const store = {
+export const state = () => ({
+  q: '',
+  start: 0,
+  skip: 0,
+  limit: 25,
+  total: 0,
+  items: []
+})
+
+export const store = {
   namespaced: true,
-  state: () => {
-    return {
-      q: '',
-      start: 0,
-      skip: 0,
-      limit: 25,
-      total: 0,
-      items: []
-    }
-  }
+  state
 }
 
 const actions = store.actions = {}
-actions.list = async function (ctx, payload) {
+actions.list = async function ({ commit, rootGetters }, payload) {
   debug('list')
-  const { commit, rootGetters } = ctx
   const { q, skip, limit } = payload
 
   commit('setListParams', {
@@ -50,9 +49,8 @@ actions.list = async function (ctx, payload) {
   return res.data
 }
 
-actions.insert = async function (ctx, payload) {
+actions.insert = async function ({ rootGetters }, payload) {
   debug('insert')
-  const { rootGetters } = ctx
 
   const res = await rootGetters.api({
     method: 'POST',
@@ -65,9 +63,8 @@ actions.insert = async function (ctx, payload) {
   return res.data
 }
 
-actions.update = async function (ctx, payload) {
+actions.update = async function ({ rootGetters }, payload) {
   debug('update')
-  const { rootGetters } = ctx
   const { id } = payload
   const res = await rootGetters.api({
     method: 'PUT',
@@ -80,9 +77,8 @@ actions.update = async function (ctx, payload) {
   return res.data
 }
 
-actions.delete = async function (ctx, payload) {
+actions.delete = async function ({ rootGetters }, payload) {
   debug('delete')
-  const { rootGetters } = ctx
   const { id } = payload
   const res = await rootGetters.api({
     method: 'DELETE',
@@ -116,13 +112,13 @@ export { actions }
 export function register ($store) {
   debug('register')
   if ($store.hasModule(name)) {
-    return
+    return false
   }
-  const opts = {}
-  if ($store.state[name]) {
-    opts.preserveState = true
-  }
-  $store.registerModule(name, store, opts)
+  const preserveState = !!$store.state[name]
+  $store.registerModule(name, store, {
+    preserveState: preserveState
+  })
+  return preserveState
 }
 
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting

@@ -13,7 +13,7 @@ export default {
     }
   },
   metaInfo () {
-    debug('outlet metaInfo')
+    debug('metaInfo')
     return {
       meta: [
         { charset: 'utf-8' },
@@ -32,8 +32,12 @@ export default {
     }
   },
   beforeCreate () {
-
+    debug('beforeCreate')
+  },
+  beforeMount () {
+    debug('beforeMount')
   },
   mounted () {
+    debug('mounted')
   }
 }

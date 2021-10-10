@@ -45,6 +45,7 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
   }
 
   rootGetters.cache.set(text, result)
+  debug('result', result)
   if (text === state.text) {
     return
   }
@@ -68,11 +69,9 @@ export function register ($store) {
   if ($store.hasModule(name)) {
     return
   }
-  const opts = {}
-  if ($store.state[name]) {
-    opts.preserveState = true
-  }
-  $store.registerModule(name, store, opts)
+  $store.registerModule(name, store, {
+    preserveState: !!$store.state[name]
+  })
 }
 
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting

@@ -2,8 +2,10 @@ import http from 'http'
 import staticCache from 'koa-static-cache'
 import env from './vue/env.js'
 import vueRoutes from './vue/routes.js'
-import koaRouter from './koa/router.mjs'
+import { createVueSSRRouter } from './koa/router.mjs'
 import app from './koa/app.mjs'
+import compose from 'koa-compose'
+import KoaRouter from 'koa-router'
 
 import koaSSROutlet from './koa-ssr-outlet.mjs'
 import * as xsrfToken from './koa/route/xsrf-token.mjs'
@@ -16,15 +18,11 @@ const { publicPath, assetOutputPath } = env
     dynamic: true
   }))
 
-  // const ssrRouter = new KoaRouter()
-  for (const route of vueRoutes) {
-    koaRouter.use(xsrfToken.create)
-    koaRouter.get(route.name, route.path, koaSSROutlet)
-  }
+  const router = createVueSSRRouter(vueRoutes, koaSSROutlet)
 
   app
-    .use(koaRouter.routes())
-    .use(koaRouter.allowedMethods())
+    .use(router.routes())
+    .use(router.allowedMethods())
 
   const server = http.createServer(app.callback())
   server.on('listening', async function () {

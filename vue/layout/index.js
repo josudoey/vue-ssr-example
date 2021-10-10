@@ -6,17 +6,6 @@ import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
   template,
-  provide () {
-    debug('provide')
-    auth.register(this.$store)
-    return {
-      ...auth.mapActions({
-        authSignIn: 'signIn'
-      }),
-      auth: this.$store.state.auth,
-      toggleSidenav: this.toggleSidenav
-    }
-  },
   computed: {
     ...auth.mapState(['uid'])
   },
@@ -37,31 +26,43 @@ export default {
       this.$refs.sidenav.toggle()
     }
   },
+  beforeCreate: function () {
+    debug('beforeCreate')
+  },
+  provide () {
+    debug('provide')
+    auth.register(this.$store)
+    return {
+      ...auth.mapActions({
+        authSignIn: 'signIn'
+      }),
+      auth: this.$store.state.auth,
+      toggleSidenav: this.toggleSidenav
+    }
+  },
+  created: function () {
+    debug('created')
+  },
+  metaInfo (vm) {
+    debug('metaInfo')
+    return {
+      titleTemplate: '%s'
+    }
+  },
   // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
   // Server-side only
   // This will be called by the server renderer automatically
-  serverPrefetch: async function () {
+  async serverPrefetch () {
     debug('serverPrefetch (server side only)')
 
     // return the Promise from the action
     // so that the component waits before rendering
   },
-  mounted: function () {
-    debug('mounted')
-  },
-  metaInfo () {
-    return {
-      titleTemplate: '%s'
-    }
-  },
-  beforeCreate: function () {
-    debug('beforeCreate')
-  },
-  created: function () {
-    debug('created')
-  },
   beforeMount: function () {
     debug('beforeMount')
+  },
+  mounted: function () {
+    debug('mounted')
   },
   beforeDestroy: function () {
     debug('beforeDestroy')
