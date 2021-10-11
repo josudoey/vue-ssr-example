@@ -10,7 +10,6 @@ module.exports = function (env) {
     target: 'node',
     externalsType: 'node-commonjs',
     externals: [
-      'vue-router',
       'debug'
     ],
     resolve: {

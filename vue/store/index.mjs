@@ -7,9 +7,6 @@ const debug = createDebug('app:store')
 Vue.use(Vuex)
 
 const createApi = function () {
-  if (!axiosCreate) {
-    return
-  }
   const api = axiosCreate({
     baseURL: '/',
     headers: {

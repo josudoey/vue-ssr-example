@@ -6,7 +6,7 @@ import Vuex from 'vuex'
 import * as authStoreModule from './auth/store.mjs'
 
 import mixin from '../mixin/index.mjs'
-import routes from '../routes.mjs'
+import routes from '../view/routes.mjs'
 import outlet from './index.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:create')

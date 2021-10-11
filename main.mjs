@@ -1,11 +1,10 @@
 import http from 'http'
 import staticCache from 'koa-static-cache'
 import env from './vue/env.js'
-import vueRoutes from './vue/routes.js'
+import vueRoutes from './vue/view/routes.mjs'
 import { createVueSSRRouter } from './koa/router.mjs'
 import app from './koa/app.mjs'
-
-import koaSSROutlet from './koa-ssr-outlet.mjs'
+import createKoaSSROutlet from './koa-ssr-outlet.mjs'
 
 const { publicPath, assetOutputPath } = env
 ;(async function main () {
@@ -15,6 +14,7 @@ const { publicPath, assetOutputPath } = env
     dynamic: true
   }))
 
+  const koaSSROutlet = createKoaSSROutlet()
   const router = createVueSSRRouter(vueRoutes, koaSSROutlet)
 
   app

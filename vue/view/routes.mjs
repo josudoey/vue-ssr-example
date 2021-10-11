@@ -1,7 +1,7 @@
 export default [{
   name: 'home',
   path: '/',
-  component: () => import('./view/home/index.mjs'),
+  component: () => import('./home/index.mjs'),
   meta: {
     title: '首頁',
     requiredAuth: true
@@ -9,14 +9,14 @@ export default [{
 }, {
   name: 'signIn',
   path: '/sign-in',
-  component: () => import('./view/sign-in/index.mjs'),
+  component: () => import('./sign-in/index.mjs'),
   meta: {
     title: '登入'
   }
 }, {
   name: 'base64',
   path: '/base64',
-  component: () => import('./view/base64/index.mjs'),
+  component: () => import('./base64/index.mjs'),
   meta: {
     title: 'Base64 編碼',
     requiredAuth: true
@@ -24,7 +24,7 @@ export default [{
 }, {
   name: 'note',
   path: '/note',
-  component: () => import('./view/note/index.mjs'),
+  component: () => import('./note/index.mjs'),
   meta: {
     title: 'Note',
     requiredAuth: true
