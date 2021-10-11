@@ -8,12 +8,6 @@ export default {
   render,
   staticRenderFns,
   watch: {},
-  data () {
-    return {
-      keyword: '' || this.$route.query.q,
-      currentPage: 1
-    }
-  },
   computed: {
     ...storeModule.mapState([
       'start',
@@ -118,6 +112,12 @@ export default {
     next(async function (vm) {
       debug('beforeRouteEnter done')
     })
+  },
+  data () {
+    return {
+      keyword: '' || this.$route.query.q,
+      currentPage: 1
+    }
   },
   provide () {
     debug('provide')

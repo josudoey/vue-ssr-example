@@ -1,20 +1,20 @@
 import VueRouter from 'vue-router'
-import createSSRApp from './vue/create-ssr-app.js'
+import createSSRApp from './vue/create-ssr-app.mjs'
 import createRenderer from './vue/create-renderer.mjs'
 import clientManifest from './vue/ssr-manifest.js'
 import createDebug from 'debug'
 const debug = createDebug('app:koa-ssr-outlet')
 
 const { isNavigationFailure, NavigationFailureType } = VueRouter
-const renderer = createRenderer(clientManifest)
 
+const renderer = createRenderer(clientManifest)
 export default async function (ctx, next) {
   const routeName = ctx._matchedRouteName
+  debug('path', ctx.path)
   debug('routeName', routeName)
-  await next()
 
   if (ctx.headers['x-xsrf-token']) {
-    // api only
+    // is api
     return
   }
 
@@ -23,9 +23,19 @@ export default async function (ctx, next) {
   $store.replaceState(ctx.state)
 
   const errOrRoute = await $router.push(ctx.url).catch((err) => err)
+  await new Promise((resolve) => {
+    return vm.$router.onReady(resolve)
+  })
+
   // see https://router.vuejs.org/guide/advanced/navigation-failures.html#navigation-failures-s-properties
   if (isNavigationFailure(errOrRoute, NavigationFailureType.redirected)) {
-    ctx.redirect($router.currentRoute.path)
+    if (!$router.currentRoute.name) {
+      debug('invalid route; redirect default /')
+      ctx.redirect('/')
+      return
+    }
+    debug('redirect', $router.currentRoute.fullPath)
+    ctx.redirect($router.currentRoute.fullPath)
     return
   }
 
@@ -34,10 +44,6 @@ export default async function (ctx, next) {
     ctx.throw(errOrRoute)
     return
   }
-
-  await new Promise((resolve) => {
-    return vm.$router.onReady(resolve)
-  })
 
   debug('renderToString')
   const html = await renderer.renderToString(vm, {
@@ -48,7 +54,7 @@ export default async function (ctx, next) {
 
       debug('rendered')
       const meta = vm.$route.meta
-      debug('meta', meta.name)
+      debug('meta', meta)
     }
   })
   debug('renderToString done')

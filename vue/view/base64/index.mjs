@@ -47,7 +47,6 @@ export default {
   },
   provide () {
     debug('provide')
-    base64Store.register(this.$store)
   },
   metaInfo: function () {
     debug('metaInfo')
@@ -63,6 +62,7 @@ export default {
   // This will be called by the server renderer automatically
   async serverPrefetch (vm) {
     debug('serverPrefetch')
+    base64Store.register(this.$store)
 
     // return the Promise from the action
     // so that the component waits before rendering
@@ -76,6 +76,11 @@ export default {
   },
   beforeMount () {
     debug(`beforeMount ${this.$route.name}`)
+    const preserveState = base64Store.register(this.$store)
+    if (preserveState) {
+      return
+    }
+
     this.encode(this.input)
   },
   mounted: function () {

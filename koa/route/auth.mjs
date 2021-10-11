@@ -3,11 +3,6 @@ import basicAuth from 'basic-auth'
 import createDebug from 'debug'
 const debug = createDebug('app:koa:store')
 
-export async function state (ctx, next) {
-  ctx.state.auth = ctx.session.auth
-  await next()
-}
-
 export async function required (ctx, next) {
   if (!ctx.session.auth) {
     ctx.status = 401
@@ -16,7 +11,8 @@ export async function required (ctx, next) {
   await next()
 }
 
-export async function get (ctx, next) {
+export async function getState (ctx, next) {
+  debug('getState', ctx.session.auth)
   ctx.status = 200
   ctx.body = ctx.session.auth
 }

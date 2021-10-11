@@ -6,7 +6,7 @@ const mapState = Vuex.mapState.bind(null, name)
 const mapMutations = Vuex.mapMutations.bind(null, name)
 const mapGetters = Vuex.mapGetters.bind(null, name)
 export { name, mapActions, mapState, mapMutations, mapGetters }
-const debug = createDebug('app:store:auth')
+const debug = createDebug('app:outlet:auth')
 
 export const state = () => ({
   uid: '',
@@ -19,6 +19,18 @@ const store = {
 }
 
 export const actions = store.actions = {}
+actions.getState = async function ({ commit, rootGetters }) {
+  const res = await rootGetters.api({
+    method: 'GET',
+    url: '/_/auth/state'
+  })
+  if (!/^2/.exec(res.status)) {
+    return
+  }
+  commit('setAuth', res.data || state())
+  return res.data
+}
+
 actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
   const res = await rootGetters.api({
     method: 'POST',
@@ -28,14 +40,16 @@ actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
       password: password
     }
   })
-  if (res.status !== 200) {
+  if (!/^2/.exec(res.status)) {
     return
   }
-  commit('setAuth', res.data)
+  commit('setAuth', res.data || state())
   return res.data
 }
+
 const mutations = store.mutations = {}
 mutations.setAuth = function (state, payload) {
+  debug('setAuth', payload)
   Object.assign(state, payload)
 }
 
@@ -46,19 +60,16 @@ store.getters = {
 export default store
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
-  debug('register', $store.hasModule(name))
-  if (!$store.state[name]) {
-    $store.state[name] = store.state()
-  }
-
+  debug('register already:', $store.hasModule(name))
   if ($store.hasModule(name)) {
-    return
+    return true
   }
 
+  const preserveState = !!$store.state[name]
   $store.registerModule(name, store, {
-    preserveState: true
+    preserveState
   })
-  debug('register done')
+  return preserveState
 }
 
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting

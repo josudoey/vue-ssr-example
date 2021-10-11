@@ -12,10 +12,9 @@ export const addRoute = function (router) {
       jsonLimit: '1mb',
       formLimit: '56kb'
     }))
-    .use(auth.state)
     .use(xsrfToken.verify)
     .get('sessionState', '/_/session', session.state)
-    .get('authGet', '/_/auth/state', auth.get)
+    .get('authGet', '/_/auth/state', auth.getState)
     .post('authBasic', '/_/auth', auth.basic)
     .get('authRevoke', '/_/auth/revoke', auth.revoke)
     .get('signOut', '/sign-out', page.signOut)

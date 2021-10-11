@@ -1,17 +1,13 @@
 import './style.css'
 import template from './template.pug'
 import sidenav from './sidenav/index.mjs'
-import * as auth from './auth/store.mjs'
+import * as auth from '../outlet/auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
   template,
   computed: {
     ...auth.mapState(['uid'])
-  },
-  data: function () {
-    return {
-    }
   },
   components: {
     sidenav: sidenav
@@ -22,6 +18,9 @@ export default {
     }
   },
   methods: {
+    ...auth.mapActions({
+      authSignIn: 'signIn'
+    }),
     toggleSidenav () {
       this.$refs.sidenav.toggle()
     }
@@ -29,14 +28,16 @@ export default {
   beforeCreate: function () {
     debug('beforeCreate')
   },
+  data: function () {
+    debug('data')
+    return {
+      auth: this.$store.state.auth
+    }
+  },
   provide () {
     debug('provide')
-    auth.register(this.$store)
     return {
-      ...auth.mapActions({
-        authSignIn: 'signIn'
-      }),
-      auth: this.$store.state.auth,
+      auth: this.auth,
       toggleSidenav: this.toggleSidenav
     }
   },

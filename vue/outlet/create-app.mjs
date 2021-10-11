@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import VueMeta from 'vue-meta'
 import BootstrapVue from 'bootstrap-vue'
 import Vuex from 'vuex'
+import * as authStoreModule from './auth/store.mjs'
+
 import mixin from '../mixin/index.mjs'
 import routes from '../routes.js'
 import outlet from './index.mjs'
@@ -22,20 +24,30 @@ export function createRouter (store) {
 
   router.beforeEach(async (to, from, next) => {
     debug(`beforeEach ${from.name} -> ${to.name}`)
+    const $store = router.app.$store
+    const preserveState = authStoreModule.register($store)
+    if (!preserveState) {
+      await $store.dispatch('auth/getState')
+    }
+    const auth = $store.state.auth
 
-    if (to.matched.some(record => record.meta.requiredAuth)) {
-      debug(`has auth module ${JSON.stringify(router.app.$store.hasModule('auth'))}`)
-
-      if (!router.app.$store.state.auth) {
-        next({
-          name: 'signIn',
-          query: {
-            redirect: to.fullPath
-          }
-        })
+    if (auth.uid && to.name === 'signIn') {
+      if (to.query.redirect) {
+        next(to.query.redirect)
         return
       }
-      next()
+
+      next({ name: 'home' })
+      return
+    }
+
+    if (!auth.uid && to.matched.some(record => record.meta.requiredAuth)) {
+      next({
+        name: 'signIn',
+        query: {
+          redirect: to.fullPath
+        }
+      })
       return
     }
     next()

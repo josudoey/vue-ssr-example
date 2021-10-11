@@ -67,11 +67,14 @@ export { actions }
 export function register ($store) {
   debug('register')
   if ($store.hasModule(name)) {
-    return
+    return true
   }
+
+  const preserveState = !!$store.state[name]
   $store.registerModule(name, store, {
-    preserveState: !!$store.state[name]
+    preserveState
   })
+  return preserveState
 }
 
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting

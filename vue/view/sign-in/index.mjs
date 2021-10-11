@@ -12,8 +12,8 @@ export default {
       disableSignIn: false
     }
   },
-  created: function () {
-    debug(`${this.$route.name}: created`)
+  beforeMount: function () {
+    debug('beforeMount')
     this.redirect()
   },
   methods: {

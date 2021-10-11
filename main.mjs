@@ -4,11 +4,8 @@ import env from './vue/env.js'
 import vueRoutes from './vue/routes.js'
 import { createVueSSRRouter } from './koa/router.mjs'
 import app from './koa/app.mjs'
-import compose from 'koa-compose'
-import KoaRouter from 'koa-router'
 
 import koaSSROutlet from './koa-ssr-outlet.mjs'
-import * as xsrfToken from './koa/route/xsrf-token.mjs'
 
 const { publicPath, assetOutputPath } = env
 ;(async function main () {

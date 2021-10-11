@@ -1,15 +1,7 @@
 import LRU from 'lru-cache'
 import createDebug from 'debug'
-import auth from './auth.mjs'
 import { createPrefetchAPI } from './api.mjs'
 const debug = createDebug('app:koa:store')
-
-export const modules = {
-  auth
-}
-
-export const actions = {}
-export const mutations = {}
 
 const createStore = function (ctx) {
   debug('createStore')
@@ -18,9 +10,9 @@ const createStore = function (ctx) {
   })
   const api = createPrefetchAPI(ctx)
   return {
-    modules,
-    actions,
-    mutations,
+    modules: {},
+    actions: {},
+    mutations: {},
     getters: {
       cache () {
         return cache

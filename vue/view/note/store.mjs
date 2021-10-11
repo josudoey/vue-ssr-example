@@ -112,7 +112,7 @@ export { actions }
 export function register ($store) {
   debug('register')
   if ($store.hasModule(name)) {
-    return false
+    return true
   }
   const preserveState = !!$store.state[name]
   $store.registerModule(name, store, {

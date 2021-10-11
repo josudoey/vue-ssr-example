@@ -1,5 +1,6 @@
 import { render, staticRenderFns } from './render.pug'
 import layout from '../layout/index.js'
+import * as auth from '../outlet/auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:outlet')
 export default {
@@ -7,10 +8,6 @@ export default {
   staticRenderFns,
   components: {
     layout: layout
-  },
-  data: function () {
-    return {
-    }
   },
   metaInfo () {
     debug('metaInfo')
@@ -33,6 +30,18 @@ export default {
   },
   beforeCreate () {
     debug('beforeCreate')
+  },
+  data: function () {
+    return {}
+  },
+  provide () {
+    debug('provide')
+    return {
+      ...auth.mapActions({
+        authSignIn: 'signIn'
+      }),
+      auth: this.auth
+    }
   },
   beforeMount () {
     debug('beforeMount')

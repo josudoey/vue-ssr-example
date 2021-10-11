@@ -12,6 +12,7 @@ module.exports = function (env) {
     entry: path.resolve(__dirname, './outlet/asset/entry.mjs'),
     resolve: {
       alias: {
+        axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue$: 'vue/dist/vue.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js'

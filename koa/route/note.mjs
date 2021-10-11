@@ -18,9 +18,6 @@ const setNoteItems = function (ctx, items) {
 
 export async function List (ctx, next) {
   debug('List')
-  await new Promise(function (resolve) {
-    setTimeout(resolve, 1000)
-  })
   ctx.status = 200
   const { query } = ctx
   const skip = Math.max(parseInt(query.skip || 0), 0)
