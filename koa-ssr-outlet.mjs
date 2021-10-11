@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 import createSSRApp from './vue/create-ssr-app.mjs'
 import createRenderer from './vue/create-renderer.mjs'
-import clientManifest from './vue/ssr-manifest.js'
+import clientManifest from './vue/ssr-manifest.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:koa-ssr-outlet')
 
