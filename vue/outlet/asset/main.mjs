@@ -10,6 +10,8 @@ import VuexRouterSync from 'vuex-router-sync'
 import createDebug from 'debug'
 import LRU from 'lru-cache'
 import { create as axiosCreate } from 'axios'
+import state from './inital-state.mjs'
+
 const debug = createDebug('app:outlet:asset')
 NProgress.start()
 
@@ -55,6 +57,8 @@ const main = function (state) {
   const vm = window.vm = createApp(createStoreOptions(state))
   VuexRouterSync.sync(vm.$store, vm.$router)
 
+  let nextHref
+
   // https://ssr.vuejs.org/zh/guide/data.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96-client-data-fetching
   vm.$router.onReady(() => {
     debug('onReady vue-router')
@@ -64,16 +68,30 @@ const main = function (state) {
   vm.$router.beforeEach((to, from, next) => {
     debug('beforeEach vue-router ')
     NProgress.start()
+    nextHref = to.fullPath
     next()
   })
   vm.$router.afterEach((to, from) => {
     debug('afterEach vue-router')
     NProgress.done()
   })
+
+  vm.$router.onError((err) => {
+    if (!err.request) {
+      window.location.reload()
+      return
+    }
+
+    if (!nextHref) {
+      window.location.reload()
+      return
+    }
+
+    window.location.href = nextHref
+  })
   return vm
 }
 
 ;(async function () {
-  main(window.__INITIAL_STATE__)
-  delete window.__INITIAL_STATE__
+  main(state)
 })()

@@ -3,6 +3,7 @@ import createRenderer from './vue/create-renderer.mjs'
 import clientManifest from './vue/ssr-manifest.mjs'
 import { isNavigationFailure, NavigationFailureType } from './vue/errors.mjs'
 import createDebug from 'debug'
+import zlib from 'zlib'
 const debug = createDebug('app:koa-ssr-outlet')
 
 export default function createKoaSSROutlet () {
@@ -45,15 +46,23 @@ export default function createKoaSSROutlet () {
     }
 
     debug('renderToString')
+
     const html = await renderer.renderToString(vm, {
       state: ctx.state,
-      rendered () {
+      rendered (ctx) {
         // see https://ssr.vuejs.org/guide/data.html#final-state-injection
         // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
 
         debug('rendered')
         const meta = vm.$route.meta
         debug('meta', meta)
+        const initalState = zlib.deflateSync(
+          JSON.stringify(
+            ctx.state
+          )
+        ).toString('base64')
+        debug('initalState', initalState)
+        ctx.state = initalState
       }
     })
     debug('renderToString done')
