@@ -59,8 +59,9 @@ export default function createKoaSSROutlet () {
         const initalState = zlib.deflateSync(
           JSON.stringify(
             ctx.state
-          )
-        ).toString('base64')
+          ), {
+            level: 9
+          }).toString('base64')
         debug('initalState', initalState)
         ctx.state = initalState
       }

@@ -1,12 +1,12 @@
 import createDebug from 'debug'
-import { strFromU8, decompressSync } from 'fflate'
-const debug = createDebug('app:outlet:asset:inital-state')
+import { inflate } from 'pako'
 
+const debug = createDebug('app:outlet:asset:inital-state')
 function decode (encoded) {
   const decoded = window.atob(encoded)
   const chars = decoded.split('').map(x => x.charCodeAt(0))
   const data = new Uint8Array(chars)
-  return strFromU8(decompressSync(data))
+  return inflate(data, { to: 'string' })
 }
 
 const initalState = window.__INITIAL_STATE__
