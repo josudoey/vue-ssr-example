@@ -1,14 +1,14 @@
 import http from 'http'
 import staticCache from 'koa-static-cache'
-import env from './vue/env.js'
-import vueRoutes from './vue/view/routes.mjs'
-import { createVueSSRRouter } from './koa/router.mjs'
-import app from './koa/app.mjs'
-import createKoaSSROutlet from './koa-ssr-outlet.mjs'
+import env from './app/vue/env.js'
+import vueRoutes from './app/vue/view/routes.mjs'
+import { createVueSSRRouter } from './app/router.mjs'
+import app from './app/index.mjs'
+import createKoaSSROutlet from './app/ssr-outlet.mjs'
 
-const { publicPath, assetOutputPath } = env
+const { publicPath, browserOutputPath } = env
 ;(async function main () {
-  app.use(staticCache(assetOutputPath, {
+  app.use(staticCache(browserOutputPath, {
     prefix: publicPath,
     maxAge: 1000 * 60 * 60 * 24 * 30,
     dynamic: true

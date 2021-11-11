@@ -3,13 +3,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
-const { assetOutputPath, publicPath } = require('./env')
+const { browserOutputPath , publicPath } = require('./env')
 
 module.exports = function (env) {
   const config = {
     target: 'web',
     mode: 'production',
-    entry: path.resolve(__dirname, './outlet/asset/entry.mjs'),
+    entry: path.resolve(__dirname, './outlet/browser/entry.mjs'),
     resolve: {
       alias: {
         axios$: 'axios/dist/axios.js',
@@ -23,7 +23,7 @@ module.exports = function (env) {
       assetModuleFilename: '_/[contenthash][ext]',
       filename: '[contenthash].js',
       chunkFilename: '[contenthash].js',
-      path: assetOutputPath,
+      path: browserOutputPath,
       publicPath: publicPath
     },
     optimization: {

@@ -12,7 +12,7 @@ import LRU from 'lru-cache'
 import { create as axiosCreate } from 'axios'
 import state from './inital-state.mjs'
 
-const debug = createDebug('app:outlet:asset')
+const debug = createDebug('app:vue:outlet:browser')
 NProgress.start()
 
 const createApi = function () {
