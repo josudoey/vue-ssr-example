@@ -47,6 +47,7 @@
     "nprogress": "^0.2.0",
     "pako": "^2.0.4",
     "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
     "pug-html-loader": "git+https://github.com/josudoey/pug-html-loader.git",
     "pug-loader": "^2.4.0",
     "terser-webpack-plugin": "^5.2.5",
