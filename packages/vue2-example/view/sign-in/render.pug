@@ -1,0 +1,8 @@
+.container.center-block
+  form.form-group(@submit.prevent='signIn' style='max-width: 330px;padding: 15px;margin: 0 auto;')
+    h2 SignIn
+    label.sr-only(for='inputEmail') User name
+    input.form-control(type='text' placeholder='User' v-model='user' required='' autofocus='')
+    label.sr-only(for='inputPassword') Password
+    input.form-control(type='password' placeholder='Password' v-model='password' required='')
+    button.btn.btn-lg.btn-primary.btn-block(type='submit' @click='signIn' :disabled='disableSignIn') Sign in

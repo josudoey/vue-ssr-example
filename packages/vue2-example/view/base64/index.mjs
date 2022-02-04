@@ -1,10 +1,9 @@
 import createDebug from 'debug'
-import { render, staticRenderFns } from './render.pug'
+import * as render from './render.pug'
 import * as base64Store from './store.mjs'
 const debug = createDebug('app:view:base64')
 export default {
-  render,
-  staticRenderFns,
+  ...render,
   computed: {
     ...base64Store.mapState([
       'text',

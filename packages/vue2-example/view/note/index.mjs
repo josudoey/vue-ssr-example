@@ -1,12 +1,11 @@
 import * as storeModule from './store.mjs'
-import { render, staticRenderFns } from './render.pug'
+import * as render from './render.pug'
 import createDebug from 'debug'
 import { show as modalEditorShow } from './modal-editor/index.mjs'
 
 const debug = createDebug('app:view:note')
 export default {
-  render,
-  staticRenderFns,
+  ...render,
   watch: {},
   computed: {
     ...storeModule.mapState([

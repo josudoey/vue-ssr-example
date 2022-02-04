@@ -2,14 +2,13 @@ import 'flatpickr/dist/flatpickr.css'
 import flatPickr from 'vue-flatpickr-component'
 
 import * as storeModule from '../store.mjs'
-import { render, staticRenderFns } from './render.pug'
+import * as render from './render.pug'
 import createDebug from 'debug'
 import { MandarinTraditional as zhTW } from 'flatpickr/dist/l10n/zh-tw.js'
 const debug = createDebug('app:view:note:modal-create')
 
 const componentConfig = {
-  render,
-  staticRenderFns,
+  ...render,
   components: {
     flatPickr
   },

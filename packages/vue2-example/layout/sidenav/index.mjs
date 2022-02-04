@@ -1,8 +1,8 @@
-import template from './template.pug'
+import * as render from './render.pug'
 import './style.css'
 
 export default {
-  template,
+  ...render,
   data () {
     return {
       show: false

@@ -1,11 +1,11 @@
 import './style.css'
-import template from './template.pug'
+import * as render from './render.pug'
 import sidenav from './sidenav/index.mjs'
 import * as auth from '../outlet/auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
-  template,
+  ...render,
   computed: {
     ...auth.mapState(['uid'])
   },

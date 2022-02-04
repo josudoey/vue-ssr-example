@@ -1,9 +1,9 @@
-import template from './template.html'
+import * as render from './render.pug'
 import createDebug from 'debug'
 const debug = createDebug('app:sign-in')
 
 export default {
-  template,
+  ...render,
   inject: ['auth', 'authSignIn'],
   data: function () {
     return {

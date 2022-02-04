@@ -1,13 +1,12 @@
 import * as css from './module.css'
 import './style.css'
-import { render, staticRenderFns } from './render.pug'
+import * as render from './render.pug'
 import createDebug from 'debug'
 
 const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
-  render,
-  staticRenderFns,
+  ...render,
   // see https://vuejs.org/v2/api/#provide-inject
   inject: ['auth', 'toggleSidenav'],
   data: function () {
