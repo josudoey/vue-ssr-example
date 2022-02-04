@@ -3,13 +3,14 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
-const { browserOutputPath , publicPath } = require('./env')
 
 module.exports = function (env) {
+  const { outputPath, publicPath, vueSSRClientManifestPath } = env
   const config = {
+    devtool: 'source-map',
+    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'web',
-    mode: 'production',
-    entry: path.resolve(__dirname, './outlet/browser/entry.mjs'),
+    entry: path.resolve(__dirname, './entry.mjs'),
     resolve: {
       alias: {
         axios$: 'axios/dist/axios.js',
@@ -23,7 +24,7 @@ module.exports = function (env) {
       assetModuleFilename: '_/[contenthash][ext]',
       filename: '[contenthash].js',
       chunkFilename: '[contenthash].js',
-      path: browserOutputPath,
+      path: outputPath,
       publicPath: publicPath
     },
     optimization: {
@@ -142,7 +143,7 @@ module.exports = function (env) {
       }),
       // see https://ssr.vuejs.org/guide/build-config.html#client-config
       new VueSSRClientPlugin({
-        filename: '../vue-ssr-client-manifest.json'
+        filename: path.relative( outputPath, vueSSRClientManifestPath )
       })
     ]
   }

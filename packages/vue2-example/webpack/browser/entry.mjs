@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import '../style.css'
+import '~vue2-example/outlet/style.css'
 
 // see https://www.npmjs.com/package/debug
 if (localStorage) {

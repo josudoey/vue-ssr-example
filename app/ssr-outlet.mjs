@@ -1,7 +1,7 @@
-import createSSRApp from './vue/create-ssr-app.mjs'
-import createRenderer from './vue/create-renderer.mjs'
-import clientManifest from './vue/ssr-manifest.mjs'
-import { isNavigationFailure, NavigationFailureType } from './vue/errors.mjs'
+import createSSRApp from '../create-ssr-app.mjs'
+import createRenderer from '~vue2-example/create-renderer.mjs'
+import clientManifest from './ssr-manifest.mjs'
+import { isNavigationFailure, NavigationFailureType } from '~vue2-example/errors.mjs'
 import createDebug from 'debug'
 import zlib from 'zlib'
 const debug = createDebug('app:koa-ssr-outlet')

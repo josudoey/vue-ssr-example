@@ -2,11 +2,12 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
-const env = require('./env.js')
-const { ssrOutputPath } = env
-
 module.exports = function (env) {
+  const { outputPath } = env
+
   return {
+    devtool: 'source-map',
+    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'node',
     externalsType: 'node-commonjs',
     externals: [
@@ -20,14 +21,12 @@ module.exports = function (env) {
         vuex$: 'vuex/dist/vuex.esm.js'
       }
     },
-    entry: path.resolve(__dirname, './outlet/ssr/entry.mjs'),
+    entry: path.resolve(__dirname, './entry.mjs'),
     output: {
       clean: true,
-      path: ssrOutputPath,
+      path: outputPath,
       libraryTarget: 'commonjs2'
     },
-    mode: 'production',
-    devtool: false,
     plugins: [
       new webpack.DefinePlugin({}),
       new MiniCssExtractPlugin({})
@@ -68,7 +67,7 @@ module.exports = function (env) {
       }, {
         test: /template.pug$/,
         use: [{
-          loader: 'html-loader',
+          loader: require.resolve('html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
