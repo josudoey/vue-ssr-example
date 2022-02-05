@@ -1,25 +1,25 @@
 import http from 'http'
-import staticCache from 'koa-static-cache'
 import env from './env.js'
-import vueRoutes from '~vue2-example/view/routes.mjs'
-import { createVueSSRRouter } from './app/router.mjs'
-import app from './app/index.mjs'
-import createKoaSSROutlet from './app/ssr-outlet.mjs'
+import { createApp } from '~example-koa/index.mjs'
+import vue2ExampleManifest from './example-vue2-manifest.mjs'
+import { routes, createRenderer, createSSRApp, createRouter, createStore, isNavigationFailure, NavigationFailureType } from './example-vue2-ssr.mjs'
 
 const { publicPath, browserOutputPath } = env
 ;(async function main () {
-  app.use(staticCache(browserOutputPath, {
-    prefix: publicPath,
-    maxAge: 1000 * 60 * 60 * 24 * 30,
-    dynamic: true
-  }))
-
-  const koaSSROutlet = createKoaSSROutlet()
-  const router = createVueSSRRouter(vueRoutes, koaSSROutlet)
-
-  app
-    .use(router.routes())
-    .use(router.allowedMethods())
+  const app = createApp({
+    exampleVue2: {
+      routes,
+      createRenderer,
+      createSSRApp,
+      createRouter,
+      createStore,
+      isNavigationFailure,
+      NavigationFailureType,
+      clientManifest: vue2ExampleManifest,
+      publicPath,
+      browserOutputPath
+    }
+  })
 
   const server = http.createServer(app.callback())
   server.on('listening', async function () {

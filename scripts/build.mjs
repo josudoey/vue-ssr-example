@@ -1,4 +1,4 @@
-import main from '~vue2-example/webpack/main.mjs'
+import main from '~example-vue2/webpack/main.mjs'
 import env from '../env.js'
 
 (async function () {

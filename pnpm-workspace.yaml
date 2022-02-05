@@ -1,6 +1,6 @@
 packages:
-  - vue2-example
-  - vue2-example/webpack
-  - vue2-example/webpack/browser
-  - vue2-example/webpack/ssr
-  - koa-server
+  - example-vue2
+  - example-vue2/webpack
+  - example-vue2/webpack/browser
+  - example-vue2/webpack/ssr
+  - example-koa

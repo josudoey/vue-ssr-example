@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-import createApp from '~vue2-example/outlet/create-app.mjs'
+import createApp from '~example-vue2/outlet/create-app.mjs'
 import VuexRouterSync from 'vuex-router-sync'
 
 import createDebug from 'debug'

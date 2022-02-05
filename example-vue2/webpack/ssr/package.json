@@ -1,12 +1,12 @@
 {
   "private": true,
-  "name": "~vue2-example-browser",
+  "name": "~example-vue2-ssr",
   "version": "0.0.0",
+  "description": "",
   "scripts": {
-    "build": "NODE_ENV=production node ./build.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "~vue2-example": "workspace:*"
+    "~example-vue2": "workspace:*"
   }
 }

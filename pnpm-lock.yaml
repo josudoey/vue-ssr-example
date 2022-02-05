@@ -7,16 +7,34 @@ importers:
       '@babel/core': ^7.17.0
       '@babel/eslint-parser': ^7.17.0
       '@babel/plugin-syntax-top-level-await': ^7.14.5
-      ~vue2-example: workspace:*
-      axios: ^0.24.0
-      basic-auth: ^2.0.1
-      csrf: ^3.1.0
-      debug: ^4.3.3
+      ~example-koa: workspace:*
+      ~example-vue2: workspace:*
       eslint: ^7.32.0
       eslint-config-standard: ^16.0.3
       eslint-plugin-import: ^2.25.4
       eslint-plugin-node: ^11.1.0
       eslint-plugin-promise: ^5.2.0
+      nodemon: ^2.0.15
+    dependencies:
+      ~example-koa: link:example-koa
+      ~example-vue2: link:example-vue2
+    devDependencies:
+      '@babel/core': 7.17.0
+      '@babel/eslint-parser': 7.17.0_@babel+core@7.17.0+eslint@7.32.0
+      '@babel/plugin-syntax-top-level-await': 7.14.5_@babel+core@7.17.0
+      eslint: 7.32.0
+      eslint-config-standard: 16.0.3_6a48346ff31498e55146b31bc801dc94
+      eslint-plugin-import: 2.25.4_eslint@7.32.0
+      eslint-plugin-node: 11.1.0_eslint@7.32.0
+      eslint-plugin-promise: 5.2.0_eslint@7.32.0
+      nodemon: 2.0.15
+
+  example-koa:
+    specifiers:
+      axios: ^0.24.0
+      basic-auth: ^2.0.1
+      csrf: ^3.1.0
+      debug: ^4.3.3
       fflate: ^0.7.3
       koa: ^2.13.4
       koa-bodyparser: ^4.3.0
@@ -24,12 +42,10 @@ importers:
       koa-session: ^6.2.0
       koa-static-cache: ^5.1.4
       lru-cache: ^6.0.0
-      nodemon: ^2.0.15
       pako: ^2.0.4
       vue-server-renderer: ^2.6.14
       yup: ^0.32.11
     dependencies:
-      ~vue2-example: link:vue2-example
       axios: 0.24.0_debug@4.3.3
       basic-auth: 2.0.1
       csrf: 3.1.0
@@ -44,27 +60,19 @@ importers:
       pako: 2.0.4
       vue-server-renderer: 2.6.14
       yup: 0.32.11
-    devDependencies:
-      '@babel/core': 7.17.0
-      '@babel/eslint-parser': 7.17.0_@babel+core@7.17.0+eslint@7.32.0
-      '@babel/plugin-syntax-top-level-await': 7.14.5_@babel+core@7.17.0
-      eslint: 7.32.0
-      eslint-config-standard: 16.0.3_6a48346ff31498e55146b31bc801dc94
-      eslint-plugin-import: 2.25.4_eslint@7.32.0
-      eslint-plugin-node: 11.1.0_eslint@7.32.0
-      eslint-plugin-promise: 5.2.0_eslint@7.32.0
-      nodemon: 2.0.15
 
-  vue2-example:
+  example-vue2:
     specifiers:
       axios: ^0.24.0
       bootstrap: ^4.6.1
       bootstrap-vue: ^2.21.2
       css-loader: ^6.5.1
       css-minimizer-webpack-plugin: ^3.1.3
+      debug: ^4.3.3
       flatpickr: ^4.6.9
       html-loader: ^3.0.1
       jquery: ^3.6.0
+      lru-cache: ^6.0.0
       mini-css-extract-plugin: ^2.4.4
       nprogress: ^0.2.0
       pako: ^2.0.4
@@ -90,9 +98,11 @@ importers:
       bootstrap-vue: 2.21.2_jquery@3.6.0+vue@2.6.14
       css-loader: 6.6.0_webpack@5.68.0
       css-minimizer-webpack-plugin: 3.4.1_webpack@5.68.0
+      debug: 4.3.3
       flatpickr: 4.6.9
       html-loader: 3.1.0_webpack@5.68.0
       jquery: 3.6.0
+      lru-cache: 6.0.0
       mini-css-extract-plugin: 2.5.3_webpack@5.68.0
       nprogress: 0.2.0
       pako: 2.0.4
@@ -113,16 +123,14 @@ importers:
       webpack: 5.68.0_webpack-cli@4.9.2
       webpack-cli: 4.9.2_webpack@5.68.0
 
-  vue2-example/webpack:
+  example-vue2/webpack:
     specifiers:
-      ~vue2-example: workspace:*
-      bootstrap-vue: ^2.21.2
+      ~example-vue2: workspace:*
       css-loader: ^6.5.1
       css-minimizer-webpack-plugin: ^3.1.3
       html-loader: ^3.0.1
       jquery: ^3.6.0
       mini-css-extract-plugin: ^2.4.4
-      nprogress: ^0.2.0
       pug: ^3.0.2
       pug-plain-loader: ^1.1.0
       terser-webpack-plugin: ^5.2.5
@@ -138,14 +146,12 @@ importers:
       webpack: ^5.63.0
       webpack-cli: ^4.9.1
     dependencies:
-      ~vue2-example: link:..
-      bootstrap-vue: 2.21.2_jquery@3.6.0+vue@2.6.14
+      ~example-vue2: link:..
       css-loader: 6.6.0_webpack@5.68.0
       css-minimizer-webpack-plugin: 3.4.1_webpack@5.68.0
       html-loader: 3.1.0_webpack@5.68.0
       jquery: 3.6.0
       mini-css-extract-plugin: 2.5.3_webpack@5.68.0
-      nprogress: 0.2.0
       pug: 3.0.2
       pug-plain-loader: 1.1.0_pug@3.0.2
       terser-webpack-plugin: 5.3.1_webpack@5.68.0
@@ -161,17 +167,17 @@ importers:
       webpack: 5.68.0_webpack-cli@4.9.2
       webpack-cli: 4.9.2_webpack@5.68.0
 
-  vue2-example/webpack/browser:
+  example-vue2/webpack/browser:
     specifiers:
-      ~vue2-example: workspace:*
+      ~example-vue2: workspace:*
     dependencies:
-      ~vue2-example: link:../..
+      ~example-vue2: link:../..
 
-  vue2-example/webpack/ssr:
+  example-vue2/webpack/ssr:
     specifiers:
-      ~vue2-example: workspace:*
+      ~example-vue2: workspace:*
     dependencies:
-      ~vue2-example: link:../..
+      ~example-vue2: link:../..
 
 packages:
 

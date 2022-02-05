@@ -1,9 +1,18 @@
-import { createRenderer, createSSRApp, createRouter, createStore, isNavigationFailure, NavigationFailureType } from '../create-ssr-app.mjs'
-import clientManifest from './ssr-manifest.mjs'
 import createDebug from 'debug'
-const debug = createDebug('app:koa-ssr-outlet')
+import staticCache from 'koa-static-cache'
+import KoaRouter from 'koa-router'
+import * as xsrfToken from './route/xsrf-token.mjs'
+const debug = createDebug('app:example-vue2')
 
-export default function createKoaSSROutlet () {
+export function createRoute ({
+  createRenderer,
+  createSSRApp,
+  createRouter,
+  createStore,
+  isNavigationFailure,
+  NavigationFailureType,
+  clientManifest
+}) {
   const renderer = createRenderer(clientManifest)
   return async function (ctx, next) {
     const routeName = ctx._matchedRouteName
@@ -56,5 +65,41 @@ export default function createKoaSSROutlet () {
     ctx.status = 200
     ctx.type = 'text/html'
     ctx.body = html
+  }
+}
+
+export function createBrowserStatic ({
+  browserOutputPath,
+  publicPath
+}) {
+  return staticCache(browserOutputPath, {
+    prefix: publicPath,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    dynamic: true
+  })
+}
+
+export const createRouter = function (exampleVue2) {
+  const router = new KoaRouter()
+  const { routes } = exampleVue2
+  const ssrRoute = createRoute(exampleVue2)
+  for (const route of routes) {
+    router.get(route.name, route.path, xsrfToken.create, ssrRoute)
+  }
+  return router
+}
+
+export default {
+  install (app, options) {
+    const { router, exampleVue2 } = options
+    app.use(createBrowserStatic(
+      exampleVue2
+    ))
+
+    const ssrRouter = createRouter(exampleVue2)
+    router.use(
+      ssrRouter.routes(),
+      ssrRouter.allowedMethods()
+    )
   }
 }
