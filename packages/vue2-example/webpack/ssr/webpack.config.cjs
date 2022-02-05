@@ -11,6 +11,7 @@ module.exports = function (env) {
     target: 'node',
     externalsType: 'node-commonjs',
     externals: [
+      'vue-server-renderer',
       'debug'
     ],
     resolve: {

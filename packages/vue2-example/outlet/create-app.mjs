@@ -16,7 +16,7 @@ Vue.use(VueMeta, { refreshOnceOnNavigation: false })
 Vue.use(BootstrapVue)
 Vue.mixin(mixin)
 
-export function createRouter (store) {
+export function createRouter ($store) {
   const router = new VueRouter({
     mode: 'history',
     routes
@@ -24,7 +24,6 @@ export function createRouter (store) {
 
   router.beforeEach(async (to, from, next) => {
     debug(`beforeEach ${from.name} -> ${to.name}`)
-    const $store = router.app.$store
     const preserveState = authStoreModule.register($store)
     if (!preserveState) {
       await $store.dispatch('auth/getState')
@@ -56,8 +55,22 @@ export function createRouter (store) {
   return router
 }
 
-export default function (storeOptions) {
+export function createStore (storeOptions) {
   const store = new Vuex.Store(storeOptions)
+  return store
+}
+
+export function createSSRApp ({ store, router }) {
+  const vm = new Vue({
+    store,
+    router,
+    ...outlet
+  })
+  return vm
+}
+
+export default function (storeOptions) {
+  const store = createStore(storeOptions)
   const router = createRouter(store)
   const vm = new Vue({
     store,

@@ -1,9 +1,6 @@
-import createSSRApp from '../create-ssr-app.mjs'
-import createRenderer from '~vue2-example/create-renderer.mjs'
+import { createRenderer, createSSRApp, createRouter, createStore, isNavigationFailure, NavigationFailureType } from '../create-ssr-app.mjs'
 import clientManifest from './ssr-manifest.mjs'
-import { isNavigationFailure, NavigationFailureType } from '~vue2-example/errors.mjs'
 import createDebug from 'debug'
-import zlib from 'zlib'
 const debug = createDebug('app:koa-ssr-outlet')
 
 export default function createKoaSSROutlet () {
@@ -18,13 +15,13 @@ export default function createKoaSSROutlet () {
       return
     }
 
-    const vm = await createSSRApp(ctx.store)
-    const { $router, $store } = vm
+    const $store = createStore(ctx.store)
     $store.replaceState(ctx.state)
+    const $router = createRouter($store)
 
     const errOrRoute = await $router.push(ctx.url).catch((err) => err)
     await new Promise((resolve) => {
-      return vm.$router.onReady(resolve)
+      return $router.onReady(resolve)
     })
 
     // see https://router.vuejs.org/guide/advanced/navigation-failures.html#navigation-failures-s-properties
@@ -45,26 +42,14 @@ export default function createKoaSSROutlet () {
       return
     }
 
+    const vm = await createSSRApp({
+      store: $store,
+      router: $router
+    })
+
     debug('renderToString')
-
     const html = await renderer.renderToString(vm, {
-      state: ctx.state,
-      rendered (ctx) {
-        // see https://ssr.vuejs.org/guide/data.html#final-state-injection
-        // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
-
-        debug('rendered')
-        const meta = vm.$route.meta
-        debug('meta', meta)
-        const initalState = zlib.deflateSync(
-          JSON.stringify(
-            ctx.state
-          ), {
-            level: 9
-          }).toString('base64')
-        debug('initalState', initalState)
-        ctx.state = initalState
-      }
+      state: ctx.state
     })
     debug('renderToString done')
 
