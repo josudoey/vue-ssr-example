@@ -10,3 +10,9 @@ div
   b-button(@click='makeToast(true)') Show Toast (appended)
   br
   b-button(@click='toggleSidenav') Toggle Sidenav
+  portal(to="sidenav-block")
+    .list-group-item.border-bottom.rounded-0
+      p.mb-0 auth.uid: {{auth.uid}}
+    .list-group-item.border-bottom.rounded-0
+      p.mb-0 this2 {{text}} is: {{now}}
+

@@ -26,7 +26,6 @@ importers:
       lru-cache: ^6.0.0
       nodemon: ^2.0.15
       pako: ^2.0.4
-      popper.js: ^1.16.1
       vue-server-renderer: ^2.6.14
       yup: ^0.32.11
     dependencies:
@@ -43,7 +42,6 @@ importers:
       koa-static-cache: 5.1.4
       lru-cache: 6.0.0
       pako: 2.0.4
-      popper.js: 1.16.1
       vue-server-renderer: 2.6.14
       yup: 0.32.11
     devDependencies:
@@ -70,6 +68,8 @@ importers:
       mini-css-extract-plugin: ^2.4.4
       nprogress: ^0.2.0
       pako: ^2.0.4
+      popper.js: ^1.16.1
+      portal-vue: ^2.1.7
       pug: ^3.0.2
       pug-plain-loader: ^1.1.0
       terser-webpack-plugin: ^5.2.5
@@ -86,7 +86,7 @@ importers:
       webpack-cli: ^4.9.1
     dependencies:
       axios: 0.24.0_debug@4.3.3
-      bootstrap: 4.6.1_jquery@3.6.0
+      bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
       bootstrap-vue: 2.21.2_jquery@3.6.0+vue@2.6.14
       css-loader: 6.6.0_webpack@5.68.0
       css-minimizer-webpack-plugin: 3.4.1_webpack@5.68.0
@@ -96,6 +96,8 @@ importers:
       mini-css-extract-plugin: 2.5.3_webpack@5.68.0
       nprogress: 0.2.0
       pako: 2.0.4
+      popper.js: 1.16.1
+      portal-vue: 2.1.7_vue@2.6.14
       pug: 3.0.2
       pug-plain-loader: 1.1.0_pug@3.0.2
       terser-webpack-plugin: 5.3.1_webpack@5.68.0
@@ -914,15 +916,6 @@ packages:
       - encoding
       - jquery
       - vue
-    dev: false
-
-  /bootstrap/4.6.1_jquery@3.6.0:
-    resolution: {integrity: sha512-0dj+VgI9Ecom+rvvpNZ4MUZJz8dcX7WCX+eTID9+/8HgOkv3dsRzi8BGeZJCQU6flWQVYxwTQnEZFrmJSEO7og==}
-    peerDependencies:
-      jquery: 1.9.1 - 3
-      popper.js: ^1.16.1
-    dependencies:
-      jquery: 3.6.0
     dev: false
 
   /bootstrap/4.6.1_jquery@3.6.0+popper.js@1.16.1:

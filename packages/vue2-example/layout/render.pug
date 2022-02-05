@@ -3,6 +3,7 @@ div
     sidenav(ref="sidenav")
       .list-group
         .list-group-item.border-bottom.rounded-0 Hi! {{auth.uid}}
+        portal-target(name="sidenav-block")
         router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'home'}" exact) Home
         router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'base64',query:{v:'base64'}}") Base64
         router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'note'}") Note
