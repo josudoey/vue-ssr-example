@@ -1,2 +1,6 @@
 packages:
-  - 'packages/**'
+  - vue2-example
+  - vue2-example/webpack
+  - vue2-example/webpack/browser
+  - vue2-example/webpack/ssr
+  - koa-server

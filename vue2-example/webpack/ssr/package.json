@@ -1,9 +1,9 @@
 {
   "private": true,
-  "name": "~vue-outlet-browser",
+  "name": "~vue2-example-ssr",
   "version": "0.0.0",
+  "description": "",
   "scripts": {
-    "build": "NODE_ENV=production node ./build.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
