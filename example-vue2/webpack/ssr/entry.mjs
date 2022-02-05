@@ -1,10 +1,8 @@
 export { default as createRenderer } from '~vue2-example/create-renderer.mjs'
 export {
-  default as routes
-} from '~example-vue2/routes/index.mjs'
-export {
+  routes,
+  isNavigationFailure, NavigationFailureType,
   createStore,
-  createSSRApp,
+  createApp,
   createRouter
-} from '~example-vue2/outlet/create-app.mjs'
-export { isNavigationFailure, NavigationFailureType } from '~vue2-example/errors.mjs'
+} from '~example-vue2/index.mjs'

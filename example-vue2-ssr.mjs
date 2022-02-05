@@ -1,5 +1,5 @@
-import env from './env.js'
-const ssrModule = await import(env.ssrPath)
-const createSSRAppModule = ssrModule.default
-const { routes, createRenderer, createRouter, createStore, createSSRApp, isNavigationFailure, NavigationFailureType } = createSSRAppModule
-export { routes, createRenderer, createSSRApp, createRouter, createStore, isNavigationFailure, NavigationFailureType }
+import env from './env.cjs'
+const { exampleVue2 } = env
+const ssrModule = await import(exampleVue2.ssrPath)
+const ssrModuleDefault = ssrModule.default
+export const { routes, createRenderer, createRouter, createStore, createApp, isNavigationFailure, NavigationFailureType } = ssrModuleDefault

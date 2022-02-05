@@ -6,7 +6,7 @@ const debug = createDebug('app:example-vue2')
 
 export function createRoute ({
   createRenderer,
-  createSSRApp,
+  createApp,
   createRouter,
   createStore,
   isNavigationFailure,
@@ -51,7 +51,7 @@ export function createRoute ({
       return
     }
 
-    const vm = await createSSRApp({
+    const vm = await createApp({
       store: $store,
       router: $router
     })

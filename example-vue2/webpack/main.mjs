@@ -2,7 +2,9 @@ import webpack from 'webpack'
 import browserConfig from './browser/webpack.config.cjs'
 import ssrConfig from './ssr/webpack.config.cjs'
 
-export default async function (env) {
+export default async function (
+  { publicPath, browserOutputPath, vueSSRClientManifestPath, ssrOutputPath }
+) {
   process.on('uncaughtException', function (err) {
     console.trace(err)
   })
@@ -12,7 +14,6 @@ export default async function (env) {
   })
 
   await new Promise(function (resolve, reject) {
-    const { publicPath, browserOutputPath, vueSSRClientManifestPath, ssrOutputPath } = env
     const compiler = webpack([
       browserConfig({
         outputPath: browserOutputPath,

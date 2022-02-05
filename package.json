@@ -5,7 +5,7 @@
   "scripts": {
     "build": "NODE_ENV=production node ./scripts/build.mjs",
     "start": "NODE_ENV=production node ./main.mjs",
-    "dev": "DEBUG=app:* nodemon --trace-warnings -e js,mjs,css,html,pug --ignore ./* --ignore ./dist.dev/* --exec 'node ./scripts/build.mjs&&node ./main.mjs'"
+    "dev": "DEBUG=app:* nodemon --trace-warnings -e js,cjs,mjs,css,html,pug --ignore ./dist.dev/** --exec 'node ./scripts/build.mjs&&node ./main.mjs'"
   },
   "repository": {
     "type": "git",

@@ -1,23 +1,22 @@
 import http from 'http'
-import env from './env.js'
-import { createApp } from '~example-koa/index.mjs'
+import env from './env.cjs'
+import { ExampleVue2, createApp, createRouter } from '~example-koa/index.mjs'
 import vue2ExampleManifest from './example-vue2-manifest.mjs'
-import { routes, createRenderer, createSSRApp, createRouter, createStore, isNavigationFailure, NavigationFailureType } from './example-vue2-ssr.mjs'
+import * as exampleVue2SSR from './example-vue2-ssr.mjs'
 
-const { publicPath, browserOutputPath } = env
+const { publicPath, exampleVue2 } = env
+
 ;(async function main () {
-  const app = createApp({
+  const app = createApp({})
+  const router = createRouter()
+  app.use(router.routes())
+  ExampleVue2.install(app, {
+    router,
     exampleVue2: {
-      routes,
-      createRenderer,
-      createSSRApp,
-      createRouter,
-      createStore,
-      isNavigationFailure,
-      NavigationFailureType,
-      clientManifest: vue2ExampleManifest,
+      ...exampleVue2SSR,
       publicPath,
-      browserOutputPath
+      clientManifest: vue2ExampleManifest,
+      browserOutputPath: exampleVue2.browserOutputPath
     }
   })
 

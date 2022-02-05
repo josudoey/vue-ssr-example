@@ -143,7 +143,7 @@ module.exports = function (env) {
       }),
       // see https://ssr.vuejs.org/guide/build-config.html#client-config
       new VueSSRClientPlugin({
-        filename: path.relative( outputPath, vueSSRClientManifestPath )
+        filename: path.relative(outputPath, vueSSRClientManifestPath)
       })
     ]
   }

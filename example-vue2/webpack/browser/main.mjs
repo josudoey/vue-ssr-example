@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-import createApp from '~example-vue2/outlet/create-app.mjs'
+import { createApp, createStore, createRouter } from '~example-vue2/index.mjs'
 import VuexRouterSync from 'vuex-router-sync'
 
 import createDebug from 'debug'
@@ -54,8 +54,14 @@ export function createStoreOptions (state) {
 }
 
 const main = function (state) {
-  const vm = window.vm = createApp(createStoreOptions(state))
-  VuexRouterSync.sync(vm.$store, vm.$router)
+  const storeOptions = createStoreOptions(state)
+  const store = createStore(storeOptions)
+  const router = createRouter(store)
+  VuexRouterSync.sync(store, router)
+  const vm = window.vm = createApp({
+    store,
+    router
+  })
 
   let nextHref
 
