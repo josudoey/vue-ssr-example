@@ -41,4 +41,4 @@ const createRenderer = function (clientManifest) {
   return { renderToString }
 }
 
-export default createRenderer
+export { createRenderer }
