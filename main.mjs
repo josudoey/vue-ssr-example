@@ -11,14 +11,12 @@ const { publicPath, exampleVue2 } = env
   const router = createRouter()
   app.use(router.routes())
   ExampleVue2.install(app, {
-    router,
-    exampleVue2: {
-      ...exampleVue2SSR,
-      publicPath,
-      clientManifest: vue2ExampleManifest,
-      browserOutputPath: exampleVue2.browserOutputPath
-    }
+    ...exampleVue2SSR,
+    publicPath,
+    clientManifest: vue2ExampleManifest,
+    browserOutputPath: exampleVue2.browserOutputPath
   })
+  app.use(router.allowedMethods())
 
   const server = http.createServer(app.callback())
   server.on('listening', async function () {

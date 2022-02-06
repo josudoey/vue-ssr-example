@@ -17,7 +17,7 @@ export async function signOut (ctx, next) {
   const refererURL = new URL(referer)
   const refererPath = refererURL.pathname + refererURL.search
   const redirectURL = new URL(origin)
-  redirectURL.pathname = ctx.router.url('signIn')
+  redirectURL.pathname = '/sign-in'
   redirectURL.searchParams.set('redirect', refererPath)
   ctx.redirect(redirectURL.toString())
 }

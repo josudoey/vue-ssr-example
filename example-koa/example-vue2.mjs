@@ -46,12 +46,6 @@ export function createRoute (ssr) {
       return
     }
 
-    const matchedComponents = $router.getMatchedComponents()
-    if (!matchedComponents.length) {
-      ctx.throw(new Error('component not matched'))
-      return
-    }
-
     const vm = await createApp({
       store: $store,
       router: $router
@@ -93,9 +87,7 @@ export const createSSRRouter = function ({
 
 export default {
   install (app, options) {
-    const { router, exampleVue2 } = options
     const {
-      routes,
       createRenderer,
       createApp,
       createRouter,
@@ -105,11 +97,21 @@ export default {
       clientManifest,
       browserOutputPath,
       publicPath
-    } = exampleVue2
+    } = options
+
     app.use(createBrowserStatic({
       browserOutputPath,
       publicPath
     }))
+
+    const vueRouter = createRouter()
+    const matchedComponent = async function (ctx, next) {
+      const matchedComponents = vueRouter.getMatchedComponents(ctx.path)
+      if (!matchedComponents.length) {
+        return
+      }
+      await next()
+    }
 
     const ssrRoute = createRoute({
       createRenderer,
@@ -121,13 +123,8 @@ export default {
       clientManifest
     })
 
-    const ssrRouter = createSSRRouter({
-      routes,
-      ssrRoute
-    })
-    router.use(
-      ssrRouter.routes(),
-      ssrRouter.allowedMethods()
-    )
+    const router = new KoaRouter()
+    router.get('/(.*)', matchedComponent, xsrfToken.create, ssrRoute)
+    app.use(router.routes())
   }
 }
