@@ -4,15 +4,16 @@ import KoaRouter from 'koa-router'
 import * as xsrfToken from './route/xsrf-token.mjs'
 const debug = createDebug('app:example-vue2')
 
-export function createRoute ({
-  createRenderer,
-  createApp,
-  createRouter,
-  createStore,
-  isNavigationFailure,
-  NavigationFailureType,
-  clientManifest
-}) {
+export function createRoute (ssr) {
+  const {
+    createRenderer,
+    createApp,
+    createRouter,
+    createStore,
+    isNavigationFailure,
+    NavigationFailureType,
+    clientManifest
+  } = ssr
   const renderer = createRenderer(clientManifest)
   return async function (ctx, next) {
     const routeName = ctx._matchedRouteName
@@ -81,24 +82,9 @@ export function createBrowserStatic ({
 
 export const createSSRRouter = function ({
   routes,
-  createRenderer,
-  createApp,
-  createRouter,
-  createStore,
-  isNavigationFailure,
-  NavigationFailureType,
-  clientManifest
+  ssrRoute
 }) {
   const router = new KoaRouter()
-  const ssrRoute = createRoute({
-    createRenderer,
-    createApp,
-    createRouter,
-    createStore,
-    isNavigationFailure,
-    NavigationFailureType,
-    clientManifest
-  })
   for (const route of routes) {
     router.get(route.name, route.path, xsrfToken.create, ssrRoute)
   }
@@ -125,8 +111,7 @@ export default {
       publicPath
     }))
 
-    const ssrRouter = createSSRRouter({
-      routes,
+    const ssrRoute = createRoute({
       createRenderer,
       createApp,
       createRouter,
@@ -134,6 +119,11 @@ export default {
       isNavigationFailure,
       NavigationFailureType,
       clientManifest
+    })
+
+    const ssrRouter = createSSRRouter({
+      routes,
+      ssrRoute
     })
     router.use(
       ssrRouter.routes(),
