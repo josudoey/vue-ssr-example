@@ -47,7 +47,7 @@ export function createRoute ({
 
     const matchedComponents = $router.getMatchedComponents()
     if (!matchedComponents.length) {
-      ctx.throw(errOrRoute)
+      ctx.throw(new Error('component not matched'))
       return
     }
 
@@ -79,10 +79,26 @@ export function createBrowserStatic ({
   })
 }
 
-export const createRouter = function (exampleVue2) {
+export const createSSRRouter = function ({
+  routes,
+  createRenderer,
+  createApp,
+  createRouter,
+  createStore,
+  isNavigationFailure,
+  NavigationFailureType,
+  clientManifest
+}) {
   const router = new KoaRouter()
-  const { routes } = exampleVue2
-  const ssrRoute = createRoute(exampleVue2)
+  const ssrRoute = createRoute({
+    createRenderer,
+    createApp,
+    createRouter,
+    createStore,
+    isNavigationFailure,
+    NavigationFailureType,
+    clientManifest
+  })
   for (const route of routes) {
     router.get(route.name, route.path, xsrfToken.create, ssrRoute)
   }
@@ -92,11 +108,33 @@ export const createRouter = function (exampleVue2) {
 export default {
   install (app, options) {
     const { router, exampleVue2 } = options
-    app.use(createBrowserStatic(
-      exampleVue2
-    ))
+    const {
+      routes,
+      createRenderer,
+      createApp,
+      createRouter,
+      createStore,
+      isNavigationFailure,
+      NavigationFailureType,
+      clientManifest,
+      browserOutputPath,
+      publicPath
+    } = exampleVue2
+    app.use(createBrowserStatic({
+      browserOutputPath,
+      publicPath
+    }))
 
-    const ssrRouter = createRouter(exampleVue2)
+    const ssrRouter = createSSRRouter({
+      routes,
+      createRenderer,
+      createApp,
+      createRouter,
+      createStore,
+      isNavigationFailure,
+      NavigationFailureType,
+      clientManifest
+    })
     router.use(
       ssrRouter.routes(),
       ssrRouter.allowedMethods()
