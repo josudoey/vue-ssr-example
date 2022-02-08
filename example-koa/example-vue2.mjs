@@ -94,15 +94,8 @@ export default {
       createStore,
       isNavigationFailure,
       NavigationFailureType,
-      clientManifest,
-      browserOutputPath,
-      publicPath
+      clientManifest
     } = options
-
-    app.use(createBrowserStatic({
-      browserOutputPath,
-      publicPath
-    }))
 
     const vueRouter = createRouter()
     const matchedComponent = async function (ctx, next) {

@@ -1,7 +1,9 @@
 import Koa from 'koa'
 import KoaSession from 'koa-session'
 import { extendKoaStore } from './store/index.mjs'
+import staticCache from 'koa-static-cache'
 export { default as ExampleVue2 } from './example-vue2.mjs'
+export { default as ExampleVue3 } from './example-vue3.mjs'
 export { createRouter } from './router.mjs'
 
 export function createApp () {
@@ -13,4 +15,15 @@ export function createApp () {
   }, app))
   extendKoaStore(app.context)
   return app
+}
+
+export function createBrowserStatic ({
+  browserOutputPath,
+  publicPath
+}) {
+  return staticCache(browserOutputPath, {
+    prefix: publicPath,
+    maxAge: 1000 * 60 * 60 * 24 * 30,
+    dynamic: true
+  })
 }

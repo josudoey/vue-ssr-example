@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "~vue3-template-loader",
+  "version": "0.0.0",
+  "main": "index.js",
+  "peerDependencies": {
+    "vue": "^3.1.2",
+    "vue-loader": "^16.8.3",
+    "webpack": "^5.52.1"
+  },
+  "dependencies": {
+    "vue": "^3.1.2",
+    "vue-loader": "^16.8.3",
+    "webpack": "^5.52.1"
+  }
+}

@@ -30,7 +30,8 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "~example-vue2": "workspace:*",
+    "~example-vue2-webpack": "workspace:*",
+    "~example-vue3-webpack": "workspace:*",
     "~example-koa": "workspace:*"
   }
 }
