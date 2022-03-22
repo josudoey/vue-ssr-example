@@ -1,6 +1,10 @@
 import http from 'http'
 import env from './env.cjs'
-import { ExampleVue3, ExampleVue2, createApp, createRouter, createBrowserStatic } from '~example-koa/index.mjs'
+import {
+  ExampleVue3, ExampleVue2,
+  createApp, createRouter, createBrowserStatic,
+  createSocketIo, extendKoaIo, getKoaSession
+} from '~example-koa/index.mjs'
 import exampleVue2Manifest from './example-vue2-manifest.mjs'
 import * as exampleVue2SSR from './example-vue2-ssr.mjs'
 import exampleVue3Manifest from './example-vue3-manifest.mjs'
@@ -37,5 +41,32 @@ const { publicPath, exampleVue2, exampleVue3 } = env
     const port = address.port
     console.log(`service listen on ${address.address}:${port}`)
   })
+  const io = createSocketIo(server)
+
+  extendKoaIo(app.context, io)
+  io.use(async (socket, next) => {
+    const session = await getKoaSession(app, socket.request)
+    const { auth } = session
+    if (!auth) {
+      const err = new Error('unauthorized')
+      next(err)
+      return
+    }
+
+    socket.data.auth = auth
+    next()
+  })
+
+  // https://socket.io/docs/v4/server-instance/#fetchsockets
+  setInterval(function () {
+    io.to('time').emit('now', Date.now())
+  }, 1000)
+
+  io.on('connection', (socket) => {
+    // see https://socket.io/docs/v4/server-socket-instance/#events
+
+    socket.join('time')
+  })
+
   server.listen(3000)
 })()

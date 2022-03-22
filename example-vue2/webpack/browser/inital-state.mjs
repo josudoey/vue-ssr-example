@@ -2,6 +2,8 @@ import createDebug from 'debug'
 import { inflate } from 'pako'
 
 const debug = createDebug('app:vue:outlet:browser:inital-state')
+// TODO
+// change https://www.npmjs.com/package/msgpackr
 function decode (encoded) {
   const decoded = window.atob(encoded)
   const chars = decoded.split('').map(x => x.charCodeAt(0))

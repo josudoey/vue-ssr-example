@@ -17,6 +17,7 @@ module.exports = function (env) {
     resolve: {
       alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
         axios: false, // return module.exports = {}
+        'socket.io-client': false,
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue$: 'vue/dist/vue.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js'

@@ -1,5 +1,6 @@
 import * as render from './render.pug'
 import createDebug from 'debug'
+import { io as SocketIo } from 'socket.io-client'
 const debug = createDebug('app:sign-in')
 
 export default {
@@ -7,6 +8,7 @@ export default {
   inject: ['auth', 'authSignIn'],
   data: function () {
     return {
+      socket: null,
       user: '',
       password: '',
       disableSignIn: false
@@ -15,6 +17,28 @@ export default {
   beforeMount: function () {
     debug('beforeMount')
     this.redirect()
+  },
+  mounted: function () {
+    const namespace = '/'
+    const socket = this.socket = new SocketIo(namespace, {
+      query: {}
+    })
+
+    socket.on('connect', () => {
+      console.log(socket.id) // x8WIv7-mJelg7on_ALbx
+    })
+
+    // see https://socket.io/docs/v4/client-socket-instance/#events
+    socket.on('connect_error', (err) => {
+      console.log(err) // err
+    })
+
+    socket.on('disconnect', () => {
+      console.log('socket disconnect') // disconnect
+    })
+  },
+  destroyed: function () {
+    this.socket.disconnect()
   },
   methods: {
     redirect: function () {
