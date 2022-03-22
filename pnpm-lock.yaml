@@ -44,7 +44,6 @@ importers:
       koa-session: ^6.2.0
       koa-static-cache: ^5.1.4
       lru-cache: ^6.0.0
-      pako: ^2.0.4
       socket.io: ^4.4.1
       vue-server-renderer: ^2.6.14
       yup: ^0.32.11
@@ -60,7 +59,6 @@ importers:
       koa-session: 6.2.0
       koa-static-cache: 5.1.4
       lru-cache: 6.0.0
-      pako: 2.0.4
       socket.io: 4.4.1
       vue-server-renderer: 2.6.14
       yup: 0.32.11
@@ -78,8 +76,8 @@ importers:
       jquery: ^3.6.0
       lru-cache: ^6.0.0
       mini-css-extract-plugin: ^2.4.4
+      msgpackr: ^1.5.5
       nprogress: ^0.2.0
-      pako: ^2.0.4
       popper.js: ^1.16.1
       portal-vue: ^2.1.7
       pug: ^3.0.2
@@ -109,8 +107,8 @@ importers:
       jquery: 3.6.0
       lru-cache: 6.0.0
       mini-css-extract-plugin: 2.5.3_webpack@5.68.0
+      msgpackr: 1.5.5
       nprogress: 0.2.0
-      pako: 2.0.4
       popper.js: 1.16.1
       portal-vue: 2.1.7_vue@2.6.14
       pug: 3.0.2
@@ -190,7 +188,7 @@ importers:
       '@popperjs/core': ^2.10.2
       bootstrap: ^5.1.3
       bootstrap-vue-3: ^0.1.0
-      pako: ^2.0.4
+      msgpackr: ^1.5.5
       pinia: ^2.0.11
       vue: ^3.1.2
       vue-router: ^4.0.12
@@ -198,7 +196,7 @@ importers:
       '@popperjs/core': 2.11.2
       bootstrap: 5.1.3_@popperjs+core@2.11.2
       bootstrap-vue-3: 0.1.2_@popperjs+core@2.11.2
-      pako: 2.0.4
+      msgpackr: 1.5.5
       pinia: 2.0.11_vue@3.2.30
       vue: 3.2.30
       vue-router: 4.0.12_vue@3.2.30
@@ -3208,6 +3206,21 @@ packages:
   /ms/2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
+  /msgpackr-extract/1.0.16:
+    resolution: {integrity: sha512-fxdRfQUxPrL/TizyfYfMn09dK58e+d65bRD/fcaVH4052vj30QOzzqxcQIS7B0NsqlypEQ/6Du3QmP2DhWFfCA==}
+    requiresBuild: true
+    dependencies:
+      nan: 2.15.0
+      node-gyp-build: 4.3.0
+    dev: false
+    optional: true
+
+  /msgpackr/1.5.5:
+    resolution: {integrity: sha512-JG0V47xRIQ9pyUnx6Hb4+3TrQoia2nA3UIdmyTldhxaxtKFkekkKpUW/N6fwHwod9o4BGuJGtouxOk+yCP5PEA==}
+    optionalDependencies:
+      msgpackr-extract: 1.0.16
+    dev: false
+
   /mz/2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
     dependencies:
@@ -3215,6 +3228,11 @@ packages:
       object-assign: 4.1.1
       thenify-all: 1.6.0
     dev: false
+
+  /nan/2.15.0:
+    resolution: {integrity: sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==}
+    dev: false
+    optional: true
 
   /nanoclone/0.2.1:
     resolution: {integrity: sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA==}
@@ -3257,6 +3275,12 @@ packages:
     dependencies:
       whatwg-url: 5.0.0
     dev: false
+
+  /node-gyp-build/4.3.0:
+    resolution: {integrity: sha512-iWjXZvmboq0ja1pUGULQBexmxq8CV4xBhX7VDOTbL7ZR4FOowwY/VOtRxBN/yKxmdGoIp4j5ysNT4u3S2pDQ3Q==}
+    hasBin: true
+    dev: false
+    optional: true
 
   /node-releases/2.0.1:
     resolution: {integrity: sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==}
@@ -3431,10 +3455,6 @@ packages:
       registry-auth-token: 4.2.1
       registry-url: 5.1.0
       semver: 6.3.0
-
-  /pako/2.0.4:
-    resolution: {integrity: sha512-v8tweI900AUkZN6heMU/4Uy4cXRc2AYNRggVmTR+dEncawDJgCdLMximOVA2p4qO57WMynangsfGRb5WD6L1Bg==}
-    dev: false
 
   /param-case/3.0.4:
     resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
