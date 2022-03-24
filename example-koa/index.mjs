@@ -34,12 +34,15 @@ export function createBrowserStatic ({
 }
 
 export async function getKoaSession (app, request) {
-  const ctx = app.createContext(request)
+  const response = {
+    setHeader () {},
+    getHeader () { }
+  }
+  const ctx = app.createContext(request, response)
   const koaSession = app[KOA_SESSION]
   if (!koaSession) {
     return
   }
   await koaSession(ctx, function () {})
-
   return ctx.session
 }
