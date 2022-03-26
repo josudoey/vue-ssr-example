@@ -1,6 +1,7 @@
 {
   "extends": "standard",
   "parserOptions": {
-    "parser": "@babel/eslint-parser"
+    "parser": "@babel/eslint-parser",
+    "ecmaVersion": 2022
   }
 }

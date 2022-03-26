@@ -1,5 +1,5 @@
-import fs from 'fs'
+import { createRequire } from 'module'
 import env from './env.cjs'
 const { manifestPath } = env.exampleVue3
-const manifest = JSON.parse(fs.readFileSync(manifestPath).toString())
+const manifest = createRequire(import.meta.url)(manifestPath)
 export default manifest

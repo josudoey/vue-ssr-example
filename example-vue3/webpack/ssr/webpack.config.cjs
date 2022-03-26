@@ -6,6 +6,7 @@ const webpack = require('webpack')
 module.exports = function (env) {
   const { outputPath } = env
   return {
+    devtool: 'source-map',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'node',
     externals: [],
@@ -27,6 +28,7 @@ module.exports = function (env) {
     },
     externalsType: 'node-commonjs',
     output: {
+      clean: true,
       path: outputPath,
       chunkFormat: 'module'
     },
