@@ -227,7 +227,7 @@ importers:
     dependencies:
       '@popperjs/core': 2.11.2
       '@vue/compiler-sfc': 3.2.30
-      ~vue3-template-loader: link:../../vue3-template-loader
+      ~vue3-template-loader: link:../../packages/vue3-template-loader
       bootstrap: 5.1.3_@popperjs+core@2.11.2
       css-loader: 6.6.0_webpack@5.68.0
       css-minimizer-webpack-plugin: 3.4.1_webpack@5.68.0
@@ -257,7 +257,7 @@ importers:
     dependencies:
       ~example-vue3: link:../..
 
-  vue3-template-loader:
+  packages/vue3-template-loader:
     specifiers:
       vue: ^3.1.2
       vue-loader: ^16.8.3
@@ -2945,19 +2945,10 @@ packages:
     dependencies:
       minimist: 1.2.6
 
-  /json5/2.2.0:
-    resolution: {integrity: sha512-f+8cldu7X/y7RAJurMEJmdoKXGB/X550w2Nr3tTbezL6RwEE/iMcm+tZnXeoZtKuOq6ft8+CqzEkrIgx1fPoQA==}
-    engines: {node: '>=6'}
-    hasBin: true
-    dependencies:
-      minimist: 1.2.5
-    dev: false
-
   /json5/2.2.1:
     resolution: {integrity: sha512-1hqLFMSrGHRHxav9q9gNjJ5EXznIxGVO09xQRrwplcS8qs28pZ8s8hupZAmqDwZUmVZ2Qb2jnyPOWcDH8m8dlA==}
     engines: {node: '>=6'}
     hasBin: true
-    dev: true
 
   /jstransformer/1.0.0:
     resolution: {integrity: sha1-7Yvwkh4vPx7U1cGkT2hwntJHIsM=}
@@ -3107,7 +3098,7 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.2.0
+      json5: 2.2.1
     dev: false
 
   /locate-path/2.0.0:
@@ -3260,10 +3251,6 @@ packages:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
       brace-expansion: 1.1.11
-
-  /minimist/1.2.5:
-    resolution: {integrity: sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==}
-    dev: false
 
   /minimist/1.2.6:
     resolution: {integrity: sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==}

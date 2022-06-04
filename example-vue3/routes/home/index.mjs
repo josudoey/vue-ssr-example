@@ -13,7 +13,7 @@ export default {
     return {
       homeStore,
       time,
-      css: css,
+      css,
       msg: ''
     }
   },
