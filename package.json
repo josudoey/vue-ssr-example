@@ -32,7 +32,9 @@
   },
   "dependencies": {
     "~example-koa": "workspace:*",
+    "~example-vue2": "workspace:^0.0.0",
     "~example-vue2-webpack": "workspace:*",
+    "~example-vue3": "workspace:^0.0.0",
     "~example-vue3-webpack": "workspace:*"
   }
 }
