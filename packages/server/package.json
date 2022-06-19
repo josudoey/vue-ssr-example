@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "~server",
+  "version": "0.0.0",
+  "main": "server.mjs",
+  "dependencies": {
+    "~example-koa": "workspace:^0.0.0",
+    "~example-vue2": "workspace:^0.0.0",
+    "~example-vue3": "workspace:^0.0.0"
+  },
+  "devDependencies": {
+    "~example-vue2-webpack": "workspace:^0.0.0",
+    "~example-vue3-webpack": "workspace:^1.0.0"
+  }
+}
