@@ -31,6 +31,8 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "~server": "workspace:*"
+    "debug": "^4.3.3",
+    "~server": "workspace:*",
+    "~vue2-server-renderer": "workspace:*"
   }
 }

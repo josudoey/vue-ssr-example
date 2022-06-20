@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "name": "~example-vue2-manifest",
+  "version": "0.0.0",
+  "description": "",
+  "main": "./create-manifest.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "~example-vue2": "workspace:*"
+  }
+}

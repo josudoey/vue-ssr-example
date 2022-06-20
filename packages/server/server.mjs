@@ -4,10 +4,10 @@ import {
   createApp, createRouter, createBrowserStatic,
   createSocketIo, extendKoaIo, getKoaSession
 } from '~example-koa/index.mjs'
-import createExampleVue2SSR from '~example-vue2/create-ssr.mjs'
-import createRxampleVue2Manifest from '~example-vue2/create-manifest.mjs'
-import createExampleVue3SSR from '~example-vue3/create-ssr.mjs'
-import createRxampleVue3Manifest from '~example-vue3/create-manifest.mjs'
+import createExampleVue2SSR from '~example-vue2-ssr'
+import createRxampleVue2Manifest from '~example-vue2-manifest'
+import createExampleVue3SSR from '~example-vue3-ssr'
+import createRxampleVue3Manifest from '~example-vue3-manifest'
 
 async function createServer (env) {
   const { publicPath, exampleVue2, exampleVue3 } = env

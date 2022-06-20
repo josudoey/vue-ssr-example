@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "~example-vue2-webpack",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "NODE_ENV=production node ./build.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "webpack": "^5.63.0",
+    "webpack-cli": "^4.9.1",
+    "~example-vue2-webpack-browser": "workspace:*",
+    "~example-vue2-webpack-ssr": "workspace:*"
+  },
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "css-minimizer-webpack-plugin": "^3.1.3",
+    "debug": "^4.3.3",
+    "html-loader": "^2.1.2",
+    "mini-css-extract-plugin": "^2.4.4",
+    "pug": "^3.0.2",
+    "pug-plain-loader": "^1.1.0",
+    "terser-webpack-plugin": "^5.2.5",
+    "vue-loader": "^15.9.8",
+    "vue-server-renderer": "^2.6.14",
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "^5.63.0",
+    "webpack-cli": "^4.9.1"
+  }
+}

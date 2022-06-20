@@ -4,12 +4,14 @@
   "version": "0.0.0",
   "main": "server.mjs",
   "dependencies": {
-    "~example-koa": "workspace:^0.0.0",
-    "~example-vue2": "workspace:^0.0.0",
-    "~example-vue3": "workspace:^0.0.0"
+    "~example-koa": "workspace:*",
+    "~example-vue2-ssr": "workspace:*",
+    "~example-vue2-manifest": "workspace:*",
+    "~example-vue3-ssr": "workspace:*",
+    "~example-vue3-manifest": "workspace:*"
   },
   "devDependencies": {
-    "~example-vue2-webpack": "workspace:^0.0.0",
-    "~example-vue3-webpack": "workspace:^1.0.0"
+    "~example-vue2-webpack": "workspace:*",
+    "~example-vue3-webpack": "workspace:*"
   }
 }

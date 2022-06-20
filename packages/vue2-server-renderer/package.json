@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "name": "~vue2-server-renderer",
+  "version": "0.0.0",
+  "main": "index.js",
+  "peerDependencies": {},
+  "dependencies": {
+    "vue-server-renderer": "^2.6.14"
+  }
+}

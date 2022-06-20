@@ -1,12 +1,2 @@
 packages:
   - packages/*
-  - example-koa
-  - example-vue2
-  - example-vue2/webpack
-  - example-vue2/webpack/browser
-  - example-vue2/webpack/ssr
-  - example-vue3
-  - example-vue3/webpack
-  - example-vue3/webpack/browser
-  - example-vue3/webpack/ssr
-  
