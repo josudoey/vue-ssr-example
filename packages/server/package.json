@@ -11,7 +11,7 @@
     "~example-vue3-manifest": "workspace:*"
   },
   "devDependencies": {
-    "~example-vue2-webpack": "workspace:*",
-    "~example-vue3-webpack": "workspace:*"
+    "~example-vue2-build": "workspace:*",
+    "~example-vue3-build": "workspace:*"
   }
 }

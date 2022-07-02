@@ -8,7 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "vue-server-renderer": "^2.6.14",
-    "~example-vue2": "workspace:*"
+    "vue-server-renderer": "^2.6.14"
   }
 }

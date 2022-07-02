@@ -1,29 +1,9 @@
-const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const { WebpackManifestPlugin, getCompilerHooks } = require('webpack-manifest-plugin')
-const webpack = require('webpack')
-
-class ManifestHashPlugin {
-  apply (compiler) {
-    const self = this
-    compiler.hooks.thisCompilation.tap(self.constructor.name, (compilation) => {
-      compilation.hooks.afterHash.tap(self.constructor.name, () => {
-        const stats = compilation.getStats()
-        self.hash = stats.hash
-      })
-    })
-
-    const { beforeEmit } = getCompilerHooks(compiler)
-    beforeEmit.tap(this.constructor.name, (manifest) => {
-      return {
-        ...manifest,
-        hash: self.hash
-      }
-    })
-  }
-}
+const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
+const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
+const TerserPlugin = require('~webpack5/plugins/terser')
+const { WebpackManifestPlugin } = require('~webpack5/plugins/manifest')
+const ManifestHashPlugin = require('~webpack5/plugins/manifest-hash')
+const webpack = require('~webpack5')
 
 module.exports = function (env) {
   const { outputPath, publicPath, manifestPath } = env
@@ -65,25 +45,18 @@ module.exports = function (env) {
     module: {
       rules: [{
         test: /\.(png|jpe?g|gif|svg)$/,
-        loader: require.resolve('file-loader'),
-        options: {
-          outputPath: 'img',
-          publicPath: '../img',
-          useRelativePath: false,
-          name: '[contenthash].[ext]'
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[contenthash][ext]'
         }
       }, {
         test: /\.(woff2?|eot|ttf|otf)$/,
-        loader: require.resolve('file-loader'),
-        options: {
-          outputPath: 'fonts',
-          publicPath: '../fonts',
-          useRelativePath: false,
-          name: '[contenthash].[ext]'
+        generator: {
+          filename: 'fonts/[contenthash][ext]'
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('html-loader'),
+        loader: require.resolve('~webpack5/html-loader'),
         options: {
           minimize: true
         }
@@ -93,19 +66,19 @@ module.exports = function (env) {
           loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('html-loader'),
+          loader: require.resolve('~webpack5/html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /\.css$/,
@@ -115,7 +88,7 @@ module.exports = function (env) {
           options: {
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -133,7 +106,7 @@ module.exports = function (env) {
             esModule: true
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             importLoaders: 1
           }

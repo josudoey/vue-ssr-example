@@ -1,8 +1,9 @@
-import webpack from 'webpack'
-import browserConfig from '~example-vue3-webpack-browser/webpack.config.cjs'
-import ssrConfig from '~example-vue3-webpack-ssr/webpack.config.cjs'
-
-export default async function (env) {
+import webpack from '~webpack5'
+import browserConfig from '~example-vue2-build-browser/webpack.config.cjs'
+import ssrConfig from '~example-vue2-build-ssr/webpack.config.cjs'
+export default async function (
+  { publicPath, browserOutputPath, vueSSRClientManifestPath, ssrOutputPath }
+) {
   process.on('uncaughtException', function (err) {
     console.trace(err)
   })
@@ -12,11 +13,10 @@ export default async function (env) {
   })
 
   await new Promise(function (resolve, reject) {
-    const { publicPath, browserOutputPath, manifestPath, ssrOutputPath } = env
     const compiler = webpack([
       browserConfig({
         outputPath: browserOutputPath,
-        manifestPath,
+        vueSSRClientManifestPath,
         publicPath
       }),
       ssrConfig({

@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "name": "~example-vue2-build",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "NODE_ENV=production node ./build.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "~webpack5": "workspace:*",
+    "~example-vue2-build-browser": "workspace:*",
+    "~example-vue2-build-ssr": "workspace:*"
+  }
+}

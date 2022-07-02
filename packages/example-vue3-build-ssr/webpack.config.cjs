@@ -1,7 +1,7 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const webpack = require('webpack')
+const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
+const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
+const TerserPlugin = require('~webpack5/plugins/terser')
+const webpack = require('~webpack5')
 module.exports = function (env) {
   const { outputPath } = env
   return {
@@ -52,25 +52,18 @@ module.exports = function (env) {
     module: {
       rules: [{
         test: /\.(png|jpe?g|gif|svg)$/,
-        loader: require.resolve('file-loader'),
-        options: {
-          outputPath: 'img',
-          publicPath: '../img',
-          useRelativePath: false,
-          name: '[contenthash].[ext]'
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[contenthash][ext]'
         }
       }, {
         test: /\.(woff2?|eot|ttf|otf)$/,
-        loader: require.resolve('file-loader'),
-        options: {
-          outputPath: 'fonts',
-          publicPath: '../fonts',
-          useRelativePath: false,
-          name: '[contenthash].[ext]'
+        generator: {
+          filename: 'fonts/[contenthash][ext]'
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('html-loader'),
+        loader: require.resolve('~webpack5/html-loader'),
         options: {
           minimize: true
         }
@@ -80,19 +73,19 @@ module.exports = function (env) {
           loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('html-loader'),
+          loader: require.resolve('~webpack5/html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /\.css$/,
@@ -102,7 +95,7 @@ module.exports = function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             modules: {
               namedExport: true,

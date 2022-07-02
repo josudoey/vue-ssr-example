@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "~vue2-template-loader",
+  "version": "0.0.0",
+  "main": "index.js",
+  "peerDependencies": {},
+  "dependencies": {
+    "vue-loader": "^15.9.8",
+    "css-loader": "^6.5.1",
+    "webpack": "^5.63.0"
+  }
+}

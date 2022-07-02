@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "~example-vue3-build-ssr",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "~vue3-template-loader": "workspace:*",
+    "~example-vue3": "workspace:*",
+    "~webpack5": "workspace:*"
+  }
+}

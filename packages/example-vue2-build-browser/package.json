@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "~example-vue2-build-browser",
+  "version": "0.0.0",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {
+    "~example-vue2": "workspace:*",
+    "~webpack5": "workspace:*",
+    "debug": "^4.3.3",
+    "~vue2-template-loader": "workspace:*",
+    "~vue2-server-renderer":"workspace:*"
+  }
+}

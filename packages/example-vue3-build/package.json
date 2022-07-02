@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "~example-vue3-build",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "NODE_ENV=production node ./scripts/build.mjs"
+  },
+  "dependencies": {
+    "~webpack5": "workspace:*",
+    "~vue3-template-loader": "workspace:*",
+    "~example-vue3-build-ssr": "workspace:*",
+    "~example-vue3-build-browser": "workspace:*"
+  }
+}

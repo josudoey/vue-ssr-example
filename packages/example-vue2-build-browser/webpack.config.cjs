@@ -1,8 +1,8 @@
 const path = require('path')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const TerserPlugin = require('terser-webpack-plugin')
-const VueSSRClientPlugin = require('vue-server-renderer/client-plugin')
+const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
+const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
+const TerserPlugin = require('~webpack5/plugins/terser')
+const VueSSRClientPlugin = require('~vue2-server-renderer/client-plugin')
 
 module.exports = function (env) {
   const { outputPath, publicPath, vueSSRClientManifestPath } = env
@@ -77,33 +77,33 @@ module.exports = function (env) {
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('html-loader'),
+        loader: require.resolve('~webpack5/html-loader'),
         options: {
           minimize: true
         }
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('vue-loader/lib/loaders/templateLoader.js'),
+          loader: require.resolve('~vue2-template-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('html-loader'),
+          loader: require.resolve('~webpack5/html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /module\.css$/,
@@ -112,7 +112,7 @@ module.exports = function (env) {
           options: {
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -129,7 +129,7 @@ module.exports = function (env) {
           options: {
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             importLoaders: 0
           }

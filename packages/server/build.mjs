@@ -1,5 +1,5 @@
-import exampleVue2WebpackMain from '~example-vue2-webpack/main.mjs'
-import exampleVue3WebpackMain from '~example-vue3-webpack/main.mjs'
+import exampleVue2WebpackMain from '~example-vue2-build/main.mjs'
+import exampleVue3WebpackMain from '~example-vue3-build/main.mjs'
 
 const exampleVue2Build = async ({ publicPath, exampleVue2 }) => {
   const { browserOutputPath, vueSSRClientManifestPath, ssrOutputPath } = exampleVue2

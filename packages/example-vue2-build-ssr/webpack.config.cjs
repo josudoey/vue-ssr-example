@@ -1,5 +1,5 @@
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const webpack = require('webpack')
+const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
+const webpack = require('~webpack5')
 
 module.exports = function (env) {
   const { outputPath } = env
@@ -49,33 +49,33 @@ module.exports = function (env) {
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('html-loader'),
+        loader: require.resolve('~webpack5/html-loader'),
         options: {
           minimize: true
         }
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('vue-loader/lib/loaders/templateLoader.js'),
+          loader: require.resolve('~vue2-template-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('html-loader'),
+          loader: require.resolve('~webpack5/html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
         test: /module\.css$/,
@@ -85,7 +85,7 @@ module.exports = function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -103,7 +103,7 @@ module.exports = function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('css-loader'),
+          loader: require.resolve('~webpack5/css-loader'),
           options: {
             importLoaders: 0
           }
