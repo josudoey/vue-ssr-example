@@ -161,15 +161,6 @@ importers:
       ~vue2-template-loader: link:../vue2-template-loader
       ~webpack5: link:../webpack5
 
-  packages/example-vue2-manifest:
-    specifiers: {}
-
-  packages/example-vue2-ssr:
-    specifiers:
-      vue-server-renderer: ^2.6.14
-    dependencies:
-      vue-server-renderer: 2.6.14
-
   packages/example-vue3:
     specifiers:
       '@popperjs/core': ^2.10.2
@@ -220,33 +211,13 @@ importers:
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
 
-  packages/example-vue3-manifest:
-    specifiers:
-      ~example-vue3: workspace:*
-    dependencies:
-      ~example-vue3: link:../example-vue3
-
-  packages/example-vue3-ssr:
-    specifiers:
-      ~example-vue3: workspace:*
-    dependencies:
-      ~example-vue3: link:../example-vue3
-
   packages/server:
     specifiers:
       ~example-koa: workspace:*
       ~example-vue2-build: workspace:*
-      ~example-vue2-manifest: workspace:*
-      ~example-vue2-ssr: workspace:*
       ~example-vue3-build: workspace:*
-      ~example-vue3-manifest: workspace:*
-      ~example-vue3-ssr: workspace:*
     dependencies:
       ~example-koa: link:../example-koa
-      ~example-vue2-manifest: link:../example-vue2-manifest
-      ~example-vue2-ssr: link:../example-vue2-ssr
-      ~example-vue3-manifest: link:../example-vue3-manifest
-      ~example-vue3-ssr: link:../example-vue3-ssr
     devDependencies:
       ~example-vue2-build: link:../example-vue2-build
       ~example-vue3-build: link:../example-vue3-build

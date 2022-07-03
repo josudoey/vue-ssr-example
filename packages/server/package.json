@@ -4,11 +4,7 @@
   "version": "0.0.0",
   "main": "server.mjs",
   "dependencies": {
-    "~example-koa": "workspace:*",
-    "~example-vue2-ssr": "workspace:*",
-    "~example-vue2-manifest": "workspace:*",
-    "~example-vue3-ssr": "workspace:*",
-    "~example-vue3-manifest": "workspace:*"
+    "~example-koa": "workspace:*"
   },
   "devDependencies": {
     "~example-vue2-build": "workspace:*",
