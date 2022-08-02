@@ -1,5 +1,5 @@
 import env from './env.cjs'
-import { createServer } from '~server'
+import { createServer } from '~example-server'
 
 ;(async function main () {
   const server = await createServer(env)

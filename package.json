@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "debug": "^4.3.3",
-    "~server": "workspace:*",
+    "~example-server": "workspace:*",
     "~vue2-server-renderer": "workspace:*"
   }
 }

@@ -13,12 +13,12 @@ export const state = () => ({
   expire: 0
 })
 
-const store = {
+const module = {
   namespaced: true,
   state
 }
 
-export const actions = store.actions = {}
+export const actions = module.actions = {}
 actions.getState = async function ({ commit, rootGetters }) {
   const res = await rootGetters.api({
     method: 'GET',
@@ -37,7 +37,7 @@ actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
     url: '/_/auth',
     auth: {
       username: user,
-      password: password
+      password
     }
   })
   if (!/^2/.exec(res.status)) {
@@ -47,36 +47,41 @@ actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
   return res.data
 }
 
-const mutations = store.mutations = {}
+const mutations = module.mutations = {}
 mutations.setAuth = function (state, payload) {
   debug('setAuth', payload)
   Object.assign(state, payload)
 }
 
-store.getters = {
+module.getters = {
 
 }
 
-export default store
+export default module
+// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
+const STORE_REGISTER_COUNT = Symbol('store#module#' + name)
+
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
-  debug('register already:', $store.hasModule(name))
   if ($store.hasModule(name)) {
+    $store[STORE_REGISTER_COUNT]++
     return true
   }
-
+  $store[STORE_REGISTER_COUNT] = 0
   const preserveState = !!$store.state[name]
-  $store.registerModule(name, store, {
+  $store.registerModule(name, module, {
     preserveState
   })
   return preserveState
 }
 
-// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function unregister ($store) {
-  debug('unregister')
   if (!$store.hasModule(name)) {
     return
   }
-  $store.unregisterModule(name)
+  $store[STORE_REGISTER_COUNT]--
+  if ($store[STORE_REGISTER_COUNT] > 0) {
+    return
+  }
+  return $store.unregisterModule(name, module)
 }

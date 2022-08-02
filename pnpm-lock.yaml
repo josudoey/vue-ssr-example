@@ -7,7 +7,7 @@ importers:
       '@babel/core': ^7.17.8
       '@babel/eslint-parser': ^7.17.0
       '@babel/plugin-syntax-top-level-await': ^7.14.5
-      ~server: workspace:*
+      ~example-server: workspace:*
       ~vue2-server-renderer: workspace:*
       debug: ^4.3.3
       eslint: ^8.12.0
@@ -18,7 +18,7 @@ importers:
       eslint-plugin-promise: ^6.0.0
       nodemon: ^2.0.15
     dependencies:
-      ~server: link:packages/server
+      ~example-server: link:packages/example-server
       ~vue2-server-renderer: link:packages/vue2-server-renderer
       debug: 4.3.4
     devDependencies:
@@ -62,6 +62,17 @@ importers:
       lru-cache: 6.0.0
       socket.io: 4.4.1
       yup: 0.32.11
+
+  packages/example-server:
+    specifiers:
+      ~example-koa: workspace:*
+      ~example-vue2-build: workspace:*
+      ~example-vue3-build: workspace:*
+    dependencies:
+      ~example-koa: link:../example-koa
+    devDependencies:
+      ~example-vue2-build: link:../example-vue2-build
+      ~example-vue3-build: link:../example-vue3-build
 
   packages/example-vue2:
     specifiers:
@@ -210,17 +221,6 @@ importers:
       ~example-vue3: link:../example-vue3
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
-
-  packages/server:
-    specifiers:
-      ~example-koa: workspace:*
-      ~example-vue2-build: workspace:*
-      ~example-vue3-build: workspace:*
-    dependencies:
-      ~example-koa: link:../example-koa
-    devDependencies:
-      ~example-vue2-build: link:../example-vue2-build
-      ~example-vue3-build: link:../example-vue3-build
 
   packages/vue2-server-renderer:
     specifiers:

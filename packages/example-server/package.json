@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "~server",
+  "name": "~example-server",
   "version": "0.0.0",
   "main": "server.mjs",
   "dependencies": {

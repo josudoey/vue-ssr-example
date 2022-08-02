@@ -6,7 +6,7 @@ const debug = createDebug('app:outlet')
 export default {
   ...render,
   components: {
-    layout: layout
+    layout
   },
   metaInfo () {
     debug('metaInfo')

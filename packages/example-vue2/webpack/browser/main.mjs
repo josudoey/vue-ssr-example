@@ -31,6 +31,22 @@ const createApi = function () {
   return api
 }
 
+const createFetcher = function () {
+  if (!axiosCreate) {
+    return
+  }
+  const api = axiosCreate({
+    baseURL: '/',
+    headers: {
+      common: {}
+    },
+    validateStatus: function () {
+      return true
+    }
+  })
+  return api
+}
+
 export function createStoreOptions (state) {
   debug('createStore')
   const cache = new LRU({
@@ -38,6 +54,7 @@ export function createStoreOptions (state) {
   })
 
   const api = createApi()
+  const fetcher = createFetcher()
   return {
     state,
     actions: {},
@@ -48,6 +65,9 @@ export function createStoreOptions (state) {
       },
       cache: function () {
         return cache
+      },
+      fetcher () {
+        return fetcher
       }
     }
   }
