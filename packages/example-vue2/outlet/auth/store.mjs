@@ -20,10 +20,7 @@ const module = {
 
 export const actions = module.actions = {}
 actions.getState = async function ({ commit, rootGetters }) {
-  const res = await rootGetters.api({
-    method: 'GET',
-    url: '/_/auth/state'
-  })
+  const res = await rootGetters.rpc('getAuthState')
   if (!/^2/.exec(res.status)) {
     return
   }
@@ -32,9 +29,7 @@ actions.getState = async function ({ commit, rootGetters }) {
 }
 
 actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
-  const res = await rootGetters.api({
-    method: 'POST',
-    url: '/_/auth',
+  const res = await rootGetters.rpc('signIn').config({
     auth: {
       username: user,
       password
@@ -53,9 +48,7 @@ mutations.setAuth = function (state, payload) {
   Object.assign(state, payload)
 }
 
-module.getters = {
-
-}
+module.getters = {}
 
 export default module
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting

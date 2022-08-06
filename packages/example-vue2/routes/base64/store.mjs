@@ -1,5 +1,6 @@
 import Vuex from 'vuex'
 import createDebug from 'debug'
+import LRU from 'lru-cache'
 const name = 'base64'
 const mapActions = Vuex.mapActions.bind(null, name)
 const mapState = Vuex.mapState.bind(null, name)
@@ -8,9 +9,9 @@ const mapGetters = Vuex.mapGetters.bind(null, name)
 const debug = createDebug('app:store:base64')
 debug('import')
 
-const store = {
+const module = {
   namespaced: true,
-  state: () => {
+  state () {
     return {
       text: '',
       result: ''
@@ -18,20 +19,29 @@ const store = {
   }
 }
 
-const actions = store.actions = {}
-actions.encode = async function ({ state, commit, rootGetters }, text) {
+const cache = new LRU({
+  max: 10
+})
+
+const getters = module.getters = {}
+getters.cache = function () {
+  return cache
+}
+
+const actions = module.actions = {}
+
+actions.encode = async function ({ state, commit, getters, rootGetters }, text) {
   debug('encode')
-  let result = rootGetters.cache.get(text)
+  const cache = getters.cache
+  let result = cache.get(text)
   if (result) {
     debug('cache', result)
     commit('setResult', result)
     return
   }
 
-  const res = await rootGetters.api({
-    method: 'GET',
-    url: '/_/base64',
-    params: {
+  const res = await rootGetters.rpc('encodeBase64', {
+    query: {
       v: text
     }
   })
@@ -40,11 +50,11 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
   }
 
   result = {
-    text: text,
+    text,
     result: res.data.result
   }
 
-  rootGetters.cache.set(text, result)
+  cache.set(text, result)
   debug('result', result)
   if (text === state.text) {
     return
@@ -53,7 +63,7 @@ actions.encode = async function ({ state, commit, rootGetters }, text) {
   return res.data
 }
 
-const mutations = store.mutations = {}
+const mutations = module.mutations = {}
 
 mutations.setResult = function (state, { text, result }) {
   debug('setResult')
@@ -61,27 +71,33 @@ mutations.setResult = function (state, { text, result }) {
   state.result = result
 }
 
-export default store
+export default module
 export { name, mapActions, mapState, mapMutations, mapGetters }
 export { actions }
+
+const STORE_REGISTER_COUNT = Symbol('store#registerCount#' + name)
+
+// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
-  debug('register')
   if ($store.hasModule(name)) {
+    $store[STORE_REGISTER_COUNT]++
     return true
   }
-
+  $store[STORE_REGISTER_COUNT] = 0
   const preserveState = !!$store.state[name]
-  $store.registerModule(name, store, {
+  $store.registerModule(name, module, {
     preserveState
   })
   return preserveState
 }
 
-// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function unregister ($store) {
-  debug('unregister')
   if (!$store.hasModule(name)) {
     return
   }
-  $store.unregisterModule(name)
+  $store[STORE_REGISTER_COUNT]--
+  if ($store[STORE_REGISTER_COUNT] > 0) {
+    return
+  }
+  return $store.unregisterModule(name, module)
 }

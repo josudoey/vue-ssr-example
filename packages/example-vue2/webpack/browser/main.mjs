@@ -8,66 +8,23 @@ import { createApp, createStore, createRouter } from '../../index.mjs'
 import VuexRouterSync from 'vuex-router-sync'
 
 import createDebug from 'debug'
-import LRU from 'lru-cache'
-import { create as axiosCreate } from 'axios'
 import state from './inital-state.mjs'
+import { createRpc } from './rpc/create.mjs'
 
 const debug = createDebug('app:vue:outlet:browser')
 NProgress.start()
 
-const createApi = function () {
-  if (!axiosCreate) {
-    return
-  }
-  const api = axiosCreate({
-    baseURL: '/',
-    headers: {
-      common: {}
-    },
-    validateStatus: function () {
-      return true
-    }
-  })
-  return api
-}
-
-const createFetcher = function () {
-  if (!axiosCreate) {
-    return
-  }
-  const api = axiosCreate({
-    baseURL: '/',
-    headers: {
-      common: {}
-    },
-    validateStatus: function () {
-      return true
-    }
-  })
-  return api
-}
-
 export function createStoreOptions (state) {
   debug('createStore')
-  const cache = new LRU({
-    max: 10
-  })
 
-  const api = createApi()
-  const fetcher = createFetcher()
+  const rpc = createRpc()
   return {
     state,
     actions: {},
     mutations: {},
     getters: {
-      api: function () {
-        return api
-      },
-      cache: function () {
-        return cache
-      },
-      fetcher () {
-        return fetcher
+      rpc: function () {
+        return rpc
       }
     }
   }

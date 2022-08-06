@@ -32,13 +32,11 @@ actions.list = async function ({ commit, rootGetters }, payload) {
     skip,
     limit
   })
-  const res = await rootGetters.api({
-    method: 'GET',
-    url: '/_/note',
-    params: {
-      q: q,
-      skip: skip,
-      limit: limit
+  const res = await rootGetters.rpc('listNote', {
+    query: {
+      q,
+      skip,
+      limit
     }
   })
   if (res.status !== 200) {
@@ -52,9 +50,7 @@ actions.list = async function ({ commit, rootGetters }, payload) {
 actions.insert = async function ({ rootGetters }, payload) {
   debug('insert')
 
-  const res = await rootGetters.api({
-    method: 'POST',
-    url: '/_/note',
+  const res = await rootGetters.fetcher.createNote({
     data: payload
   })
   if (res.status !== 200) {
@@ -66,9 +62,10 @@ actions.insert = async function ({ rootGetters }, payload) {
 actions.update = async function ({ rootGetters }, payload) {
   debug('update')
   const { id } = payload
-  const res = await rootGetters.api({
-    method: 'PUT',
-    url: `/_/note/${id}`,
+  const res = await rootGetters.rpc('updateNote', {
+    params: {
+      id
+    },
     data: payload
   })
   if (res.status !== 200) {
@@ -80,9 +77,8 @@ actions.update = async function ({ rootGetters }, payload) {
 actions.delete = async function ({ rootGetters }, payload) {
   debug('delete')
   const { id } = payload
-  const res = await rootGetters.api({
-    method: 'DELETE',
-    url: `/_/note/${id}`
+  const res = await rootGetters.rpc('deleteNote', {
+    params: { id }
   })
   if (!/^2/.exec(res.status)) {
     throw new Error('request failed')
@@ -116,7 +112,7 @@ export function register ($store) {
   }
   const preserveState = !!$store.state[name]
   $store.registerModule(name, store, {
-    preserveState: preserveState
+    preserveState
   })
   return preserveState
 }
