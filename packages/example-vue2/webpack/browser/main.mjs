@@ -17,7 +17,7 @@ NProgress.start()
 export function createStoreOptions (state) {
   debug('createStore')
 
-  const rpc = createRpc()
+  const rpc = createRpc('/')
   return {
     state,
     actions: {},

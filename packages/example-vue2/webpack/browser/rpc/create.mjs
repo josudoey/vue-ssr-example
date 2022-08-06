@@ -63,8 +63,8 @@ const createAxios = function (baseURL) {
   })
 }
 
-const AxiosRpc = function () {
-  setAxios(this, createAxios('/'))
+const AxiosRpc = function (baseURL) {
+  setAxios(this, createAxios(baseURL))
 }
 
 for (const define of api) {
@@ -77,8 +77,8 @@ for (const define of api) {
   })
 }
 
-export const createRpc = function () {
-  const fetcher = new AxiosRpc()
+export const createRpc = function (baseURL) {
+  const fetcher = new AxiosRpc(baseURL)
   return function (name, payload) {
     return fetcher[name](payload)
   }
