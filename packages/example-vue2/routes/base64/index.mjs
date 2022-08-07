@@ -1,14 +1,11 @@
 import createDebug from 'debug'
 import * as render from './render.pug'
-import * as base64Store from './store.mjs'
+import { text, result, prefetch, encode, register, unregister } from './store.mjs'
 const debug = createDebug('app:view:base64')
 export default {
   ...render,
   computed: {
-    ...base64Store.mapState([
-      'text',
-      'result'
-    ])
+    text, result
   },
   data: function () {
     const { $route } = this
@@ -36,7 +33,7 @@ export default {
     }
   },
   methods: {
-    ...base64Store.mapActions(['encode'])
+    encode, prefetch
   },
   beforeRouteEnter (to, from, next) {
     debug(`beforeRouteEnter ${to.name}: `)
@@ -56,31 +53,27 @@ export default {
       }]
     }
   },
+  beforeCreate: function () {
+    register(this.$store)
+    debug(`beforeCreate ${this.$route.name}`)
+  },
   // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
   // Server-side only
   // This will be called by the server renderer automatically
   async serverPrefetch (vm) {
     debug('serverPrefetch')
-    base64Store.register(this.$store)
 
     // return the Promise from the action
     // so that the component waits before rendering
-    return this.encode(this.input)
-  },
-  beforeCreate: function () {
-    debug(`beforeCreate ${this.$route.name}`)
+    return this.prefetch(this.input)
   },
   created: function () {
     debug(`created ${this.$route.name}`)
   },
   beforeMount () {
     debug(`beforeMount ${this.$route.name}`)
-    const preserveState = base64Store.register(this.$store)
-    if (preserveState) {
-      return
-    }
 
-    this.encode(this.input)
+    this.prefetch(this.input)
   },
   mounted: function () {
     debug(`${this.$route.name}: mounted`)
@@ -99,6 +92,6 @@ export default {
   },
   destroyed: function () {
     debug(`destroyed ${this.$route.name}`)
-    base64Store.unregister(this.$store)
+    unregister(this.$store)
   }
 }

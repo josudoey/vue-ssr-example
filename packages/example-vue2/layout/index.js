@@ -10,7 +10,7 @@ export default {
     ...auth.mapState(['uid'])
   },
   components: {
-    sidenav: sidenav
+    sidenav
   },
   watch: {
     $route: function () {

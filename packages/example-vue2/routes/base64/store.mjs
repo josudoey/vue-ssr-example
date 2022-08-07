@@ -2,10 +2,6 @@ import Vuex from 'vuex'
 import createDebug from 'debug'
 import LRU from 'lru-cache'
 const name = 'base64'
-const mapActions = Vuex.mapActions.bind(null, name)
-const mapState = Vuex.mapState.bind(null, name)
-const mapMutations = Vuex.mapMutations.bind(null, name)
-const mapGetters = Vuex.mapGetters.bind(null, name)
 const debug = createDebug('app:store:base64')
 debug('import')
 
@@ -13,6 +9,7 @@ const module = {
   namespaced: true,
   state () {
     return {
+      prefetched: false,
       text: '',
       result: ''
     }
@@ -29,6 +26,13 @@ getters.cache = function () {
 }
 
 const actions = module.actions = {}
+actions.prefetch = async function ({ state, dispatch, commit, getters, rootGetters }, text) {
+  if (state.prefetched) {
+    return
+  }
+  await dispatch('encode', text)
+  commit('setPrefetched', true)
+}
 
 actions.encode = async function ({ state, commit, getters, rootGetters }, text) {
   debug('encode')
@@ -65,6 +69,11 @@ actions.encode = async function ({ state, commit, getters, rootGetters }, text) 
 
 const mutations = module.mutations = {}
 
+mutations.setPrefetched = function (state, {}) {
+  debug('setPrefetched')
+  state.prefetched = true
+}
+
 mutations.setResult = function (state, { text, result }) {
   debug('setResult')
   state.text = text
@@ -72,8 +81,12 @@ mutations.setResult = function (state, { text, result }) {
 }
 
 export default module
-export { name, mapActions, mapState, mapMutations, mapGetters }
-export { actions }
+
+export const { encode, prefetch } = Vuex.mapActions(name, ['encode', 'prefetch'])
+export const { text, result } = Vuex.mapState(name, [
+  'text',
+  'result'
+])
 
 const STORE_REGISTER_COUNT = Symbol('store#registerCount#' + name)
 
