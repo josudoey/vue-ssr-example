@@ -1,7 +1,10 @@
 import 'flatpickr/dist/flatpickr.css'
 import flatPickr from 'vue-flatpickr-component'
 
-import * as storeModule from '../store.mjs'
+import {
+  register, unregister,
+  insert, update
+} from '../store.mjs'
 import * as render from './render.pug'
 import createDebug from 'debug'
 import { MandarinTraditional as zhTW } from 'flatpickr/dist/l10n/zh-tw.js'
@@ -31,20 +34,24 @@ const componentConfig = {
       return this.id ? '更新' : '新增'
     }
   },
+  beforeCreate () { },
   created () {
     debug('created')
   },
   mounted () {
+    register(this.$store)
+  },
+  beforeDestroy: function () {
+    debug('beforeDestroy')
   },
   destroyed () {
     debug('destroyed')
+    unregister(this.$store)
     this.$el.remove()
   },
   methods: {
-    ...storeModule.mapActions({
-      insert: 'insert',
-      update: 'update'
-    }),
+    insert,
+    update,
     async save () {
       if (!this.id) {
         return this.insert({
@@ -80,8 +87,11 @@ const componentConfig = {
       this.$refs.modal.hide()
       this.$emit('ok', bvModalEvt, this)
     },
-    shown () {
+    onShown () {
 
+    },
+    onHidden () {
+      this.$destroy()
     }
   }
 }

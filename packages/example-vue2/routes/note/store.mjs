@@ -1,28 +1,54 @@
 import Vuex from 'vuex'
 import createDebug from 'debug'
 const name = 'note'
-const mapActions = Vuex.mapActions.bind(null, name)
-const mapState = Vuex.mapState.bind(null, name)
-const mapMutations = Vuex.mapMutations.bind(null, name)
-const mapGetters = Vuex.mapGetters.bind(null, name)
 const debug = createDebug('app:store:note')
 debug('import')
 
+export const { start, skip, total, limit, items, currentPage } = Vuex.mapState(name, [
+  'currentPage',
+  'start',
+  'skip',
+  'total',
+  'limit',
+  'items'
+])
+
+export const { prefetch, insert, update, list, remove } = Vuex.mapActions(name, [
+  'prefetch',
+  'insert',
+  'update',
+  'list',
+  'remove'
+])
+
+export const { setListParams } = Vuex.mapMutations(name, [
+  'setListParams'
+])
+
 export const state = () => ({
+  prefetched: false,
   q: '',
+  currentPage: 1,
   start: 0,
   skip: 0,
-  limit: 25,
+  limit: 5,
   total: 0,
   items: []
 })
 
-export const store = {
+export const module = {
   namespaced: true,
   state
 }
 
-const actions = store.actions = {}
+const actions = module.actions = {}
+actions.prefetch = async function ({ state, dispatch, commit, rootGetters }, payload) {
+  if (state.prefetched) {
+    return
+  }
+  dispatch('list', payload)
+  state.prefetched = true
+}
 actions.list = async function ({ commit, rootGetters }, payload) {
   debug('list')
   const { q, skip, limit } = payload
@@ -50,7 +76,7 @@ actions.list = async function ({ commit, rootGetters }, payload) {
 actions.insert = async function ({ rootGetters }, payload) {
   debug('insert')
 
-  const res = await rootGetters.fetcher.createNote({
+  const res = await rootGetters.rpc('createNote', {
     data: payload
   })
   if (res.status !== 200) {
@@ -74,8 +100,8 @@ actions.update = async function ({ rootGetters }, payload) {
   return res.data
 }
 
-actions.delete = async function ({ rootGetters }, payload) {
-  debug('delete')
+actions.remove = async function ({ rootGetters }, payload) {
+  debug('remove')
   const { id } = payload
   const res = await rootGetters.rpc('deleteNote', {
     params: { id }
@@ -86,12 +112,13 @@ actions.delete = async function ({ rootGetters }, payload) {
   return res.data
 }
 
-const mutations = store.mutations = {}
+const mutations = module.mutations = {}
 
 mutations.setList = function (state, { start, limit, total, items }) {
   debug('setList')
+  const currentPage = (start / limit) + 1
   Object.assign(state, {
-    start, limit, total, items
+    start, limit, total, items, currentPage
   })
 }
 
@@ -102,26 +129,30 @@ mutations.setListParams = function (state, { q, skip, limit }) {
   })
 }
 
-export default store
-export { name, mapActions, mapState, mapMutations, mapGetters }
-export { actions }
+const STORE_REGISTER_COUNT = Symbol('store#registerCount#' + name)
+
+// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
-  debug('register')
   if ($store.hasModule(name)) {
+    $store[STORE_REGISTER_COUNT]++
     return true
   }
+  $store[STORE_REGISTER_COUNT] = 1
   const preserveState = !!$store.state[name]
-  $store.registerModule(name, store, {
+  $store.registerModule(name, module, {
     preserveState
   })
   return preserveState
 }
 
-// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function unregister ($store) {
-  debug('unregister')
   if (!$store.hasModule(name)) {
     return
   }
-  $store.unregisterModule(name)
+
+  $store[STORE_REGISTER_COUNT]--
+  if ($store[STORE_REGISTER_COUNT] > 0) {
+    return
+  }
+  return $store.unregisterModule(name, module)
 }

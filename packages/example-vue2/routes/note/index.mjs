@@ -1,41 +1,47 @@
-import * as storeModule from './store.mjs'
 import * as render from './render.pug'
 import createDebug from 'debug'
 import { show as modalEditorShow } from './modal-editor/index.mjs'
-
+import {
+  register, unregister,
+  prefetch, start, skip, total, limit, items, currentPage,
+  list, remove, setListParams
+} from './store.mjs'
 const debug = createDebug('app:view:note')
 export default {
   ...render,
+  data () {
+    return {
+      keyword: this.$route.query.q || ''
+    }
+  },
+  provide () {
+    debug('provide')
+  },
   watch: {},
   computed: {
-    ...storeModule.mapState([
-      'start',
-      'skip',
-      'total',
-      'limit',
-      'items'
-    ]),
+    currentPage,
+    start,
+    skip,
+    total,
+    limit,
+    items,
     count () {
       return this.items.length
     }
   },
   methods: {
-    ...storeModule.mapActions({
-      list: 'list',
-      delete: 'delete'
-    }),
-    ...storeModule.mapMutations({
-      setListParams: 'setListParams'
-    }),
+    prefetch,
+    list,
+    remove,
+    setListParams,
     async fetch () {
       debug('fetch')
       const { keyword, skip, limit } = this
       await this.list({
         q: keyword,
-        skip: skip,
-        limit: limit
+        skip: parseInt(skip),
+        limit: parseInt(limit)
       })
-      this.currentPage = parseInt(this.start / this.limit) + 1
     },
     async showCreateModal () {
       debug('showCreateModal')
@@ -53,9 +59,9 @@ export default {
         self.fetch()
       })
     },
-    async remove (item) {
+    async handleRemove (item) {
       try {
-        await this.delete({ id: item.id })
+        await this.remove({ id: item.id })
         this.$bvToast.toast(`已刪除 [${item.id}]`, {
           title: '刪除成功',
           autoHideDelay: 5000,
@@ -82,11 +88,9 @@ export default {
         params,
         query: {
           ...query,
-          ...{
-            q: keyword,
-            skip,
-            limit
-          }
+          q: keyword,
+          skip,
+          limit
         }
       }
 
@@ -100,8 +104,8 @@ export default {
       const skip = limit * (page - 1)
       this.setListParams({
         q: keyword,
-        skip: skip,
-        limit: limit
+        skip,
+        limit
       })
       this.changeRoute()
     }
@@ -112,36 +116,30 @@ export default {
       debug('beforeRouteEnter done')
     })
   },
-  data () {
-    return {
-      keyword: '' || this.$route.query.q,
-      currentPage: 1
-    }
-  },
-  provide () {
-    debug('provide')
-  },
-  async serverPrefetch (vm) {
-    debug('serverPrefetch')
-    storeModule.register(vm.$store)
-    const { q, skip, limit } = vm.$route.query
-    await vm.list({
-      q: q || '',
-      skip: parseInt(skip) || 0,
-      limit: parseInt(limit) || 5
-    })
-    this.currentPage = parseInt(this.start / this.limit) + 1
+  beforeCreate () {
+    debug('beforeCreate')
+    register(this.$store)
   },
   async created () {
     debug('created')
   },
-  beforeMount () {
+  async serverPrefetch (vm) {
+    debug('serverPrefetch')
+    const { keyword, skip, limit } = this
+    await this.prefetch({
+      q: keyword,
+      skip,
+      limit
+    })
+  },
+  async beforeMount () {
     debug('beforeMount')
-    const preserveState = storeModule.register(this.$store)
-    if (preserveState) {
-      return
-    }
-    this.fetch()
+    const { keyword, skip, limit } = this
+    await this.prefetch({
+      q: keyword,
+      skip,
+      limit
+    })
   },
   mounted () {
     debug('mounted')
@@ -153,8 +151,8 @@ export default {
       debug('beforeRouteUpdate done')
     })
   },
-  destroyed: function () {
+  beforeDestroy: function () {
     debug(`${this.$route.name}: destroyed`)
-    storeModule.unregister(this.$store)
+    unregister(this.$store)
   }
 }

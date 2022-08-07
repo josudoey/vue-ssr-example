@@ -3,7 +3,7 @@ mixin body
     flat-pickr.form-control(v-model="date" :config="config" placeholder="日期" name="date")
     b-form-input(:inline="true" type="text" v-model="text" placeholder="記事文字")
 
-b-modal(ref="modal" @ok="ok" size="lg" @shown="shown"  @hidden="$nextTick($destroy)" centered)
+b-modal(ref="modal" @ok="ok" size="lg" @shown="onShown" @hidden="onHidden" centered)
   template(v-slot:modal-title) {{actionName}} {{id}}
   template(v-slot:modal-footer)
     .btn.btn-secondary(@click="$refs.modal.hide") 取消

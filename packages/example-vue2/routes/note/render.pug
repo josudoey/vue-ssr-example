@@ -1,6 +1,6 @@
 .contaner
   .float-right
-      b-pagination(v-if="total" align="right" size="sm" :total-rows="total" v-model="currentPage" :per-page="limit" @change="changePage")
+      b-pagination(v-if="total" align="right" size="sm" :total-rows="total" :value="currentPage" :per-page="limit" @change="changePage")
       span(v-if="total") Displaying {{skip+1}} to {{skip+count}} of {{total}} items
       span(v-else) Displaying 0 items
   form.form-inline(@submit.prevent='setListParams({q:keyword,skip:0,limit:limit});changeRoute()')
@@ -19,5 +19,5 @@
       .btn.btn-sm.btn-primary(@click="showCreateModal") 新增
     template(v-slot:cell(action)="data")
       .btn.btn-sm.btn-secondary(@click="showUpdateModal(data.item)") 更新
-      .btn.btn-sm.btn-danger(@click="remove(data.item)") 刪除
+      .btn.btn-sm.btn-danger(@click="handleRemove(data.item)") 刪除
     template(v-slot:cell(text)="data") {{data.value}} 
