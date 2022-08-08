@@ -1,6 +1,5 @@
 import * as render from './render.pug'
 import layout from '../layout/index.js'
-import * as auth from '../outlet/auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:outlet')
 export default {
@@ -35,12 +34,7 @@ export default {
   },
   provide () {
     debug('provide')
-    return {
-      ...auth.mapActions({
-        authSignIn: 'signIn'
-      }),
-      auth: this.auth
-    }
+    return { }
   },
   beforeMount () {
     debug('beforeMount')

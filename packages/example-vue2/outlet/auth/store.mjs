@@ -1,11 +1,6 @@
 import Vuex from 'vuex'
 import createDebug from 'debug'
 const name = 'auth'
-const mapActions = Vuex.mapActions.bind(null, name)
-const mapState = Vuex.mapState.bind(null, name)
-const mapMutations = Vuex.mapMutations.bind(null, name)
-const mapGetters = Vuex.mapGetters.bind(null, name)
-export { name, mapActions, mapState, mapMutations, mapGetters }
 const debug = createDebug('app:outlet:auth')
 
 export const state = () => ({
@@ -17,6 +12,9 @@ const module = {
   namespaced: true,
   state
 }
+
+export const { uid } = Vuex.mapState(name, ['uid'])
+export const { getState, signIn } = Vuex.mapActions(name, ['signIn', 'getState'])
 
 export const actions = module.actions = {}
 actions.getState = async function ({ commit, rootGetters }) {

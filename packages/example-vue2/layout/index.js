@@ -1,13 +1,13 @@
 import './style.css'
 import * as render from './render.pug'
 import sidenav from './sidenav/index.mjs'
-import * as auth from '../outlet/auth/store.mjs'
+import { uid, signIn } from '../outlet/auth/store.mjs'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {
   ...render,
   computed: {
-    ...auth.mapState(['uid'])
+    uid
   },
   components: {
     sidenav
@@ -18,9 +18,7 @@ export default {
     }
   },
   methods: {
-    ...auth.mapActions({
-      authSignIn: 'signIn'
-    }),
+    signIn,
     toggleSidenav () {
       this.$refs.sidenav.toggle()
     }
@@ -37,6 +35,7 @@ export default {
   provide () {
     debug('provide')
     return {
+      authSignIn: this.signIn,
       auth: this.auth,
       toggleSidenav: this.toggleSidenav
     }
