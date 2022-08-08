@@ -151,7 +151,7 @@ export default {
       debug('beforeRouteUpdate done')
     })
   },
-  beforeDestroy: function () {
+  beforeDestroy () {
     debug(`${this.$route.name}: destroyed`)
     unregister(this.$store)
   }

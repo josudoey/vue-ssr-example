@@ -92,12 +92,14 @@ const STORE_REGISTER_COUNT = Symbol('store#registerCount#' + name)
 
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
+  debug('register')
   if ($store.hasModule(name)) {
     $store[STORE_REGISTER_COUNT]++
     return true
   }
-  $store[STORE_REGISTER_COUNT] = 0
+  $store[STORE_REGISTER_COUNT] = 1
   const preserveState = !!$store.state[name]
+  debug('registerModule')
   $store.registerModule(name, module, {
     preserveState
   })
@@ -105,6 +107,7 @@ export function register ($store) {
 }
 
 export function unregister ($store) {
+  debug('unregister')
   if (!$store.hasModule(name)) {
     return
   }
@@ -112,5 +115,6 @@ export function unregister ($store) {
   if ($store[STORE_REGISTER_COUNT] > 0) {
     return
   }
+  debug('unregisterModule')
   return $store.unregisterModule(name, module)
 }

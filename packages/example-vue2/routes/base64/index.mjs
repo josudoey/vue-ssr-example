@@ -1,13 +1,15 @@
 import createDebug from 'debug'
 import * as render from './render.pug'
 import { text, result, prefetch, encode, register, unregister } from './store.mjs'
+
 const debug = createDebug('app:view:base64')
+
 export default {
   ...render,
   computed: {
     text, result
   },
-  data: function () {
+  data () {
     const { $route } = this
     const name = $route.name
     debug(`${name}: data`)
@@ -16,10 +18,10 @@ export default {
     }
   },
   watch: {
-    $route: async function (val, old) {
+    async $route (val, old) {
       debug(`${this.$route.name} watch.$route`)
     },
-    input: async function (val, old) {
+    async input  (val, old) {
       debug(`${this.$route.name} watch.input val: ${val} old: ${old}`)
       const $route = this.$route
       if ($route.query.v === val) {
@@ -35,8 +37,13 @@ export default {
   methods: {
     encode, prefetch
   },
-  beforeRouteEnter (to, from, next) {
-    debug(`beforeRouteEnter ${to.name}: `)
+  async prefetch (ctx) {
+    const { $store, $route } = ctx
+    register($store)
+    return prefetch.call(ctx, $route.query.v)
+  },
+  async beforeRouteEnter (to, from, next) {
+    debug(`beforeRouteEnter ${to.name}`)
     next(function (vm) {
       debug(`beforeRouteEnter next ${vm.$route.name}`)
     })
@@ -53,8 +60,7 @@ export default {
       }]
     }
   },
-  beforeCreate: function () {
-    register(this.$store)
+  beforeCreate () {
     debug(`beforeCreate ${this.$route.name}`)
   },
   // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
@@ -65,17 +71,16 @@ export default {
 
     // return the Promise from the action
     // so that the component waits before rendering
-    return this.prefetch(this.input)
+    // return this.prefetch(this.input)
   },
-  created: function () {
+  async created () {
     debug(`created ${this.$route.name}`)
   },
   beforeMount () {
     debug(`beforeMount ${this.$route.name}`)
-
     this.prefetch(this.input)
   },
-  mounted: function () {
+  mounted () {
     debug(`${this.$route.name}: mounted`)
   },
   beforeRouteUpdate (to, from, next) {
@@ -87,10 +92,10 @@ export default {
     debug(`beforeRouteLeave ${to.name}`)
     next()
   },
-  beforeDestroy: function () {
+  beforeDestroy () {
     debug(`beforeDestroy ${this.$route.name}`)
   },
-  destroyed: function () {
+  destroyed () {
     debug(`destroyed ${this.$route.name}`)
     unregister(this.$store)
   }

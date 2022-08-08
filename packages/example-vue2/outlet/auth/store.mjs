@@ -60,7 +60,7 @@ export function register ($store) {
     $store[STORE_REGISTER_COUNT]++
     return true
   }
-  $store[STORE_REGISTER_COUNT] = 0
+  $store[STORE_REGISTER_COUNT] = 1
   const preserveState = !!$store.state[name]
   $store.registerModule(name, module, {
     preserveState

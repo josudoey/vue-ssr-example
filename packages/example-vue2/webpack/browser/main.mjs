@@ -42,24 +42,20 @@ const main = function (state) {
 
   let nextHref
 
-  // https://ssr.vuejs.org/zh/guide/data.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96-client-data-fetching
-  vm.$router.onReady(() => {
-    debug('onReady vue-router')
-    vm.$mount('[data-server-rendered]', true)
-    NProgress.done()
-  })
-  vm.$router.beforeEach((to, from, next) => {
+  router.beforeEach((to, from, next) => {
     debug('beforeEach vue-router ')
     NProgress.start()
     nextHref = to.fullPath
+
     next()
   })
-  vm.$router.afterEach((to, from) => {
+
+  router.afterEach((to, from) => {
     debug('afterEach vue-router')
     NProgress.done()
   })
 
-  vm.$router.onError((err) => {
+  router.onError((err) => {
     if (!err.request) {
       window.location.reload()
       return
@@ -71,6 +67,12 @@ const main = function (state) {
     }
 
     window.location.href = nextHref
+  })
+
+  router.onReady(() => {
+    debug('onReady')
+    vm.$mount('[data-server-rendered]', true)
+    NProgress.done()
   })
   return vm
 }
