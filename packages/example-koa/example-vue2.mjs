@@ -52,9 +52,7 @@ export function createRoute (ssr) {
     })
 
     debug('renderToString')
-    const html = await renderer.renderToString(vm, {
-      state: ctx.state
-    })
+    const html = await renderer.renderToString(vm)
     debug('renderToString done')
 
     ctx.status = 200
