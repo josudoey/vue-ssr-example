@@ -11,7 +11,7 @@ const createRenderer = function (clientManifest) {
     clientManifest,
     inject: true,
     shouldPreload: (file, type) => {
-      // ref https://ssr.vuejs.org/api/#shouldpreload
+      // ref https://v2.ssr.vuejs.org/api/#shouldpreload
       return true
     },
     shouldPrefetch: (file, type) => {
@@ -22,7 +22,7 @@ const createRenderer = function (clientManifest) {
   const renderToString = function (vm) {
     return renderer.renderToString(vm, {
       rendered (ctx) {
-        // see https://ssr.vuejs.org/guide/data.html#final-state-injection
+        // see https://v2.ssr.vuejs.org/guide/data.html#final-state-injection
         // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
 
         // const meta = vm.$route.meta
