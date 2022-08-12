@@ -14,11 +14,11 @@ export default {
       disableSignIn: false
     }
   },
-  beforeMount: function () {
+  beforeMount () {
     debug('beforeMount')
     this.redirect()
   },
-  mounted: function () {
+  mounted () {
     const namespace = '/'
     const socket = this.socket = new SocketIo(namespace, {
       query: {}
@@ -36,10 +36,12 @@ export default {
     socket.on('disconnect', () => {
       console.log('socket disconnect') // disconnect
     })
+
+    this.$on('hook:destroyed', function () {
+      socket.disconnect()
+    })
   },
-  destroyed: function () {
-    this.socket.disconnect()
-  },
+  destroyed: function () {},
   methods: {
     redirect: function () {
       if (!this.auth.uid) {

@@ -9,14 +9,6 @@ export default {
   computed: {
     text, result
   },
-  data () {
-    const { $route } = this
-    const name = $route.name
-    debug(`${name}: data`)
-    return {
-      input: $route.query.v
-    }
-  },
   watch: {
     async $route (val, old) {
       debug(`${this.$route.name} watch.$route`)
@@ -37,8 +29,9 @@ export default {
   methods: {
     encode, prefetch
   },
-  async prefetch (ctx) {
+  async beforeRouteResolve (ctx) {
     const { $store, $route } = ctx
+    debug(`beforeRouteResolve ${$route.name}`)
     register($store)
     return prefetch.call(ctx, $route.query.v)
   },
@@ -48,20 +41,12 @@ export default {
       debug(`beforeRouteEnter next ${vm.$route.name}`)
     })
   },
-  provide () {
-    debug('provide')
-  },
-  metaInfo: function () {
-    debug('metaInfo')
-    return {
-      script: [{
-        innerHTML: 'console.log("base64: metaInfo script innerHTML");',
-        type: 'text/javascript'
-      }]
-    }
-  },
   beforeCreate () {
     debug(`beforeCreate ${this.$route.name}`)
+    const { $store } = this
+    this.$on('hook:destroyed', function () {
+      unregister($store)
+    })
   },
   // see https://ssr.vuejs.org/guide/data.html#logic-collocation-with-components
   // Server-side only
@@ -71,21 +56,39 @@ export default {
 
     // return the Promise from the action
     // so that the component waits before rendering
-    // return this.prefetch(this.input)
+  },
+  data () {
+    const { $route } = this
+    const name = $route.name
+    debug(`data ${name}`)
+    return {
+      input: $route.query.v
+    }
+  },
+  provide () {
+    debug('provide')
   },
   async created () {
     debug(`created ${this.$route.name}`)
   },
+  metaInfo: function () {
+    debug(`metaInfo ${this.$route.name}`)
+    return {
+      script: [{
+        innerHTML: `console.log("metaInfo script innerHTML ${this.$route.name}");`,
+        type: 'text/javascript'
+      }]
+    }
+  },
   beforeMount () {
     debug(`beforeMount ${this.$route.name}`)
-    this.prefetch(this.input)
   },
   mounted () {
-    debug(`${this.$route.name}: mounted`)
+    debug(`mounted ${this.$route.name}`)
   },
-  beforeRouteUpdate (to, from, next) {
-    debug(`${to.name} beforeRouteUpdate`)
-    this.encode(this.input)
+  async beforeRouteUpdate (to, from, next) {
+    debug(`beforeRouteUpdate ${to.name} `)
+    await this.encode(this.input)
     next()
   },
   beforeRouteLeave (to, from, next) {
@@ -97,6 +100,5 @@ export default {
   },
   destroyed () {
     debug(`destroyed ${this.$route.name}`)
-    unregister(this.$store)
   }
 }

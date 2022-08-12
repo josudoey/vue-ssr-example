@@ -12,6 +12,8 @@ export function createRouter ($store) {
     routes
   })
 
+  const PromiseEmptyResolve = Promise.resolve()
+
   // https://v2.ssr.vuejs.org/zh/guide/data.html#%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%95%B0%E6%8D%AE%E9%A2%84%E5%8F%96-client-data-fetching
   router.beforeResolve((to, from, next) => {
     debug('beforeResolve')
@@ -28,10 +30,10 @@ export function createRouter ($store) {
     }
 
     Promise.all(activated.map(function (c) {
-      if (c.prefetch) {
-        return c.prefetch({ $store, $route: to })
+      if (c.beforeRouteResolve) {
+        return c.beforeRouteResolve({ $store, $route: to })
       }
-      return Promise.resolve()
+      return PromiseEmptyResolve
     })).then(() => {
       next()
     }).catch(next)
