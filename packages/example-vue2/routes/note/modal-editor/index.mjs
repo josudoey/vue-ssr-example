@@ -10,7 +10,7 @@ import createDebug from 'debug'
 import { MandarinTraditional as zhTW } from 'flatpickr/dist/l10n/zh-tw.js'
 const debug = createDebug('app:view:note:modal-create')
 
-const componentConfig = {
+const options = {
   ...render,
   components: {
     flatPickr
@@ -39,15 +39,19 @@ const componentConfig = {
     debug('created')
   },
   mounted () {
-    register(this.$store)
+    const self = this
+    const { $store } = this
+    register($store)
+    this.$on('hook:destroyed', function () {
+      unregister($store)
+      self.$el.remove()
+    })
   },
   beforeDestroy: function () {
     debug('beforeDestroy')
   },
   destroyed () {
     debug('destroyed')
-    unregister(this.$store)
-    this.$el.remove()
   },
   methods: {
     insert,
@@ -99,7 +103,7 @@ const componentConfig = {
 export function show ($parent, defaultData) {
   // ref see https://github.com/bootstrap-vue/bootstrap-vue/blob/1d59417df6869e2b04c651f6caeed9474cf14a84/src/components/toast/helpers/bv-toast.js#L112-L140
   const Vue = $parent.$root.constructor
-  const Modal = Vue.extend(componentConfig)
+  const Modal = Vue.extend(options)
   const vm = new Modal({
     parent: $parent
   })
@@ -111,4 +115,5 @@ export function show ($parent, defaultData) {
   vm.$refs.modal.show()
   return vm
 }
-export default componentConfig
+
+export default options
