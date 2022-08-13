@@ -22,8 +22,9 @@ actions.getState = async function ({ commit, rootGetters }) {
   if (!/^2/.exec(res.status)) {
     return
   }
-  commit('setAuth', res.data || state())
-  return res.data
+  const auth = res.data || state()
+  commit('setAuth', auth)
+  return auth
 }
 
 actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
@@ -49,10 +50,10 @@ mutations.setAuth = function (state, payload) {
 module.getters = {}
 
 export default module
+
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 const STORE_REGISTER_COUNT = Symbol('store#module#' + name)
 
-// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 export function register ($store) {
   if ($store.hasModule(name)) {
     $store[STORE_REGISTER_COUNT]++
