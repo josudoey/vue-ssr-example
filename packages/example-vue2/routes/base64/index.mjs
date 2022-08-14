@@ -1,14 +1,11 @@
 import createDebug from 'debug'
 import * as render from './render.pug'
 import { text, result, prefetch, encode, register, unregister } from './store.mjs'
-
+import { mixin } from './mixin.mjs'
 const debug = createDebug('app:view:base64')
 
 export default {
   ...render,
-  computed: {
-    text, result
-  },
   watch: {
     async $route (val, old) {
       debug(`${this.$route.name} watch.$route`)
@@ -26,9 +23,13 @@ export default {
       })
     }
   },
+  computed: {
+    text, result
+  },
   methods: {
     encode, prefetch
   },
+  mixins: [mixin],
   async beforeRouteResolve (ctx) {
     const { $store, $route } = ctx
     debug(`beforeRouteResolve ${$route.name}`)
@@ -44,6 +45,7 @@ export default {
   beforeCreate () {
     debug(`beforeCreate ${this.$route.name}`)
     const { $store } = this
+    register($store)
     this.$on('hook:destroyed', function () {
       unregister($store)
     })
@@ -61,12 +63,13 @@ export default {
     const { $route } = this
     const name = $route.name
     debug(`data ${name}`)
+
     return {
       input: $route.query.v
     }
   },
   provide () {
-    debug('provide')
+    debug(`provide ${this.$route.name}`)
   },
   async created () {
     debug(`created ${this.$route.name}`)
@@ -93,6 +96,7 @@ export default {
   },
   beforeRouteLeave (to, from, next) {
     debug(`beforeRouteLeave ${to.name}`)
+    unregister(this.$store)
     next()
   },
   beforeDestroy () {
