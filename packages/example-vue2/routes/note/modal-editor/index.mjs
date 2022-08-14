@@ -1,5 +1,6 @@
 import 'flatpickr/dist/flatpickr.css'
 import flatPickr from 'vue-flatpickr-component'
+import { cloneDeep } from 'lodash'
 
 import {
   register, unregister,
@@ -39,12 +40,10 @@ const options = {
     debug('created')
   },
   mounted () {
-    const self = this
     const { $store } = this
     register($store)
     this.$on('hook:destroyed', function () {
       unregister($store)
-      self.$el.remove()
     })
   },
   beforeDestroy: function () {
@@ -100,18 +99,21 @@ const options = {
   }
 }
 
-export function show ($parent, defaultData) {
+export function show ($parent, $data) {
   // ref see https://github.com/bootstrap-vue/bootstrap-vue/blob/1d59417df6869e2b04c651f6caeed9474cf14a84/src/components/toast/helpers/bv-toast.js#L112-L140
   const Vue = $parent.$root.constructor
   const Modal = Vue.extend(options)
   const vm = new Modal({
     parent: $parent
   })
-  Object.assign(vm, defaultData)
 
+  Object.assign(vm, cloneDeep($data))
   const div = document.createElement('div')
   document.body.appendChild(div)
   vm.$mount(div)
+  vm.$on('hook:destroyed', function () {
+    vm.$el.remove()
+  })
   vm.$refs.modal.show()
   return vm
 }
