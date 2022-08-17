@@ -26,7 +26,7 @@ const createRenderer = function (clientManifest) {
         // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
 
         // const meta = vm.$route.meta
-        if(!vm.$store){
+        if (!vm.$store) {
           return
         }
         const initalState = pack(vm.$store.state).toString('base64')

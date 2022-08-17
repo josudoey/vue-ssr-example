@@ -31,10 +31,13 @@ export default {
   },
   mixins: [mixin],
   async beforeRouteResolve (ctx) {
-    const { $store, $route } = ctx
+    const { $store, $route, $redirect } = ctx
     debug(`beforeRouteResolve ${$route.name}`)
     register($store)
-    return prefetch.call(ctx, $route.query.v)
+    await prefetch.call(ctx, $route.query.v)
+    if ($route.query.v === 'home') {
+      return $redirect({ name: 'home' })
+    }
   },
   async beforeRouteEnter (to, from, next) {
     debug(`beforeRouteEnter ${to.name}`)

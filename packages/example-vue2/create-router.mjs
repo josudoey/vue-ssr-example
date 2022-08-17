@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import routes from './routes/index.mjs'
 import createDebug from 'debug'
 import * as authStoreModule from './outlet/auth/store.mjs'
+import { once } from 'lodash'
 const debug = createDebug('app:create-router')
 Vue.use(VueRouter)
 
@@ -29,14 +30,16 @@ export function createRouter ($store) {
       return next()
     }
 
+    const $route = to
+    const $redirect = once(next)
     Promise.all(activated.map(function (c) {
       if (c.beforeRouteResolve) {
-        return c.beforeRouteResolve({ $store, $route: to })
+        return c.beforeRouteResolve({ $store, $route, $redirect })
       }
       return PromiseEmptyResolve
     })).then(() => {
-      next()
-    }).catch(next)
+      $redirect()
+    }).catch($redirect)
   })
 
   router.beforeEach(async (to, from, next) => {
