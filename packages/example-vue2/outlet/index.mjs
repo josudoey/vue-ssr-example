@@ -10,11 +10,15 @@ export default {
   metaInfo () {
     debug('metaInfo')
     return {
+      __dangerouslyDisableSanitizersByTagID: {
+        outletMetaInfo: ['innerHTML']
+      },
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no' }
       ],
       script: [{
+        vmid: 'outletMetaInfo',
         innerHTML: 'console.log("outlet metaInfo script innerHTML");',
         type: 'text/javascript'
       }],

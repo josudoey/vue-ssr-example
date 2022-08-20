@@ -30,16 +30,15 @@ export function createRouter ($store) {
       return next()
     }
 
-    const $route = to
-    const $redirect = once(next)
+    const onceNext = once(next)
     Promise.all(activated.map(function (c) {
       if (c.beforeRouteResolve) {
-        return c.beforeRouteResolve({ $store, $route, $redirect })
+        return c.beforeRouteResolve.call({ $store }, to, from, onceNext)
       }
       return PromiseEmptyResolve
     })).then(() => {
-      $redirect()
-    }).catch($redirect)
+      onceNext()
+    }).catch(onceNext)
   })
 
   router.beforeEach(async (to, from, next) => {

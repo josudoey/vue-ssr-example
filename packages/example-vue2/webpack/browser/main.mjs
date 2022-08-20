@@ -5,7 +5,6 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
 import { createApp, createStore, createRouter } from '../../index.mjs'
-import VuexRouterSync from 'vuex-router-sync'
 
 import createDebug from 'debug'
 import state from './inital-state.mjs'
@@ -34,8 +33,8 @@ const main = function (state) {
   const storeOptions = createStoreOptions(state)
   const store = createStore(storeOptions)
   const router = createRouter(store)
-  VuexRouterSync.sync(store, router)
-  const vm = window.vm = createApp({
+
+  const vm = createApp({
     store,
     router
   })
@@ -74,6 +73,10 @@ const main = function (state) {
     vm.$mount('[data-server-rendered]', true)
     NProgress.done()
   })
+
+  if (vm.$root.constructor.config.devtools) {
+    window.vm = vm
+  }
   return vm
 }
 

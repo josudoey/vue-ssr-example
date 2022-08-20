@@ -30,7 +30,6 @@ const createRenderer = function (clientManifest) {
 
         // see https://v2.ssr.vuejs.org/guide/data.html#final-state-injection
         // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
-
         const initalState = pack(vm.$store.state).toString('base64')
         ctx.state = initalState
       }

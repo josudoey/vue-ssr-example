@@ -24,19 +24,20 @@ export default {
     }
   },
   computed: {
-    text, result
+    text,
+    result
   },
   methods: {
     encode, prefetch
   },
   mixins: [mixin],
-  async beforeRouteResolve (ctx) {
-    const { $store, $route, $redirect } = ctx
-    debug(`beforeRouteResolve ${$route.name}`)
+  async beforeRouteResolve (to, from, next) {
+    const { $store } = this
+    debug(`beforeRouteResolve ${to.name}`)
     register($store)
-    await prefetch.call(ctx, $route.query.v)
-    if ($route.query.v === 'home') {
-      return $redirect({ name: 'home' })
+    await prefetch.call(this, to.query.v)
+    if (to.query.v === 'home') {
+      return next({ name: 'home' })
     }
   },
   async beforeRouteEnter (to, from, next) {
@@ -80,10 +81,13 @@ export default {
   metaInfo () {
     debug(`metaInfo ${this.$route.name}`)
     return {
+      __dangerouslyDisableSanitizersByTagID: {
+        base64MetaInfo: ['innerHTML']
+      },
       title: 'Base64 編碼',
-      // title: `${this.$route.name}`,
       script: [{
-        innerHTML: `console.log("metaInfo script innerHTML ${this.$route.name}");`,
+        vmid: 'base64MetaInfo',
+        innerHTML: `console.log("base64 metaInfo script innerHTML ${this.$route.name}");`,
         type: 'text/javascript'
       }]
     }
@@ -96,7 +100,10 @@ export default {
   },
   async beforeRouteUpdate (to, from, next) {
     debug(`beforeRouteUpdate ${to.name} `)
-    await this.encode(this.input)
+    const { query } = to
+    const { v } = query
+    Object.assign(this, { input: v })
+    await this.encode(v)
     next()
   },
   beforeRouteLeave (to, from, next) {
