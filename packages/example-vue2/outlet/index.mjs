@@ -19,17 +19,15 @@ export default {
         type: 'text/javascript'
       }],
       title: '預設標題',
-      titleTemplate: '%s',
       afterNavigation (metaInfo) {
         debug('metaInfo afterNavigation', metaInfo)
-      },
-      ...this.$route.meta
+      }
     }
   },
   beforeCreate () {
     debug('beforeCreate')
   },
-  data: function () {
+  data () {
     return {}
   },
   provide () {

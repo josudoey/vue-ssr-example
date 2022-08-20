@@ -12,7 +12,7 @@ div
       slot(name="navbar-toggler")
         button.navbar-toggler.px-1.mx-1(type='button' @click="$refs.sidenav.toggle()")
           span.navbar-toggler-icon
-      span.navbar-brand(slot="title") {{$route.meta.title}}
+      span.navbar-brand(slot="brand-title") {{$route.meta.brandTitle}}
       ul.navbar-nav.ml-auto(v-if="auth.uid")
         li.nav-item
           b-dropdown(right size="sm" variant="link")

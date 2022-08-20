@@ -7,7 +7,7 @@ const createRenderer = function (clientManifest) {
     cache: new LRU({
       max: 10000
     }),
-    template: '<!DOCTYPE html><html><head></head><body><!--vue-ssr-outlet--></body></html>',
+    template: '<!DOCTYPE html><html><head>{{{meta}}}</head><body><!--vue-ssr-outlet--></body></html>',
     clientManifest,
     inject: true,
     shouldPreload: (file, type) => {
@@ -22,13 +22,15 @@ const createRenderer = function (clientManifest) {
   const renderToString = function (vm) {
     return renderer.renderToString(vm, {
       rendered (ctx) {
+        // see https://vue-meta.nuxtjs.org/guide/ssr.html#inject-metadata-into-page-string
+        const {
+          title, meta, script
+        } = vm.$meta().inject()
+        ctx.meta = `${meta.text()}${title.text()}${script.text()}`
+
         // see https://v2.ssr.vuejs.org/guide/data.html#final-state-injection
         // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
 
-        // const meta = vm.$route.meta
-        if (!vm.$store) {
-          return
-        }
         const initalState = pack(vm.$store.state).toString('base64')
         ctx.state = initalState
       }

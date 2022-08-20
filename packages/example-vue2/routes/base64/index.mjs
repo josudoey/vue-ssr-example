@@ -77,9 +77,11 @@ export default {
   async created () {
     debug(`created ${this.$route.name}`)
   },
-  metaInfo: function () {
+  metaInfo () {
     debug(`metaInfo ${this.$route.name}`)
     return {
+      title: 'Base64 編碼',
+      // title: `${this.$route.name}`,
       script: [{
         innerHTML: `console.log("metaInfo script innerHTML ${this.$route.name}");`,
         type: 'text/javascript'
