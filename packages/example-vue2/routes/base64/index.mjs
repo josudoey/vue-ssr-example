@@ -37,7 +37,8 @@ export default {
     register($store)
     await prefetch.call(this, to.query.v)
     if (to.query.v === 'home') {
-      return next({ name: 'home' })
+      next({ name: 'home' })
+      unregister($store)
     }
   },
   async beforeRouteEnter (to, from, next) {
