@@ -29,8 +29,10 @@ export function createRoute (ssr) {
     $store.replaceState(ctx.state)
     const $router = createRouter($store)
 
+    debug(`router push ${ctx.url}`)
     const errOrRoute = await $router.push(ctx.url).catch((err) => err)
     await new Promise((resolve) => {
+      debug('router onReady')
       return $router.onReady(resolve)
     })
 

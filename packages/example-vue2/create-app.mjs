@@ -6,6 +6,9 @@ import { Portal, PortalTarget } from 'portal-vue'
 import Vuex from 'vuex'
 import mixin from './mixin/index.mjs'
 import outlet from './outlet/index.mjs'
+import createDebug from 'debug'
+const debug = createDebug('app:create-app')
+
 Vue.use(Vuex)
 Vue.use(VueRouter)
 Vue.use(VueMeta, { refreshOnceOnNavigation: false })
@@ -15,6 +18,7 @@ Vue.component('Portal', Portal)
 Vue.component('PortalTarget', PortalTarget)
 
 export function createApp ({ store, router }) {
+  debug('createApp')
   const vm = new Vue({
     store,
     router,
