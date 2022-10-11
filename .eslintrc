@@ -1,7 +1,8 @@
 {
-  "extends": "standard",
+  "extends": "eslint-config-standard-with-typescript",
   "parserOptions": {
-    "parser": "@babel/eslint-parser",
-    "ecmaVersion": 2022
+    "project": [
+      "./tsconfig.eslint.json"
+    ]
   }
 }
