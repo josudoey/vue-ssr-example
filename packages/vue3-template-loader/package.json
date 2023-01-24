@@ -3,14 +3,10 @@
   "name": "~vue3-template-loader",
   "version": "0.0.0",
   "main": "index.js",
-  "peerDependencies": {
-    "vue": "^3.1.2",
-    "vue-loader": "^16.8.3",
-    "webpack": "^5.52.1"
-  },
-  "dependencies": {
-    "vue": "^3.1.2",
-    "vue-loader": "^16.8.3",
-    "webpack": "^5.52.1"
+  "peerDependencies": {},
+  "devDependencies": {
+    "vue-loader": "^17.0.1",
+    "vue": "^3.2.45",
+    "webpack": "^5.75.0"
   }
 }
