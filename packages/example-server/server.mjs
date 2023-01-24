@@ -3,7 +3,7 @@ import {
   ExampleVue3, ExampleVue2,
   createApp, createRouter, createBrowserStatic,
   createSocketIo, extendKoaIo, getKoaSession
-} from '~example-koa/index.mjs'
+} from './koa/app.mjs'
 import createExampleVue2SSR from './example-vue2-ssr.mjs'
 import createRxampleVue2Manifest from './example-vue2-manifest.mjs'
 import createExampleVue3SSR from './example-vue3-ssr.mjs'
