@@ -9,7 +9,7 @@
   "dependencies": {},
   "devDependencies": {
     "~webpack5": "workspace:*",
-    "~example-vue2-build-browser": "workspace:*",
-    "~example-vue2-build-ssr": "workspace:*"
+    "~example-vue2": "workspace:*",
+    "~vue2-template-loader": "workspace:*"
   }
 }

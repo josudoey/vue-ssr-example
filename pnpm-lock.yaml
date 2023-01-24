@@ -153,12 +153,12 @@ importers:
 
   packages/example-vue2-build:
     specifiers:
-      ~example-vue2-build-browser: workspace:*
-      ~example-vue2-build-ssr: workspace:*
+      ~example-vue2: workspace:*
+      ~vue2-template-loader: workspace:*
       ~webpack5: workspace:*
     devDependencies:
-      ~example-vue2-build-browser: link:../example-vue2-build-browser
-      ~example-vue2-build-ssr: link:../example-vue2-build-ssr
+      ~example-vue2: link:../example-vue2
+      ~vue2-template-loader: link:../vue2-template-loader
       ~webpack5: link:../webpack5
 
   packages/example-vue2-build-browser:
@@ -205,32 +205,10 @@ importers:
 
   packages/example-vue3-build:
     specifiers:
-      ~example-vue3-build-browser: workspace:*
-      ~example-vue3-build-ssr: workspace:*
+      ~example-vue3: workspace:*
       ~vue3-template-loader: workspace:*
       ~webpack5: workspace:*
     dependencies:
-      ~example-vue3-build-browser: link:../example-vue3-build-browser
-      ~example-vue3-build-ssr: link:../example-vue3-build-ssr
-      ~vue3-template-loader: link:../vue3-template-loader
-      ~webpack5: link:../webpack5
-
-  packages/example-vue3-build-browser:
-    specifiers:
-      ~example-vue3: workspace:*
-      ~vue3-template-loader: workspace:*
-      ~webpack5: workspace:*
-    devDependencies:
-      ~example-vue3: link:../example-vue3
-      ~vue3-template-loader: link:../vue3-template-loader
-      ~webpack5: link:../webpack5
-
-  packages/example-vue3-build-ssr:
-    specifiers:
-      ~example-vue3: workspace:*
-      ~vue3-template-loader: workspace:*
-      ~webpack5: workspace:*
-    devDependencies:
       ~example-vue3: link:../example-vue3
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5

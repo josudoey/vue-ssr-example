@@ -1,6 +1,6 @@
 import webpack from '~webpack5'
-import browserConfig from '~example-vue3-build-browser/webpack.config.cjs'
-import ssrConfig from '~example-vue3-build-ssr/webpack.config.cjs'
+import browserConfig from './webpack/browser/config.cjs'
+import ssrConfig from './webpack/ssr/config.cjs'
 
 export default async function (env) {
   process.on('uncaughtException', function (err) {

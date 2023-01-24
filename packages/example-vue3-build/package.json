@@ -8,7 +8,6 @@
   "dependencies": {
     "~webpack5": "workspace:*",
     "~vue3-template-loader": "workspace:*",
-    "~example-vue3-build-ssr": "workspace:*",
-    "~example-vue3-build-browser": "workspace:*"
+    "~example-vue3": "workspace:*"
   }
 }
