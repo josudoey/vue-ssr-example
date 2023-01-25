@@ -6,7 +6,6 @@ importers:
     specifiers:
       '@babel/core': ^7.17.8
       '@babel/eslint-parser': ^7.17.0
-      '@babel/plugin-syntax-top-level-await': ^7.14.5
       '@tsconfig/node16': ^1.0.3
       '@types/node': ^18.7.21
       '@typescript-eslint/eslint-plugin': ^5.0.0
@@ -26,7 +25,6 @@ importers:
     devDependencies:
       '@babel/core': 7.17.8
       '@babel/eslint-parser': 7.17.0_@babel+core@7.17.8+eslint@8.25.0
-      '@babel/plugin-syntax-top-level-await': 7.14.5_@babel+core@7.17.8
       '@tsconfig/node16': 1.0.3
       '@types/node': 18.8.4
       '@typescript-eslint/eslint-plugin': 5.40.0_d765299b94a6a4ae3d9fb8b19a3abfbc
@@ -360,11 +358,6 @@ packages:
       - supports-color
     dev: true
 
-  /@babel/helper-plugin-utils/7.16.7:
-    resolution: {integrity: sha512-Qg3Nk7ZxpgMrsox6HreY1ZNKdBq7K72tDSliA6dCl5f007jR4ne8iD5UzuNnCJH2xBf2BEEVGr+/OL6Gdp7RxA==}
-    engines: {node: '>=6.9.0'}
-    dev: true
-
   /@babel/helper-simple-access/7.17.7:
     resolution: {integrity: sha512-txyMCGroZ96i+Pxr3Je3lzEJjqwaRC9buMUgtomcrLe5Nd0+fk1h0LLA+ixUF5OW7AhHuQ7Es1WcQJZmZsz2XA==}
     engines: {node: '>=6.9.0'}
@@ -412,16 +405,6 @@ packages:
     resolution: {integrity: sha512-BoHhDJrJXqcg+ZL16Xv39H9n+AqJ4pcDrQBGZN+wHxIysrLZ3/ECwCBUch/1zUNhnsXULcONU3Ei5Hmkfk6kiQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
-
-  /@babel/plugin-syntax-top-level-await/7.14.5_@babel+core@7.17.8:
-    resolution: {integrity: sha512-hx++upLv5U1rgYfwe1xBQUhRmU41NEvpUvrp8jkrSCdvGSnM5/qdRMtylJ6PG5OFkBaHkbTAKTnd3/YyESRHFw==}
-    engines: {node: '>=6.9.0'}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.17.8
-      '@babel/helper-plugin-utils': 7.16.7
-    dev: true
 
   /@babel/runtime/7.17.0:
     resolution: {integrity: sha512-etcO/ohMNaNA2UBdaXBBSX/3aEzFMRrVfaPv8Ptc0k+cWpWW0QFiGZ2XnVqQZI1Cf734LbPGmqBKWESfW4x/dQ==}
@@ -5567,7 +5550,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@5.0.1
     dev: true
 
   /terser/5.10.0:
