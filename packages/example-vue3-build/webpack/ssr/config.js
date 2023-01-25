@@ -1,33 +1,28 @@
-const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
-const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
-const TerserPlugin = require('~webpack5/plugins/terser')
-const { WebpackManifestPlugin } = require('~webpack5/plugins/manifest')
-const ManifestHashPlugin = require('~webpack5/plugins/manifest-hash')
-const webpack = require('~webpack5')
+import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
+import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
+import TerserPlugin from '~webpack5/plugins/terser.js'
+import webpack from '~webpack5'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-module.exports = function (env) {
-  const { outputPath, publicPath, manifestPath } = env
+export default function (env) {
+  const { outputPath } = env
   return {
     devtool: 'source-map',
-    target: 'web',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    entry: require.resolve('~example-vue3/webpack/browser/entry.mjs'),
-    resolve: {
-      alias: {
-        vue$: 'vue/dist/vue.esm-bundler.js'
-      }
-    },
+    target: 'node',
+    externals: [],
+    entry: require.resolve('~example-vue3/webpack/ssr/entry.mjs'),
+    externalsType: 'node-commonjs',
     output: {
       clean: true,
-      filename: '[contenthash].js',
-      chunkFilename: '[contenthash].js',
       path: outputPath,
-      publicPath
+      libraryTarget: 'commonjs2'
+    },
+    resolve: {
+      alias: {}
     },
     optimization: {
-      splitChunks: {
-        chunks: 'all'
-      },
       minimizer: [
         new TerserPlugin({}),
         new CssMinimizerPlugin({
@@ -82,10 +77,10 @@ module.exports = function (env) {
         }]
       }, {
         test: /\.css$/,
-        exclude: /node_modules/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
+            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -97,20 +92,6 @@ module.exports = function (env) {
             importLoaders: 1
           }
         }]
-      }, {
-        test: /\.css$/,
-        include: /node_modules/,
-        use: [{
-          loader: MiniCssExtractPlugin.loader,
-          options: {
-            esModule: true
-          }
-        }, {
-          loader: require.resolve('~webpack5/css-loader'),
-          options: {
-            importLoaders: 1
-          }
-        }]
       }]
     },
     plugins: [
@@ -118,10 +99,6 @@ module.exports = function (env) {
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false
       }),
-      new WebpackManifestPlugin({
-        fileName: manifestPath
-      }),
-      new ManifestHashPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'

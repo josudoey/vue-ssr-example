@@ -1,6 +1,6 @@
 import webpack from '~webpack5'
-import browserConfig from './webpack/browser/config.cjs'
-import ssrConfig from './webpack/ssr/config.cjs'
+import browserConfig from './webpack/browser/config.js'
+import ssrConfig from './webpack/ssr/config.js'
 
 export default async function (env) {
   process.on('uncaughtException', function (err) {

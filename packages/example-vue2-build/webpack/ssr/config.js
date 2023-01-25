@@ -1,7 +1,9 @@
-const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
-const webpack = require('~webpack5')
+import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
+import webpack from '~webpack5'
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
 
-module.exports = function (env) {
+export default function (env) {
   const { outputPath } = env
 
   return {

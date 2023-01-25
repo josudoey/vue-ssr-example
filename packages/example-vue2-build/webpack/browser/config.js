@@ -1,10 +1,13 @@
-const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
-const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
-const TerserPlugin = require('~webpack5/plugins/terser')
-const { WebpackManifestPlugin } = require('~webpack5/plugins/manifest')
-const ManifestHashPlugin = require('~webpack5/plugins/manifest-hash')
+import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
+import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
+import TerserPlugin from '~webpack5/plugins/terser.js'
+import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
+import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
 
-module.exports = function (env) {
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url)
+
+export default function (env) {
   const { outputPath, publicPath, manifestPath } = env
   const config = {
     devtool: 'source-map',
