@@ -1,4 +1,16 @@
 import KoaRouter from 'koa-router'
+import { createRequire } from 'module'
+
+function createSSR ({ ssrPath }) {
+  const ssrModuleExports = createRequire(import.meta.url)(ssrPath)
+  const { createRenderer, createApp, createMemoryRouter, createPinia } = ssrModuleExports
+  return { createRenderer, createApp, createMemoryRouter, createPinia }
+}
+
+function createManifest ({ manifestPath }) {
+  const manifest = createRequire(import.meta.url)(manifestPath)
+  return manifest
+}
 
 export function createRoute (ssr) {
   const {
@@ -25,14 +37,19 @@ export function createRoute (ssr) {
 }
 
 export default {
-  install (app, options) {
+  install (app, modulePaths) {
+    const {
+      manifestPath,
+      ssrPath
+    } = modulePaths
+
     const {
       createRenderer,
       createApp,
       createMemoryRouter,
-      createPinia,
-      manifest
-    } = options
+      createPinia
+    } = createSSR({ ssrPath })
+    const manifest = createManifest({ manifestPath })
 
     const vueRouter = createMemoryRouter()
     const matchedComponent = async function (ctx, next) {

@@ -4,10 +4,6 @@ import {
   createApp, createRouter, createBrowserStatic,
   createSocketIo, extendKoaIo, getKoaSession
 } from './koa/app.mjs'
-import createExampleVue2SSR from './example-vue2-ssr.mjs'
-import createExampleVue2Manifest from './example-vue2-manifest.mjs'
-import createExampleVue3SSR from './example-vue3-ssr.mjs'
-import createExampleVue3Manifest from './example-vue3-manifest.mjs'
 
 async function createServer (env) {
   const { publicPath, exampleVue2, exampleVue3 } = env
@@ -18,29 +14,22 @@ async function createServer (env) {
     browserOutputPath: exampleVue3.browserOutputPath,
     publicPath
   }))
+
   app.use(createBrowserStatic({
     browserOutputPath: exampleVue2.browserOutputPath,
     publicPath
   }))
 
-  const exampleVue3SSR = await createExampleVue3SSR({ ssrPath: env.exampleVue3.ssrPath })
-  const exampleVue3Manifest = createExampleVue3Manifest({ manifestPath: env.exampleVue3.manifestPath })
   ExampleVue3.install(app, {
-    ...exampleVue3SSR,
-    manifest: exampleVue3Manifest
+    ssrPath: env.exampleVue3.ssrPath,
+    manifestPath: env.exampleVue3.manifestPath
   })
 
-  const exampleVue2Manifest = createExampleVue2Manifest({
+  ExampleVue2.install(app, {
+    ssrPath: env.exampleVue2.ssrPath,
     manifestPath: env.exampleVue2.manifestPath
   })
 
-  const exampleVue2SSR = createExampleVue2SSR({
-    ssrPath: env.exampleVue2.ssrPath
-  })
-  ExampleVue2.install(app, {
-    ...exampleVue2SSR,
-    manifest: exampleVue2Manifest
-  })
   app.use(router.allowedMethods())
 
   const server = http.createServer(app.callback())

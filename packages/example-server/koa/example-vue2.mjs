@@ -1,8 +1,19 @@
 import createDebug from 'debug'
-import staticCache from 'koa-static-cache'
 import KoaRouter from 'koa-router'
 import * as xsrfToken from './route/xsrf-token.mjs'
+
+import { createRequire } from 'module'
 const debug = createDebug('app:example-vue2')
+function createSSR ({ ssrPath }) {
+  const ssrModuleExports = createRequire(import.meta.url)(ssrPath)
+  const { createRenderer, createRouter, createStore, createApp, isNavigationFailure, NavigationFailureType } = ssrModuleExports
+  return { createRenderer, createRouter, createStore, createApp, isNavigationFailure, NavigationFailureType }
+}
+
+function createManifest ({ manifestPath }) {
+  const manifest = createRequire(import.meta.url)(manifestPath)
+  return manifest
+}
 
 export function createRoute (ssr) {
   const {
@@ -14,6 +25,7 @@ export function createRoute (ssr) {
     NavigationFailureType,
     manifest
   } = ssr
+
   const renderer = createRenderer(manifest)
   return async function (ctx, next) {
     const routeName = ctx._matchedRouteName
@@ -48,13 +60,13 @@ export function createRoute (ssr) {
       return
     }
 
-    const vm = await createApp({
+    const app = await createApp({
       store: $store,
       router: $router
     })
 
     debug('renderToString')
-    const html = await renderer.renderToString(vm)
+    const html = await renderer.renderToString(app)
     debug('renderToString done')
 
     ctx.status = 200
@@ -63,39 +75,27 @@ export function createRoute (ssr) {
   }
 }
 
-export function createBrowserStatic ({
-  browserOutputPath,
-  publicPath
-}) {
-  return staticCache(browserOutputPath, {
-    prefix: publicPath,
-    maxAge: 1000 * 60 * 60 * 24 * 30,
-    dynamic: true
-  })
-}
-
-export const createSSRRouter = function ({
-  routes,
-  ssrRoute
-}) {
-  const router = new KoaRouter()
-  for (const route of routes) {
-    router.get(route.name, route.path, xsrfToken.create, ssrRoute)
-  }
-  return router
-}
-
 export default {
-  install (app, options) {
+  install (app, modulePaths) {
+    const {
+      manifestPath,
+      ssrPath
+    } = modulePaths
+
+    const manifest = createManifest({
+      manifestPath
+    })
+
     const {
       createRenderer,
       createApp,
       createRouter,
       createStore,
       isNavigationFailure,
-      NavigationFailureType,
-      manifest
-    } = options
+      NavigationFailureType
+    } = createSSR({
+      ssrPath
+    })
 
     const vueRouter = createRouter()
     const matchedComponent = async function (ctx, next) {

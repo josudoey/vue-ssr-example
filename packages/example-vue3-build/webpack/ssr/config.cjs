@@ -9,27 +9,12 @@ module.exports = function (env) {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'node',
     externals: [],
-    entry: {
-      main: {
-        import: require.resolve('~example-vue3/webpack/ssr/entry.mjs'),
-        filename: 'main.mjs',
-        library: {
-          type: 'module'
-        }
-      }
-    },
-    node: {
-      __dirname: false,
-      __filename: false
-    },
-    experiments: {
-      outputModule: true
-    },
+    entry: require.resolve('~example-vue3/webpack/ssr/entry.mjs'),
     externalsType: 'node-commonjs',
     output: {
       clean: true,
       path: outputPath,
-      chunkFormat: 'module'
+      libraryTarget: 'commonjs2'
     },
     resolve: {
       alias: {}

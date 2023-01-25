@@ -14,7 +14,7 @@ const env = {
     browserOutputPath: path.join(distPath, 'example-vue3-browser', publicPath),
     manifestPath: path.join(distPath, 'example-vue3-browser', 'manifest.json'),
     ssrOutputPath: path.join(distPath, 'example-vue3-ssr'),
-    ssrPath: path.join(distPath, 'example-vue3-ssr', 'main.mjs')
+    ssrPath: path.join(distPath, 'example-vue3-ssr', 'main.js')
   }
 }
 

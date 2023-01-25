@@ -9,10 +9,7 @@ module.exports = function (env) {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'node',
     externalsType: 'node-commonjs',
-    externals: [
-      '~vue2-server-renderer',
-      'debug'
-    ],
+    externals: ['debug'],
     resolve: {
       alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
         axios: false, // return module.exports = {}
