@@ -1,6 +1,6 @@
-import * as auth from '../route/auth.mjs'
-import * as base64 from '../route/base64.mjs'
-import * as note from '../route/note.mjs'
+import * as auth from '../route/auth.js'
+import * as base64 from '../route/base64.js'
+import * as note from '../route/note.js'
 
 const rpcRoutes = {
   getAuthState: auth.getState,

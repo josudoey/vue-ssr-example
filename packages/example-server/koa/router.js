@@ -1,11 +1,11 @@
 import KoaRouter from 'koa-router'
 import bodyParser from 'koa-bodyparser'
-import * as session from './route/session.mjs'
-import * as auth from './route/auth.mjs'
-import * as base64 from './route/base64.mjs'
-import * as page from './route/page.mjs'
-import * as note from './route/note.mjs'
-import * as xsrfToken from './route/xsrf-token.mjs'
+import * as session from './route/session.js'
+import * as auth from './route/auth.js'
+import * as base64 from './route/base64.js'
+import * as page from './route/page.js'
+import * as note from './route/note.js'
+import * as xsrfToken from './route/xsrf-token.js'
 
 export function createRouter () {
   return new KoaRouter()

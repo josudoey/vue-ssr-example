@@ -2,7 +2,8 @@
   "private": true,
   "name": "~example-server",
   "version": "0.0.0",
-  "main": "server.mjs",
+  "main": "server.js",
+  "type": "module",
   "dependencies": {
     "axios": "^0.24.0",
     "basic-auth": "^2.0.1",

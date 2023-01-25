@@ -1,6 +1,6 @@
 import createDebug from 'debug'
 import KoaRouter from 'koa-router'
-import * as xsrfToken from './route/xsrf-token.mjs'
+import * as xsrfToken from './koa/route/xsrf-token.js'
 
 import { createRequire } from 'module'
 const debug = createDebug('app:example-vue2')

@@ -1,6 +1,11 @@
-const path = require('path')
+import path from 'path'
+import { fileURLToPath } from 'url'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+export { __filename, __dirname }
 const publicPath = '/_/'
 const distPath = process.env.NODE_ENV === 'production' ? path.join(__dirname, 'dist') : path.join(__dirname, 'dist.dev')
+
 const env = {
   distPath,
   publicPath,
@@ -18,4 +23,4 @@ const env = {
   }
 }
 
-module.exports = env
+export default env

@@ -1,9 +1,10 @@
 import http from 'http'
+import ExampleVue2 from './example-vue2.js'
+import ExampleVue3 from './example-vue3.js'
 import {
-  ExampleVue3, ExampleVue2,
   createApp, createRouter, createBrowserStatic,
   createSocketIo, extendKoaIo, getKoaSession
-} from './koa/app.mjs'
+} from './koa/app.js'
 
 async function createServer (env) {
   const { publicPath, exampleVue2, exampleVue3 } = env

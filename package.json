@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "example project",
   "scripts": {
+    "ts-check": "tsc --noEmit",
     "ncu": "npx npm-check-updates",
     "build": "NODE_ENV=production node ./scripts/build.mjs",
     "start": "NODE_ENV=production node ./main.mjs",
@@ -32,6 +33,7 @@
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.0.1",
     "nodemon": "^2.0.15",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.3"
   },
   "dependencies": {

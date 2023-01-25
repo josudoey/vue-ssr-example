@@ -1,5 +1,5 @@
 import { URL } from 'url'
-import * as auth from './auth.mjs'
+import * as auth from './auth.js'
 
 export async function signOut (ctx, next) {
   await auth.revoke(ctx, next)

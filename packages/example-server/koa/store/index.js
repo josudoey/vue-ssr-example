@@ -1,5 +1,5 @@
 import createDebug from 'debug'
-import { createRpc } from './rpc.mjs'
+import { createRpc } from './rpc.js'
 const debug = createDebug('app:koa:store')
 
 const createStore = function (rpc) {

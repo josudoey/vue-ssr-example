@@ -1,11 +1,9 @@
 import Koa from 'koa'
 import KoaSession from 'koa-session'
-import { extendKoaStore } from './store/index.mjs'
+import { extendKoaStore } from './store/index.js'
 import staticCache from 'koa-static-cache'
-export { default as ExampleVue2 } from './example-vue2.mjs'
-export { default as ExampleVue3 } from './example-vue3.mjs'
-export { createRouter } from './router.mjs'
-export { createSocketIo, extendKoaIo } from './socket-io/index.mjs'
+export { createRouter } from './router.js'
+export { createSocketIo, extendKoaIo } from './socket-io/index.js'
 
 const KOA_SESSION = Symbol('koa#session')
 
