@@ -13,7 +13,7 @@ export default function (env) {
     devtool: 'source-map',
     target: 'web',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    entry: require.resolve('~example-vue3/entry/browser/main.js'),
+    entry: require.resolve('./entry/main.js'),
     resolve: {
       alias: {
         vue$: 'vue/dist/vue.esm-bundler.js'

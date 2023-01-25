@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-import { createApp, createStore, createRouter } from '../../index.js'
+import { createApp, createStore, createRouter } from '../../../index.js'
 
 import createDebug from 'debug'
 import state from './inital-state.js'

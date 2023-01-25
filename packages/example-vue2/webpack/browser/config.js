@@ -1,28 +1,57 @@
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
 import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
 import TerserPlugin from '~webpack5/plugins/terser.js'
-import webpack from '~webpack5'
+import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
+import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
+
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
 export default function (env) {
-  const { outputPath } = env
-  return {
-    devtool: 'source-map',
-    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    target: 'node',
-    externals: [],
-    entry: require.resolve('~example-vue3/entry/ssr/main.js'),
-    externalsType: 'node-commonjs',
+  const { outputPath, publicPath, manifestPath } = env
+  const config = {
+    entry: require.resolve('./entry/main.js'),
     output: {
       clean: true,
+      assetModuleFilename: '_/[contenthash][ext]',
+      filename: '[contenthash].js',
+      chunkFilename: '[contenthash].js',
       path: outputPath,
-      libraryTarget: 'commonjs2'
+      publicPath
     },
+    devtool: 'source-map',
+    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
+    target: 'web',
     resolve: {
-      alias: {}
+      alias: {
+        axios$: 'axios/dist/axios.js',
+        'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
+        vue$: 'vue/dist/vue.esm.js',
+        vuex$: 'vuex/dist/vuex.esm.js'
+      }
     },
     optimization: {
+      splitChunks: { // see https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks
+        chunks: 'async',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      },
       minimizer: [
         new TerserPlugin({}),
         new CssMinimizerPlugin({
@@ -58,8 +87,12 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~vue3-template-loader'),
-          options: {}
+          loader: require.resolve('~vue2-template-loader'),
+          options: {
+            minimize: {
+              collapseBooleanAttributes: true
+            }
+          }
         }, {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
@@ -76,11 +109,10 @@ export default function (env) {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
-        test: /\.css$/,
+        test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -89,20 +121,35 @@ export default function (env) {
               namedExport: true,
               localIdentName: '__[hash:base64:5]'
             },
-            importLoaders: 1
+            importLoaders: 0
+          }
+        }]
+      }, {
+        test: /\.css$/,
+        exclude: /module\.css$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+          }
+        }, {
+          loader: require.resolve('~webpack5/css-loader'),
+          options: {
+            importLoaders: 0
           }
         }]
       }]
     },
     plugins: [
-      new webpack.DefinePlugin({
-        __VUE_OPTIONS_API__: true,
-        __VUE_PROD_DEVTOOLS__: false
+      new WebpackManifestPlugin({
+        fileName: manifestPath
       }),
+      new ManifestHashPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'
       })
     ]
   }
+
+  return config
 }

@@ -4,13 +4,16 @@
   "version": "0.0.0",
   "description": "",
   "type": "module",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^5.1.3",
     "bootstrap-vue-3": "^0.1.0",
     "msgpackr": "^1.5.5",
     "pinia": "^2.0.11",
     "vue": "^3.1.2",
-    "vue-router": "^4.0.12"
+    "vue-router": "^4.0.12",
+    "~webpack5": "workspace:*",
+    "~vue3-template-loader": "workspace:*"
   }
 }

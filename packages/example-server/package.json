@@ -20,7 +20,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "~example-vue2-build": "workspace:*",
-    "~example-vue3-build": "workspace:*"
+    "~example-vue2": "workspace:*",
+    "~example-vue3": "workspace:*"
   }
 }
