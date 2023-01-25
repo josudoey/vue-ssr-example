@@ -6,7 +6,7 @@ const env = {
   publicPath,
   exampleVue2: {
     browserOutputPath: path.join(distPath, 'example-vue2-browser', publicPath),
-    vueSSRClientManifestPath: path.join(distPath, 'example-vue2-browser', 'vue-ssr-client-manifest.json'),
+    manifestPath: path.join(distPath, 'example-vue2-browser', 'manifest.json'),
     ssrOutputPath: path.join(distPath, 'example-vue2-ssr'),
     ssrPath: path.join(distPath, 'example-vue2-ssr', 'main.js')
   },

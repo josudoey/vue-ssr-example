@@ -1,5 +1,5 @@
 import { createRequire } from 'module'
-export default function ({ vueSSRClientManifestPath }) {
-  const vueSSRClientManifest = createRequire(import.meta.url)(vueSSRClientManifestPath)
-  return vueSSRClientManifest
+export default function ({ manifestPath }) {
+  const manifest = createRequire(import.meta.url)(manifestPath)
+  return manifest
 }

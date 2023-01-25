@@ -32,12 +32,11 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.3.0",
     "eslint-plugin-promise": "^6.0.1",
-    "typescript": "^4.8.3",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "typescript": "^4.8.3"
   },
   "dependencies": {
     "debug": "^4.3.3",
-    "~example-server": "workspace:*",
-    "~vue2-server-renderer": "workspace:*"
+    "~example-server": "workspace:*"
   }
 }

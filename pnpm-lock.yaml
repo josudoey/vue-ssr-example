@@ -12,7 +12,6 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.0.0
       '@typescript-eslint/parser': ^5.0.0
       ~example-server: workspace:*
-      ~vue2-server-renderer: workspace:*
       debug: ^4.3.3
       eslint: ^8.24.0
       eslint-config-standard-with-typescript: ^23.0.0
@@ -23,7 +22,6 @@ importers:
       typescript: ^4.8.3
     dependencies:
       ~example-server: link:packages/example-server
-      ~vue2-server-renderer: link:packages/vue2-server-renderer
       debug: 4.3.4
     devDependencies:
       '@babel/core': 7.17.8
@@ -183,12 +181,6 @@ importers:
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
 
-  packages/vue2-server-renderer:
-    specifiers:
-      vue-server-renderer: ^2.6.14
-    dependencies:
-      vue-server-renderer: 2.6.14
-
   packages/vue2-template-loader:
     specifiers:
       css-loader: ^6.5.1
@@ -201,10 +193,12 @@ importers:
 
   packages/vue3-template-loader:
     specifiers:
+      lodash: ^4.17.21
       vue: ^3.2.45
       vue-loader: ^17.0.1
       webpack: ^5.75.0
     devDependencies:
+      lodash: 4.17.21
       vue: 3.2.45
       vue-loader: 17.0.1_vue@3.2.45+webpack@5.75.0
       webpack: 5.75.0
@@ -5573,7 +5567,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
     dev: true
 
   /terser/5.10.0:

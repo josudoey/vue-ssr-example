@@ -5,9 +5,9 @@ import {
   createSocketIo, extendKoaIo, getKoaSession
 } from './koa/app.mjs'
 import createExampleVue2SSR from './example-vue2-ssr.mjs'
-import createRxampleVue2Manifest from './example-vue2-manifest.mjs'
+import createExampleVue2Manifest from './example-vue2-manifest.mjs'
 import createExampleVue3SSR from './example-vue3-ssr.mjs'
-import createRxampleVue3Manifest from './example-vue3-manifest.mjs'
+import createExampleVue3Manifest from './example-vue3-manifest.mjs'
 
 async function createServer (env) {
   const { publicPath, exampleVue2, exampleVue3 } = env
@@ -24,21 +24,22 @@ async function createServer (env) {
   }))
 
   const exampleVue3SSR = await createExampleVue3SSR({ ssrPath: env.exampleVue3.ssrPath })
-  const exampleVue3Manifest = createRxampleVue3Manifest({ manifestPath: env.exampleVue3.manifestPath })
+  const exampleVue3Manifest = createExampleVue3Manifest({ manifestPath: env.exampleVue3.manifestPath })
   ExampleVue3.install(app, {
     ...exampleVue3SSR,
     manifest: exampleVue3Manifest
   })
 
-  const exampleVue2Manifest = createRxampleVue2Manifest({
-    vueSSRClientManifestPath: env.exampleVue2.vueSSRClientManifestPath
+  const exampleVue2Manifest = createExampleVue2Manifest({
+    manifestPath: env.exampleVue2.manifestPath
   })
+
   const exampleVue2SSR = createExampleVue2SSR({
     ssrPath: env.exampleVue2.ssrPath
   })
   ExampleVue2.install(app, {
     ...exampleVue2SSR,
-    clientManifest: exampleVue2Manifest
+    manifest: exampleVue2Manifest
   })
   app.use(router.allowedMethods())
 

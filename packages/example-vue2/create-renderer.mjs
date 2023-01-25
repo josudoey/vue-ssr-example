@@ -1,42 +1,40 @@
-import VueServerRenderer from '~vue2-server-renderer'
-import LRU from 'lru-cache'
 import { pack } from 'msgpackr/pack'
+import entryServerBasicRenderer from 'vue-server-renderer/basic.js'
 
-const createRenderer = function (clientManifest) {
-  const renderer = VueServerRenderer.createRenderer({
-    cache: new LRU({
-      max: 10000
-    }),
-    template: '<!DOCTYPE html><html><head>{{{meta}}}</head><body><!--vue-ssr-outlet--></body></html>',
-    clientManifest,
-    inject: true,
-    shouldPreload: (file, type) => {
-      // ref https://v2.ssr.vuejs.org/api/#shouldpreload
-      return true
-    },
-    shouldPrefetch: (file, type) => {
-      return false
+export function renderStoreStateToString (app) {
+  const initalState = pack(app.$store.state).toString('base64')
+  return `<script>window.__INITIAL_STATE__='${initalState}'</script>`
+}
+
+const createRenderer = function (manifest) {
+  return {
+    async renderToString (app) {
+      const ctx = {}
+      const html = await new Promise(function (resolve, reject) {
+        entryServerBasicRenderer(app, ctx, function (err, result) {
+          if (err) {
+            return reject(err)
+          }
+          resolve(result)
+        })
+      })
+
+      // see https://vue-meta.nuxtjs.org/guide/ssr.html#inject-metadata-into-page-string
+      const {
+        title, headAttrs, bodyAttrs, link,
+        style, script, noscript, meta
+      } = app.$meta().inject()
+
+      return `<!DOCTYPE html><html>
+  <head ${headAttrs.text()}>${meta.text()}${title.text()}${link.text()}${style.text()}${script.text()}${noscript.text()}</head>
+  <body ${bodyAttrs.text()}>${style.text({ pbody: true })}${script.text({ pbody: true })}${noscript.text({ pbody: true })}
+    ${html}
+    <script src="${manifest['main.js']}"></script>${renderStoreStateToString(app) || ''}
+    ${style.text({ body: true })}${script.text({ body: true })}${noscript.text({ body: true })}
+  </body>
+</html>`
     }
-  })
-
-  const renderToString = function (vm) {
-    return renderer.renderToString(vm, {
-      rendered (ctx) {
-        // see https://vue-meta.nuxtjs.org/guide/ssr.html#inject-metadata-into-page-string
-        const {
-          title, meta, script
-        } = vm.$meta().inject()
-        ctx.meta = `${meta.text()}${title.text()}${script.text()}`
-
-        // see https://v2.ssr.vuejs.org/guide/data.html#final-state-injection
-        // see https://github.com/vuejs/vue/blob/0603ff695d2f41286239298210113cbe2b209e28/src/server/create-renderer.js#L89
-        const initalState = pack(vm.$store.state).toString('base64')
-        ctx.state = initalState
-      }
-    })
   }
-
-  return { renderToString }
 }
 
 export { createRenderer }

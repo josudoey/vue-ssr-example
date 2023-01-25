@@ -2,7 +2,7 @@ import webpack from '~webpack5'
 import browserConfig from './webpack/browser/config.cjs'
 import ssrConfig from './webpack/ssr/config.cjs'
 export default async function (
-  { publicPath, browserOutputPath, vueSSRClientManifestPath, ssrOutputPath }
+  { publicPath, browserOutputPath, vueSSRClientManifestPath, manifestPath, ssrOutputPath }
 ) {
   process.on('uncaughtException', function (err) {
     console.trace(err)
@@ -17,6 +17,7 @@ export default async function (
       browserConfig({
         outputPath: browserOutputPath,
         vueSSRClientManifestPath,
+        manifestPath,
         publicPath
       }),
       ssrConfig({

@@ -12,9 +12,9 @@ export function createRoute (ssr) {
     createStore,
     isNavigationFailure,
     NavigationFailureType,
-    clientManifest
+    manifest
   } = ssr
-  const renderer = createRenderer(clientManifest)
+  const renderer = createRenderer(manifest)
   return async function (ctx, next) {
     const routeName = ctx._matchedRouteName
     debug('path', ctx.path)
@@ -94,7 +94,7 @@ export default {
       createStore,
       isNavigationFailure,
       NavigationFailureType,
-      clientManifest
+      manifest
     } = options
 
     const vueRouter = createRouter()
@@ -113,7 +113,7 @@ export default {
       createStore,
       isNavigationFailure,
       NavigationFailureType,
-      clientManifest
+      manifest
     })
 
     const router = new KoaRouter()

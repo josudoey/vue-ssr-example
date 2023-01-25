@@ -1,11 +1,11 @@
-const path = require('path')
 const MiniCssExtractPlugin = require('~webpack5/plugins/mini-css-extract')
 const CssMinimizerPlugin = require('~webpack5/plugins/css-minimizer')
 const TerserPlugin = require('~webpack5/plugins/terser')
-const VueSSRClientPlugin = require('~vue2-server-renderer/client-plugin')
+const { WebpackManifestPlugin } = require('~webpack5/plugins/manifest')
+const ManifestHashPlugin = require('~webpack5/plugins/manifest-hash')
 
 module.exports = function (env) {
-  const { outputPath, publicPath, vueSSRClientManifestPath } = env
+  const { outputPath, publicPath, manifestPath } = env
   const config = {
     devtool: 'source-map',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
@@ -137,13 +137,13 @@ module.exports = function (env) {
       }]
     },
     plugins: [
+      new WebpackManifestPlugin({
+        fileName: manifestPath
+      }),
+      new ManifestHashPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'
-      }),
-      // see https://ssr.vuejs.org/guide/build-config.html#client-config
-      new VueSSRClientPlugin({
-        filename: path.relative(outputPath, vueSSRClientManifestPath)
       })
     ]
   }
