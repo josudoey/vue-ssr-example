@@ -12,7 +12,7 @@ export default function (env) {
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
     target: 'node',
     externals: [],
-    entry: require.resolve('~example-vue3/webpack/ssr/entry.mjs'),
+    entry: require.resolve('~example-vue3/entry/ssr/main.js'),
     externalsType: 'node-commonjs',
     output: {
       clean: true,

@@ -1,6 +1,6 @@
 import * as render from './render.pug'
 import * as css from './style.css'
-import { useHomeStore } from './store.mjs'
+import { useHomeStore } from './store.js'
 import { storeToRefs, mapActions } from 'pinia'
 
 export default {

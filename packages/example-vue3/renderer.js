@@ -1,5 +1,5 @@
 import { renderToString } from 'vue/server-renderer'
-import { renderPiniaToString } from './pinia/render.mjs'
+import { renderPiniaToString } from './pinia/render.js'
 
 const createRenderer = function (manifest) {
   return {
