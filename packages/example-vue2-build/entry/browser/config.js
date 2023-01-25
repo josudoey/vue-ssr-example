@@ -1,50 +1,82 @@
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import webpack from '~webpack5'
+import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
+import TerserPlugin from '~webpack5/plugins/terser.js'
+import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
+import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
+
 import { createRequire } from 'module'
 const require = createRequire(import.meta.url)
 
 export default function (env) {
-  const { outputPath } = env
-
-  return {
+  const { outputPath, publicPath, manifestPath } = env
+  const config = {
     devtool: 'source-map',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    target: 'node',
-    externalsType: 'node-commonjs',
-    externals: ['debug'],
+    target: 'web',
+    entry: require.resolve('~example-vue2/entry/browser/main.js'),
     resolve: {
-      alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
-        axios: false, // return module.exports = {}
-        'socket.io-client': false,
+      alias: {
+        axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue$: 'vue/dist/vue.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js'
       }
     },
-    entry: require.resolve('~example-vue2/webpack/ssr/entry.mjs'),
     output: {
       clean: true,
+      assetModuleFilename: '_/[contenthash][ext]',
+      filename: '[contenthash].js',
+      chunkFilename: '[contenthash].js',
       path: outputPath,
-      libraryTarget: 'commonjs2'
+      publicPath
     },
-    plugins: [
-      new webpack.DefinePlugin({}),
-      new MiniCssExtractPlugin({})
-    ],
+    optimization: {
+      splitChunks: { // see https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks
+        chunks: 'async',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      },
+      minimizer: [
+        new TerserPlugin({}),
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true }
+              }
+            ]
+          }
+        })
+      ]
+    },
     module: {
       rules: [{
         test: /\.(png|jpe?g|gif|svg)$/,
-        // see https://webpack.js.org/guides/asset-modules/
         type: 'asset/resource',
         generator: {
-          // see https://webpack.js.org/configuration/module/#rulegeneratoremit
-          emit: false
+          filename: 'img/[contenthash][ext]'
         }
       }, {
         test: /\.(woff2?|eot|ttf|otf)$/,
-        type: 'asset/resource',
         generator: {
-          emit: false
+          filename: 'fonts/[contenthash][ext]'
         }
       }, {
         test: /\.html$/,
@@ -81,7 +113,6 @@ export default function (env) {
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -99,7 +130,6 @@ export default function (env) {
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -108,6 +138,18 @@ export default function (env) {
           }
         }]
       }]
-    }
+    },
+    plugins: [
+      new WebpackManifestPlugin({
+        fileName: manifestPath
+      }),
+      new ManifestHashPlugin(),
+      new MiniCssExtractPlugin({
+        filename: 'css/[contenthash].css',
+        chunkFilename: 'css/[contenthash].css'
+      })
+    ]
   }
+
+  return config
 }

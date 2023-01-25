@@ -1,11 +1,11 @@
 import * as render from './render.pug'
 import createDebug from 'debug'
-import { show as modalEditorShow } from './modal-editor/index.mjs'
+import { show as modalEditorShow } from './modal-editor/index.js'
 import {
   register, unregister,
   prefetch, start, skip, total, limit, items, currentPage,
   list, remove, setListParams
-} from './store.mjs'
+} from './store.js'
 const debug = createDebug('app:view:note')
 export default {
   ...render,

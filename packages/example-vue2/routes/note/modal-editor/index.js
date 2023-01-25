@@ -5,7 +5,7 @@ import { cloneDeep } from 'lodash'
 import {
   register, unregister,
   insert, update
-} from '../store.mjs'
+} from '../store.js'
 import * as render from './render.pug'
 import createDebug from 'debug'
 import { MandarinTraditional as zhTW } from 'flatpickr/dist/l10n/zh-tw.js'

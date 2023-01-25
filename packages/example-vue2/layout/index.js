@@ -1,7 +1,7 @@
 import './style.css'
 import * as render from './render.pug'
-import sidenav from './sidenav/index.mjs'
-import { uid, signIn } from '../outlet/auth/store.mjs'
+import sidenav from './sidenav/index.js'
+import { uid, signIn } from '../outlet/auth/store.js'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')
 export default {

@@ -1,7 +1,7 @@
-export { createRenderer } from '../../create-renderer.mjs'
+export { createRenderer } from '../../renderer.js'
 export {
   isNavigationFailure, NavigationFailureType,
   createStore,
   createApp,
   createRouter
-} from '../../index.mjs'
+} from '../../index.js'

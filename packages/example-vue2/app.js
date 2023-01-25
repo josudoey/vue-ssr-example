@@ -4,8 +4,8 @@ import VueMeta from 'vue-meta'
 import BootstrapVue from 'bootstrap-vue'
 import { Portal, PortalTarget } from 'portal-vue'
 import Vuex from 'vuex'
-import mixin from './mixin/index.mjs'
-import outlet from './outlet/index.mjs'
+import mixin from './mixin/index.js'
+import outlet from './outlet/index.js'
 import createDebug from 'debug'
 const debug = createDebug('app:create-app')
 

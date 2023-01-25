@@ -1,6 +1,6 @@
 import webpack from '~webpack5'
-import browserConfig from './webpack/browser/config.js'
-import ssrConfig from './webpack/ssr/config.js'
+import browserConfig from './entry/browser/config.js'
+import ssrConfig from './entry/ssr/config.js'
 export default async function (
   { publicPath, browserOutputPath, vueSSRClientManifestPath, manifestPath, ssrOutputPath }
 ) {

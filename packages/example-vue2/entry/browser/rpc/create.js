@@ -1,8 +1,8 @@
 import { pathToRegexp, compile } from 'path-to-regexp'
 import isEmpty from 'lodash/isEmpty.js'
-import { createAxiosChain, getAxios, setAxios } from './axios-chain.mjs'
+import { createAxiosChain, getAxios, setAxios } from './axios-chain.js'
 import { create as axiosCreate } from 'axios'
-import api from './api.mjs'
+import api from './api.js'
 
 const createMethod = function ({ path, method }) {
   if (!method) {

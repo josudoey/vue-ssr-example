@@ -5,4 +5,4 @@ import '../../outlet/style.css'
 if (localStorage) {
   localStorage.debug = '*'
 }
-import('./main.mjs')
+import('./script.js')

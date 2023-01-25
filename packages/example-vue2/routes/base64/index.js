@@ -1,7 +1,7 @@
 import createDebug from 'debug'
 import * as render from './render.pug'
-import { text, result, prefetch, encode, register, unregister } from './store.mjs'
-import { mixin } from './mixin.mjs'
+import { text, result, prefetch, encode, register, unregister } from './store.js'
+import { mixin } from './mixin.js'
 const debug = createDebug('app:view:base64')
 
 export default {

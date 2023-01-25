@@ -16,8 +16,8 @@ export default {
     return {
       socket: null,
       text: 'server time',
-      css: css,
-      now: now
+      css,
+      now
     }
   },
   beforeRouteEnter: function (to, from, next) {
