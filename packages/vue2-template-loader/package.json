@@ -5,8 +5,9 @@
   "main": "index.js",
   "peerDependencies": {},
   "devDependencies": {
+    "vue-template-compiler": "^2.7.14",
     "vue-loader": "^15.9.8",
     "css-loader": "^6.5.1",
-    "webpack": "^5.63.0"
+    "webpack": "^5.75.0"
   }
 }

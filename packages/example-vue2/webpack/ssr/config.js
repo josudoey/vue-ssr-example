@@ -55,7 +55,7 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~vue2-template-loader'),
+          loader: require.resolve('~webpack5/vue2-template-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true

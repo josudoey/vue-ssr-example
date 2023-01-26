@@ -13,7 +13,6 @@
     "pinia": "^2.0.11",
     "vue": "^3.1.2",
     "vue-router": "^4.0.12",
-    "~webpack5": "workspace:*",
-    "~vue3-template-loader": "workspace:*"
+    "~webpack5": "workspace:*"
   }
 }
