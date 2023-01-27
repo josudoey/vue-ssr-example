@@ -16,7 +16,7 @@ export default function (env) {
     entry: require.resolve('./entry/main.js'),
     resolve: {
       alias: {
-        vue$: 'vue/dist/vue.esm-bundler.js'
+        vue$: require.resolve('~webpack5/vue-compat.js')
       }
     },
     output: {
@@ -65,10 +65,10 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/vue3-template-loader'),
+          loader: require.resolve('~webpack5/vue3-template-loader.js'),
           options: {}
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader.js')
         }]
       }, {
         test: /template.pug$/,

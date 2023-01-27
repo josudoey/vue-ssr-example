@@ -1,5 +1,7 @@
-import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
+import { createRouter, createWebHistory, createMemoryHistory, NavigationFailureType, isNavigationFailure } from 'vue-router'
 import routes from './routes/index.js'
+export { NavigationFailureType, isNavigationFailure }
+
 // see https://next.router.vuejs.org/guide/migration/index.html#new-history-option-to-replace-mode
 
 export function createVueRouter (history) {

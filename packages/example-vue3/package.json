@@ -12,6 +12,7 @@
     "pinia": "^2.0.29",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
+    "vuex": "^4.1.0",
     "~webpack5": "workspace:*"
   }
 }

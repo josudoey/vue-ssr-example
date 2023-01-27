@@ -2,9 +2,7 @@ import KoaRouter from 'koa-router'
 import { createRequire } from 'module'
 
 function createSSR ({ ssrPath }) {
-  const ssrModuleExports = createRequire(import.meta.url)(ssrPath)
-  const { createRenderer, createApp, createMemoryRouter, createPinia } = ssrModuleExports
-  return { createRenderer, createApp, createMemoryRouter, createPinia }
+  return createRequire(import.meta.url)(ssrPath)
 }
 
 function createManifest ({ manifestPath }) {
@@ -14,25 +12,34 @@ function createManifest ({ manifestPath }) {
 
 export function createRoute (ssr) {
   const {
-    createRenderer,
-    createApp,
-    createMemoryRouter,
-    createPinia,
+    RedirectedError,
+    createHtmlRenderer,
     manifest
   } = ssr
-  const renderer = createRenderer(manifest)
+  const htmlRenderer = createHtmlRenderer({
+    manifest
+  })
   return async function (ctx, next) {
-    const $router = createMemoryRouter()
-    await $router.push(ctx.url)
-    await $router.isReady()
+    try {
+      const { rpc } = ctx
+      const html = await htmlRenderer.render(ctx.path, {
+        rpc
+      })
 
-    const pinia = createPinia()
-    const app = await createApp().use(pinia).use($router)
-    const html = await renderer.renderToString(app)
-
-    ctx.status = 200
-    ctx.type = 'text/html'
-    ctx.body = html
+      ctx.status = 200
+      ctx.type = 'text/html'
+      ctx.body = html
+    } catch (err) {
+      if (err instanceof RedirectedError) {
+        if (!err.currentRoute.name) {
+          ctx.redirect('/')
+          return
+        }
+        ctx.redirect(err.currentRoute.fullPath)
+      } else {
+        ctx.redirect('/')
+      }
+    }
   }
 }
 
@@ -43,35 +50,28 @@ export default {
       ssrPath
     } = modulePaths
 
+    const ssr = createSSR({ ssrPath })
     const {
-      createRenderer,
-      createApp,
-      createMemoryRouter,
-      createPinia
-    } = createSSR({ ssrPath })
+      existsRoute
+    } = ssr
     const manifest = createManifest({ manifestPath })
 
-    const vueRouter = createMemoryRouter()
-    const matchedComponent = async function (ctx, next) {
+    const existsSsrRoute = async function (ctx, next) {
       // see https://next.router.vuejs.org/api/#resolve
       //     https://next.router.vuejs.org/api/#routelocationnormalized
-      const routeLocation = vueRouter.resolve(ctx.path)
-      if (!routeLocation.matched.length) {
+      if (!existsRoute(ctx.path)) {
         return
       }
       await next()
     }
 
     const ssrRoute = createRoute({
-      createRenderer,
-      createApp,
-      createMemoryRouter,
-      createPinia,
+      ...ssr,
       manifest
     })
 
     const router = new KoaRouter()
-    router.get('/v3(.*)', matchedComponent, ssrRoute)
+    router.get('/v3(.*)', existsSsrRoute, ssrRoute)
     app.use(router.routes())
   }
 }

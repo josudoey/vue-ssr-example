@@ -1,5 +1,6 @@
 import { renderToString } from 'vue/server-renderer'
 import { renderPiniaToString } from './pinia/render.js'
+import { renderStoreStateToString } from './store/render.js'
 
 const createRenderer = function (manifest) {
   return {
@@ -13,7 +14,7 @@ const createRenderer = function (manifest) {
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
         </head>
-        <body><div id="_${manifest.hash}">${html}</div></body>${ctx.pinia || ''}
+        <body><div id="_${manifest.hash}">${html}</div></body>${ctx.pinia || ''}${renderStoreStateToString(app)}
         <script src="${manifest['main.js']}" defer></script>
       </html>`
     }
