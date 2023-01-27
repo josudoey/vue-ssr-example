@@ -8,7 +8,7 @@ const rpcRoutes = {
   listNote: note.List
 }
 
-const KoaRpc = function (ctx) {
+const KoaRpcAdapter = function (ctx) {
   this.ctx = ctx
 }
 
@@ -25,11 +25,11 @@ const wrapMethod = function (koaRoute) {
 
 for (const name of Object.keys(rpcRoutes)) {
   const koaRoute = rpcRoutes[name]
-  KoaRpc.prototype[name] = wrapMethod(koaRoute)
+  KoaRpcAdapter.prototype[name] = wrapMethod(koaRoute)
 }
 
-export function createRpc (ctx) {
-  const fetcher = new KoaRpc(ctx)
+export function createKoaRpcAdapter (ctx) {
+  const fetcher = new KoaRpcAdapter(ctx)
   return function (name, payload) {
     return fetcher[name](payload)
   }

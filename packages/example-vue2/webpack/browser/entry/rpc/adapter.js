@@ -63,13 +63,13 @@ const createAxios = function (baseURL) {
   })
 }
 
-const AxiosRpc = function (baseURL) {
+const AxiosRpcAdapter = function (baseURL) {
   setAxios(this, createAxios(baseURL))
 }
 
 for (const define of api) {
   const { name, method, path } = define
-  Object.assign(AxiosRpc.prototype, {
+  Object.assign(AxiosRpcAdapter.prototype, {
     [name]: createMethod({
       method,
       path
@@ -77,9 +77,9 @@ for (const define of api) {
   })
 }
 
-export const createRpc = function (baseURL) {
-  const fetcher = new AxiosRpc(baseURL)
+export const createAxiosRpcAdapter = function (baseURL) {
+  const rpc = new AxiosRpcAdapter(baseURL)
   return function (name, payload) {
-    return fetcher[name](payload)
+    return rpc[name](payload)
   }
 }

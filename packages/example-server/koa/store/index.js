@@ -1,5 +1,5 @@
 import createDebug from 'debug'
-import { createRpc } from './rpc.js'
+import { createKoaRpcAdapter } from './rpc.js'
 const debug = createDebug('app:koa:store')
 
 const createStore = function (rpc) {
@@ -26,7 +26,7 @@ export function extendKoaStore (context) {
         if (this[CONTEXT_RPC]) {
           return this[CONTEXT_RPC]
         }
-        this[CONTEXT_RPC] = createRpc(this)
+        this[CONTEXT_RPC] = createKoaRpcAdapter(this)
         return this[CONTEXT_RPC]
       }
     },

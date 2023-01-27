@@ -4,37 +4,23 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import 'nprogress/nprogress.css'
 import NProgress from 'nprogress'
-import { createApp, createStore, createRouter } from '../../../index.js'
+import { createApp, createRouter } from '../../../index.js'
+import { createStore, createStoreOptions } from '../../../store.js'
 
 import createDebug from 'debug'
 import state from './inital-state.js'
-import { createRpc } from './rpc/create.js'
+import { createAxiosRpcAdapter } from './rpc/adapter.js'
 
 const debug = createDebug('app:vue:outlet:browser')
 NProgress.start()
 
-export function createStoreOptions (state) {
-  debug('createStore')
-
-  const rpc = createRpc('/')
-  return {
-    state,
-    actions: {},
-    mutations: {},
-    getters: {
-      rpc: function () {
-        return rpc
-      }
-    }
-  }
-}
-
 const main = function (state) {
-  const storeOptions = createStoreOptions(state)
-  const store = createStore(storeOptions)
+  const rpc = createAxiosRpcAdapter('/')
+  const store = createStore(createStoreOptions(rpc))
+  store.replaceState(state)
   const router = createRouter(store)
 
-  const vm = createApp({
+  const app = createApp({
     store,
     router
   })
@@ -70,14 +56,14 @@ const main = function (state) {
 
   router.onReady(() => {
     debug('onReady')
-    vm.$mount('[data-server-rendered]', true)
+    app.$mount('[data-server-rendered]', true)
     NProgress.done()
   })
 
-  if (vm.$root.constructor.config.devtools) {
-    window.vm = vm
+  if (app.$root.constructor.config.devtools) {
+    window.vm = app
   }
-  return vm
+  return app
 }
 
 ;(async function () {
