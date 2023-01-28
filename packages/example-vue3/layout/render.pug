@@ -1,0 +1,27 @@
+div
+  template(v-if="auth.uid")
+    sidenav(ref="sidenav")
+      .list-group
+        .list-group-item.border-bottom.rounded-0 Hi! {{auth.uid}}
+        portal-target(name="sidenav-block")
+        router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'home'}" exact) Home
+        //- router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'base64',query:{v:'base64'}}") Base64
+        //- router-link.list-group-item.list-group-item-action.border-bottom.rounded-0(:to="{name:'note'}") Note
+        a.list-group-item.list-group-item-action.border-bottom.rounded-0(href="/sign-out") Sign Out
+    nav.navbar.navbar-dark.bg-dark
+      slot(name="navbar-toggler")
+        button.navbar-toggler.px-1.mx-1(type='button' @click="$refs.sidenav.toggle()")
+          span.navbar-toggler-icon
+      span.navbar-brand(slot="brand-title") {{$route.meta.brandTitle}}
+      ul.navbar-nav.ml-auto(v-if="auth.uid")
+        li.nav-item
+          b-dropdown(right size="sm" variant="link")
+            template(slot="button-content")
+              .navbar-text {{auth.uid}}
+            b-dropdown-header.m-0.mx-2.p-0.px-1
+              p.m-0.p-0.px-1
+                h6.m-0 {{auth.uid}}
+                | {{auth.uid}}
+            b-dropdown-divider
+            b-dropdown-item(href='/sign-out') Sign Out
+  slot

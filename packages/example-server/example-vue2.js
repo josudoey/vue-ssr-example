@@ -54,9 +54,9 @@ export function createRoute (ssr) {
         }
         debug(`redirect to ${err.currentRoute.fullPath}`)
         ctx.redirect(err.currentRoute.fullPath)
-      } else {
-        ctx.redirect('/')
       }
+
+      ctx.throw(err)
     }
   }
 }

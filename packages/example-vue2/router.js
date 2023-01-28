@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes/index.js'
 import * as authStoreModule from './outlet/auth/store.js'
-import { once } from 'lodash'
+import once from 'lodash/once.js'
 import createDebug from 'debug'
 const debug = createDebug('app:create-router')
 Vue.use(VueRouter)

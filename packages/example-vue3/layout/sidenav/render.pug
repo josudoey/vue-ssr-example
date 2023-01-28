@@ -1,0 +1,5 @@
+span
+  .sidenav-overlay(v-if="show" @click="toggle")
+  transition(name="sidenav")
+    nav.sidenav.bg-light(v-if="show")
+      slot

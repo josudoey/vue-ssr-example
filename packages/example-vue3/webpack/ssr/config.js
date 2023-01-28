@@ -10,9 +10,9 @@ export default function (env) {
   return {
     devtool: 'source-map',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    target: 'node',
-    externals: [],
     entry: require.resolve('./entry/main.js'),
+    target: 'node',
+    externals: ['debug'],
     externalsType: 'node-commonjs',
     output: {
       clean: true,
@@ -20,7 +20,13 @@ export default function (env) {
       libraryTarget: 'commonjs2'
     },
     resolve: {
-      alias: {}
+      alias: {
+        // see https://webpack.js.org/configuration/resolve/#resolvealias
+        axios: false, // return module.exports = {}
+        'socket.io-client': false,
+        'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
+        vue$: '@vue/compat'
+      }
     },
     optimization: {
       minimizer: [
@@ -58,7 +64,7 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/vue3-template-loader'),
+          loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
           loader: require.resolve('~webpack5/pug-plain-loader')
@@ -95,10 +101,10 @@ export default function (env) {
       }]
     },
     plugins: [
-      new webpack.DefinePlugin({
-        __VUE_OPTIONS_API__: true,
-        __VUE_PROD_DEVTOOLS__: false
-      }),
+      // new webpack.DefinePlugin({
+      //   __VUE_OPTIONS_API__: true,
+      //   __VUE_PROD_DEVTOOLS__: false
+      // }),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'

@@ -1,0 +1,10 @@
+.red {
+  color: red;
+}
+
+.example-img {
+  width: 10px;
+  height: 10px;
+  border-style: solid;
+  background: url(./image.png);
+}

@@ -27,6 +27,7 @@
     "vuex-router-sync": "^5.0.0",
     "lodash": "^4.17.21",
     "path-to-regexp": "^6.2.1",
+    "~vue2-template-loader": "workspace:*",
     "~webpack5": "workspace:*"
   }
 }

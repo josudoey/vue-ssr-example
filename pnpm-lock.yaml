@@ -11,6 +11,8 @@ importers:
       '@typescript-eslint/eslint-plugin': ^5.0.0
       '@typescript-eslint/parser': ^5.0.0
       ~example-server: workspace:*
+      ~example-vue2: workspace:*
+      ~example-vue3: workspace:*
       debug: ^4.3.3
       eslint: ^8.24.0
       eslint-config-standard-with-typescript: ^23.0.0
@@ -22,6 +24,8 @@ importers:
       typescript: ^4.8.3
     dependencies:
       ~example-server: link:packages/example-server
+      ~example-vue2: link:packages/example-vue2
+      ~example-vue3: link:packages/example-vue3
       debug: 4.3.4
     devDependencies:
       '@babel/core': 7.20.12
@@ -41,8 +45,6 @@ importers:
 
   packages/example-server:
     specifiers:
-      ~example-vue2: workspace:*
-      ~example-vue3: workspace:*
       axios: ^0.24.0
       basic-auth: ^2.0.1
       csrf: ^3.1.0
@@ -70,12 +72,10 @@ importers:
       lru-cache: 6.0.0
       socket.io: 4.4.1
       yup: 0.32.11
-    devDependencies:
-      ~example-vue2: link:../example-vue2
-      ~example-vue3: link:../example-vue3
 
   packages/example-vue2:
     specifiers:
+      ~vue2-template-loader: workspace:*
       ~webpack5: workspace:*
       axios: ^0.24.0
       bootstrap: ^4.6.1
@@ -99,10 +99,11 @@ importers:
       vuex: ^3.6.2
       vuex-router-sync: ^5.0.0
     devDependencies:
+      ~vue2-template-loader: link:../vue2-template-loader
       ~webpack5: link:../webpack5
       axios: 0.24.0_debug@4.3.4
       bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
-      bootstrap-vue: 2.21.2_jquery@3.6.0+vue@2.7.14
+      bootstrap-vue: 2.23.1_jquery@3.6.0+vue@2.7.14
       debug: 4.3.4
       flatpickr: 4.6.9
       jquery: 3.6.0
@@ -124,35 +125,43 @@ importers:
 
   packages/example-vue3:
     specifiers:
-      '@popperjs/core': ^2.11.6
+      '@vue/compat': ^3.2.45
+      ~vue3-template-loader: workspace:*
       ~webpack5: workspace:*
-      bootstrap: ^5.2.3
-      bootstrap-vue-3: ^0.1.0
+      axios: ^0.24.0
+      bootstrap: ^4.6.1
+      bootstrap-vue: ^2.23.0
+      jquery: ^3.6.0
+      lodash: ^4.17.21
       msgpackr: ^1.8.2
+      path-to-regexp: ^6.2.1
       pinia: ^2.0.29
+      popper.js: ^1.16.1
+      portal-vue: ^3.0.0
+      socket.io-client: ^4.4.1
       vue: ^3.2.45
+      vue-meta: ^2.4.0
       vue-router: ^4.1.6
       vuex: ^4.1.0
     devDependencies:
-      '@popperjs/core': 2.11.6
+      '@vue/compat': 3.2.45_vue@3.2.45
+      ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
-      bootstrap: 5.2.3_@popperjs+core@2.11.6
-      bootstrap-vue-3: 0.1.2_@popperjs+core@2.11.6
+      axios: 0.24.0_debug@4.3.4
+      bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
+      bootstrap-vue: 2.23.1_jquery@3.6.0+vue@3.2.45
+      jquery: 3.6.0
+      lodash: 4.17.21
       msgpackr: 1.8.2
+      path-to-regexp: 6.2.1
       pinia: 2.0.29_typescript@4.8.4+vue@3.2.45
+      popper.js: 1.16.1
+      portal-vue: 3.0.0_vue@3.2.45
+      socket.io-client: 4.4.1
       vue: 3.2.45
+      vue-meta: 2.4.0
       vue-router: 4.1.6_vue@3.2.45
       vuex: 4.1.0_vue@3.2.45
-
-  packages/vue-compat:
-    specifiers:
-      '@vue/compat': ^3.2.45
-      '@vue/compiler-sfc': ^3.2.45
-      vue: ^3.2.45
-    devDependencies:
-      '@vue/compat': 3.2.45_vue@3.2.45
-      '@vue/compiler-sfc': 3.2.45
-      vue: 3.2.45
 
   packages/vue2-template-loader:
     specifiers:
@@ -180,9 +189,6 @@ importers:
 
   packages/webpack5:
     specifiers:
-      ~vue-compat: workspace:^0.0.0
-      ~vue2-template-loader: workspace:*
-      ~vue3-template-loader: workspace:*
       css-loader: ^6.7.3
       css-minimizer-webpack-plugin: ^4.2.2
       html-loader: ^4.2.0
@@ -194,9 +200,6 @@ importers:
       webpack-cli: ^5.0.1
       webpack-manifest-plugin: ^5.0.0
     devDependencies:
-      ~vue-compat: link:../vue-compat
-      ~vue2-template-loader: link:../vue2-template-loader
-      ~vue3-template-loader: link:../vue3-template-loader
       css-loader: 6.7.3_webpack@5.75.0
       css-minimizer-webpack-plugin: 4.2.2_webpack@5.75.0
       html-loader: 4.2.0_webpack@5.75.0
@@ -649,10 +652,6 @@ packages:
       node-fetch: 2.6.7
     transitivePeerDependencies:
       - encoding
-    dev: true
-
-  /@popperjs/core/2.11.6:
-    resolution: {integrity: sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==}
     dev: true
 
   /@sinclair/typebox/0.25.21:
@@ -1396,23 +1395,29 @@ packages:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
     dev: true
 
-  /bootstrap-vue-3/0.1.2_@popperjs+core@2.11.6:
-    resolution: {integrity: sha512-Fg/YU0fOyoQf/88I/vZjeXE4P6qdZwFZn9PCwzgBgwUSBZMUWCzqtBwP5GeC53mBAlmeTge9hpChPfIfYsXp3g==}
-    dependencies:
-      bootstrap: 5.2.3_@popperjs+core@2.11.6
-      core-js: 3.21.0
-    transitivePeerDependencies:
-      - '@popperjs/core'
-    dev: true
-
-  /bootstrap-vue/2.21.2_jquery@3.6.0+vue@2.7.14:
-    resolution: {integrity: sha512-0Exe+4MZysqhZNXIKf4TzkvXaupxh9EHsoCRez0o5Dc0J7rlafayOEwql63qXv74CgZO8E4U8ugRNJko1vMvNw==}
+  /bootstrap-vue/2.23.1_jquery@3.6.0+vue@2.7.14:
+    resolution: {integrity: sha512-SEWkG4LzmMuWjQdSYmAQk1G/oOKm37dtNfjB5kxq0YafnL2W6qUAmeDTcIZVbPiQd2OQlIkWOMPBRGySk/zGsg==}
     requiresBuild: true
     dependencies:
       '@nuxt/opencollective': 0.3.2
       bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
       popper.js: 1.16.1
       portal-vue: 2.1.7_vue@2.7.14
+      vue-functional-data-merge: 3.1.0
+    transitivePeerDependencies:
+      - encoding
+      - jquery
+      - vue
+    dev: true
+
+  /bootstrap-vue/2.23.1_jquery@3.6.0+vue@3.2.45:
+    resolution: {integrity: sha512-SEWkG4LzmMuWjQdSYmAQk1G/oOKm37dtNfjB5kxq0YafnL2W6qUAmeDTcIZVbPiQd2OQlIkWOMPBRGySk/zGsg==}
+    requiresBuild: true
+    dependencies:
+      '@nuxt/opencollective': 0.3.2
+      bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
+      popper.js: 1.16.1
+      portal-vue: 2.1.7_vue@3.2.45
       vue-functional-data-merge: 3.1.0
     transitivePeerDependencies:
       - encoding
@@ -1428,14 +1433,6 @@ packages:
     dependencies:
       jquery: 3.6.0
       popper.js: 1.16.1
-    dev: true
-
-  /bootstrap/5.2.3_@popperjs+core@2.11.6:
-    resolution: {integrity: sha512-cEKPM+fwb3cT8NzQZYEu4HilJ3anCrWqh3CHAok1p9jXqMPsPTBhU25fBckEJHJ/p+tTxTFTsFQGM+gaHpi3QQ==}
-    peerDependencies:
-      '@popperjs/core': ^2.11.6
-    dependencies:
-      '@popperjs/core': 2.11.6
     dev: true
 
   /boxen/5.1.2:
@@ -1785,11 +1782,6 @@ packages:
   /copy-to/2.0.1:
     resolution: {integrity: sha512-3DdaFaU/Zf1AnpLiFDeNCD4TOWe3Zl2RZaTzUvWiIk5ERzcCodOE20Vqq4fzCbNoHURFHT4/us/Lfq+S2zyY4w==}
     dev: false
-
-  /core-js/3.21.0:
-    resolution: {integrity: sha512-YUdI3fFu4TF/2WykQ2xzSiTQdldLB4KVuL9WeAy5XONZYt5Cun/fpQvctoKbCgvPhmzADeesTk/j2Rdx77AcKQ==}
-    requiresBuild: true
-    dev: true
 
   /core-util-is/1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -4097,6 +4089,26 @@ packages:
       vue: ^2.5.18
     dependencies:
       vue: 2.7.14
+    dev: true
+
+  /portal-vue/2.1.7_vue@3.2.45:
+    resolution: {integrity: sha512-+yCno2oB3xA7irTt0EU5Ezw22L2J51uKAacE/6hMPMoO/mx3h4rXFkkBkT4GFsMDv/vEe8TNKC3ujJJ0PTwb6g==}
+    peerDependencies:
+      vue: ^2.5.18
+    dependencies:
+      vue: 3.2.45
+    dev: true
+
+  /portal-vue/3.0.0_vue@3.2.45:
+    resolution: {integrity: sha512-9eprMxNURLx6ijbcgkWjYNcTWJYu/H8QF8nyAeBzOmk9lKCea01BW1hYBeLkgz+AestmPOvznAEOFmNuO4Adjw==}
+    engines: {node: '>=14.19'}
+    peerDependencies:
+      vue: ^3.0.4
+    peerDependenciesMeta:
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.2.45
     dev: true
 
   /postcss-calc/8.2.4_postcss@8.4.21:

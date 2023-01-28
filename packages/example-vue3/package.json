@@ -5,14 +5,23 @@
   "description": "",
   "type": "module",
   "devDependencies": {
-    "@popperjs/core": "^2.11.6",
-    "bootstrap": "^5.2.3",
-    "bootstrap-vue-3": "^0.1.0",
     "msgpackr": "^1.8.2",
     "pinia": "^2.0.29",
     "vue": "^3.2.45",
+    "bootstrap": "^4.6.1",
+    "bootstrap-vue": "^2.23.0",
+    "jquery": "^3.6.0",
+    "popper.js": "^1.16.1",
+    "portal-vue": "^3.0.0",
+    "vue-meta": "^2.4.0",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0",
+    "@vue/compat": "^3.2.45",
+    "axios": "^0.24.0",
+    "socket.io-client": "^4.4.1",
+    "lodash": "^4.17.21",
+    "path-to-regexp": "^6.2.1",
+    "~vue3-template-loader": "workspace:*",
     "~webpack5": "workspace:*"
   }
 }

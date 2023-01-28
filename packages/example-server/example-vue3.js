@@ -36,9 +36,9 @@ export function createRoute (ssr) {
           return
         }
         ctx.redirect(err.currentRoute.fullPath)
-      } else {
-        ctx.redirect('/')
+        return
       }
+      ctx.throw(err)
     }
   }
 }

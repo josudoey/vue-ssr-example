@@ -16,7 +16,9 @@ export default function (env) {
     entry: require.resolve('./entry/main.js'),
     resolve: {
       alias: {
-        vue$: require.resolve('~webpack5/vue-compat.js')
+        axios$: 'axios/dist/axios.js',
+        'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
+        vue$: '@vue/compat'
       }
     },
     output: {
@@ -65,7 +67,7 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/vue3-template-loader.js'),
+          loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
           loader: require.resolve('~webpack5/pug-plain-loader.js')

@@ -1,30 +1,72 @@
+import * as css from './module.css'
+import './style.css'
 import * as render from './render.pug'
-import * as css from './style.css'
-import { useHomeStore } from './store.js'
-import { storeToRefs, mapActions } from 'pinia'
+import createDebug from 'debug'
+import { io as SocketIo } from 'socket.io-client'
 
+const debug = createDebug('app:view:home')
+debug('home module loaded')
 export default {
   ...render,
-  setup () { },
-  data () {
-    const homeStore = useHomeStore()
-    const { time } = storeToRefs(homeStore)
-
+  // see https://vuejs.org/v2/api/#provide-inject
+  inject: ['auth', 'toggleSidenav'],
+  data: function () {
     return {
-      homeStore,
-      time,
+      socket: null,
+      text: 'server time',
       css,
-      msg: ''
+      now: 0
     }
   },
-  mounted () {
+  beforeRouteEnter: function (to, from, next) {
+    debug(`${to.name} beforeRouteEnter`)
+    next()
   },
   methods: {
-    ...mapActions(useHomeStore, { refreshTime: 'refresh' }),
-    async refresh () {
-      await this.refreshTime()
-      const { time } = this
-      this.msg = `time: ${time}`
+    makeToast () {
+      this.$bvToast.toast('make toast', {
+        title: 'BootstrapVue Toast',
+        autoHideDelay: 5000,
+        appendToast: true
+      })
     }
+  },
+  beforeCreate: function () {
+    debug('beforeCreate')
+  },
+  created: function () {
+    debug('created')
+  },
+  beforeMount: function () {
+    debug('home: beforeMount')
+    this.text = 'browser time'
+  },
+  mounted: function () {
+    debug('mounted')
+    const namespace = '/'
+    const socket = this.socket = new SocketIo(namespace, {})
+
+    const self = this
+    socket.on('connect', () => {
+      socket.on('now', function (now) {
+        self.now = now
+      })
+    })
+
+    // see https://socket.io/docs/v4/client-socket-instance/#events
+    socket.on('connect_error', (err) => {
+      console.log(err) // err
+    })
+
+    socket.on('disconnect', () => {
+      console.log('socket disconnect')
+    })
+  },
+  beforeDestroy: function () {
+    debug('beforeDestroy')
+  },
+  destroyed: function () {
+    this.socket.disconnect()
+    debug('destroyed')
   }
 }

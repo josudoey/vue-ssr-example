@@ -26,7 +26,7 @@ export function createHtmlRenderer ({ manifest }) {
   return {
     async render (path, { rpc }) {
       const store = createStore(createStoreOptions(rpc))
-      const router = createMemoryRouter()
+      const router = createMemoryRouter(store)
       const pinia = createPinia()
       const app = await createApp().use(pinia).use(store).use(router)
       const failure = await router.push(path).catch((err) => err)

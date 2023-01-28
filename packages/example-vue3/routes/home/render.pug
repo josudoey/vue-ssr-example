@@ -1,3 +1,18 @@
-button.btn.btn-sm.btn-primary(@click="refresh") refresh
-template(v-if="!msg") server time: {{time}}
-div(v-else :class="[css.red]") this is is client message: {{msg}}
+div
+  p auth.uid: {{auth.uid}}
+  p this {{text}} is: {{now}}
+  br
+  p.pb-0(:class='[css.red]') red text class name: {{css.red}}
+  p.pb-0(class='blue') blue text class name: blue
+  p example image
+    div(:class='[css.exampleImg]')
+  br
+  b-button(@click='makeToast(true)') Show Toast (appended)
+  br
+  b-button(@click='toggleSidenav') Toggle Sidenav
+  portal(to="sidenav-block")
+    .list-group-item.border-bottom.rounded-0
+      p.mb-0 auth.uid: {{auth.uid}}
+    .list-group-item.border-bottom.rounded-0
+      p.mb-0 this2 {{text}} is: {{now}}
+

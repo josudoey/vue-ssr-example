@@ -19,8 +19,5 @@
     "socket.io": "^4.4.1",
     "yup": "^0.32.11"
   },
-  "devDependencies": {
-    "~example-vue2": "workspace:*",
-    "~example-vue3": "workspace:*"
-  }
+  "devDependencies": {}
 }

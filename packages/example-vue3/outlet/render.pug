@@ -1,2 +1,4 @@
-router-view(v-slot="{ Component }")
-  component(:is="Component")
+layout
+  router-view(v-slot="{ Component }")
+    transition
+      component(:is="Component")

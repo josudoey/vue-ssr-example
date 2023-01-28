@@ -1,4 +1,5 @@
 import { createStore, createStoreOptions } from '../store/index.js'
+import { createAxiosRpcAdapter } from './rpc/adapter.js'
 import { unpack } from 'msgpackr/unpack'
 
 function decode (encoded) {
@@ -9,7 +10,7 @@ function decode (encoded) {
 }
 
 export function getHydrateStore (window) {
-  const rpc = {}
+  const rpc = createAxiosRpcAdapter('/')
   if (!window.__INITIAL_STATE__) {
     return createStore(createStoreOptions(rpc))
   }
