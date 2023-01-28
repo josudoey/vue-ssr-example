@@ -7,12 +7,12 @@
     "ncu": "npx npm-check-updates",
     "build:example-vue2": "NODE_ENV=production node ./scripts/build-example-vue2.mjs",
     "build:example-vue3": "NODE_ENV=production node ./scripts/build-example-vue3.mjs",
-    "build": "npm run build:example-vue2&&npm run build:example-vue3",
+    "build": "NODE_ENV=production node ./scripts/build-all.mjs",
     "start": "NODE_ENV=production node ./main.mjs",
     "build:dev:example-vue2": "node ./scripts/build-example-vue2.mjs",
     "build:dev:example-vue3": "node ./scripts/build-example-vue3.mjs",
-    "build:dev": "npm run build:dev:example-vue2&&npm run build:dev:example-vue3",
-    "dev": "DEBUG=app:* nodemon --trace-warnings -e js,cjs,mjs,css,html,pug --ignore ./dist.dev/** --exec 'npm run build:dev&&node ./main.mjs'"
+    "build:dev": "node ./scripts/build-all.mjs",
+    "dev": "DEBUG=app:* nodemon --delay 1.5 --trace-warnings -e js,cjs,mjs,css,html,pug --ignore ./dist.dev/** --exec 'npm run build:dev&&node ./main.mjs'"
   },
   "repository": {
     "type": "git",

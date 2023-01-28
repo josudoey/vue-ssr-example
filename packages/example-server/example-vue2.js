@@ -54,6 +54,7 @@ export function createRoute (ssr) {
         }
         debug(`redirect to ${err.currentRoute.fullPath}`)
         ctx.redirect(err.currentRoute.fullPath)
+        return
       }
 
       ctx.throw(err)

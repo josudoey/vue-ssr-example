@@ -19,10 +19,10 @@ Vue.component('PortalTarget', PortalTarget)
 
 export function createApp ({ store, router }) {
   debug('createApp')
-  const vm = new Vue({
+  const app = new Vue({
     store,
     router,
     ...outlet
   })
-  return vm
+  return app
 }

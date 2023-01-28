@@ -58,16 +58,16 @@ export default {
     // return the Promise from the action
     // so that the component waits before rendering
   },
-  beforeMount: function () {
+  beforeMount () {
     debug('beforeMount')
   },
-  mounted: function () {
+  mounted () {
     debug('mounted')
   },
-  beforeDestroy: function () {
-    debug('beforeDestroy')
+  beforeUnmount () {
+    debug('beforeUnmount')
   },
-  destroyed: function () {
-    debug('destroyed')
+  unmounted () {
+    debug('unmounted')
   }
 }

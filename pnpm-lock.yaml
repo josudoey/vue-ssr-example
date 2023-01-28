@@ -126,18 +126,18 @@ importers:
   packages/example-vue3:
     specifiers:
       '@vue/compat': ^3.2.45
+      '@vue/server-renderer': ^3.2.45
       ~vue3-template-loader: workspace:*
       ~webpack5: workspace:*
       axios: ^0.24.0
       bootstrap: ^4.6.1
       bootstrap-vue: ^2.23.0
-      jquery: ^3.6.0
       lodash: ^4.17.21
       msgpackr: ^1.8.2
       path-to-regexp: ^6.2.1
       pinia: ^2.0.29
       popper.js: ^1.16.1
-      portal-vue: ^3.0.0
+      portal-vue: ^2.1.7
       socket.io-client: ^4.4.1
       vue: ^3.2.45
       vue-meta: ^2.4.0
@@ -145,18 +145,18 @@ importers:
       vuex: ^4.1.0
     devDependencies:
       '@vue/compat': 3.2.45_vue@3.2.45
+      '@vue/server-renderer': 3.2.45_vue@3.2.45
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
       axios: 0.24.0_debug@4.3.4
-      bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
-      bootstrap-vue: 2.23.1_jquery@3.6.0+vue@3.2.45
-      jquery: 3.6.0
+      bootstrap: 4.6.1_popper.js@1.16.1
+      bootstrap-vue: 2.23.1_vue@3.2.45
       lodash: 4.17.21
       msgpackr: 1.8.2
       path-to-regexp: 6.2.1
       pinia: 2.0.29_typescript@4.8.4+vue@3.2.45
       popper.js: 1.16.1
-      portal-vue: 3.0.0_vue@3.2.45
+      portal-vue: 2.1.7_vue@3.2.45
       socket.io-client: 4.4.1
       vue: 3.2.45
       vue-meta: 2.4.0
@@ -1410,12 +1410,12 @@ packages:
       - vue
     dev: true
 
-  /bootstrap-vue/2.23.1_jquery@3.6.0+vue@3.2.45:
+  /bootstrap-vue/2.23.1_vue@3.2.45:
     resolution: {integrity: sha512-SEWkG4LzmMuWjQdSYmAQk1G/oOKm37dtNfjB5kxq0YafnL2W6qUAmeDTcIZVbPiQd2OQlIkWOMPBRGySk/zGsg==}
     requiresBuild: true
     dependencies:
       '@nuxt/opencollective': 0.3.2
-      bootstrap: 4.6.1_jquery@3.6.0+popper.js@1.16.1
+      bootstrap: 4.6.1_popper.js@1.16.1
       popper.js: 1.16.1
       portal-vue: 2.1.7_vue@3.2.45
       vue-functional-data-merge: 3.1.0
@@ -1432,6 +1432,15 @@ packages:
       popper.js: ^1.16.1
     dependencies:
       jquery: 3.6.0
+      popper.js: 1.16.1
+    dev: true
+
+  /bootstrap/4.6.1_popper.js@1.16.1:
+    resolution: {integrity: sha512-0dj+VgI9Ecom+rvvpNZ4MUZJz8dcX7WCX+eTID9+/8HgOkv3dsRzi8BGeZJCQU6flWQVYxwTQnEZFrmJSEO7og==}
+    peerDependencies:
+      jquery: 1.9.1 - 3
+      popper.js: ^1.16.1
+    dependencies:
       popper.js: 1.16.1
     dev: true
 
@@ -4095,18 +4104,6 @@ packages:
     resolution: {integrity: sha512-+yCno2oB3xA7irTt0EU5Ezw22L2J51uKAacE/6hMPMoO/mx3h4rXFkkBkT4GFsMDv/vEe8TNKC3ujJJ0PTwb6g==}
     peerDependencies:
       vue: ^2.5.18
-    dependencies:
-      vue: 3.2.45
-    dev: true
-
-  /portal-vue/3.0.0_vue@3.2.45:
-    resolution: {integrity: sha512-9eprMxNURLx6ijbcgkWjYNcTWJYu/H8QF8nyAeBzOmk9lKCea01BW1hYBeLkgz+AestmPOvznAEOFmNuO4Adjw==}
-    engines: {node: '>=14.19'}
-    peerDependencies:
-      vue: ^3.0.4
-    peerDependenciesMeta:
-      vue:
-        optional: true
     dependencies:
       vue: 3.2.45
     dev: true

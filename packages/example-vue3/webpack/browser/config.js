@@ -18,7 +18,7 @@ export default function (env) {
       alias: {
         axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
-        vue$: '@vue/compat'
+        vue: '@vue/compat'
       }
     },
     output: {
@@ -85,12 +85,10 @@ export default function (env) {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
-        test: /\.css$/,
-        exclude: /node_modules/,
+        test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
-          options: {
-          }
+          options: {}
         }, {
           loader: require.resolve('~webpack5/css-loader'),
           options: {
@@ -98,21 +96,20 @@ export default function (env) {
               namedExport: true,
               localIdentName: '__[hash:base64:5]'
             },
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }, {
         test: /\.css$/,
-        include: /node_modules/,
+        exclude: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            esModule: true
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
           options: {
-            importLoaders: 1
+            importLoaders: 0
           }
         }]
       }]

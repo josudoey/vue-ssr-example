@@ -1,4 +1,7 @@
 /* global __webpack_hash__ */
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import { createWebRouter } from '../../../router.js'
 import { getHydratePinia } from '../../../pinia/hydrate.js'

@@ -108,8 +108,7 @@ export default function (env) {
         test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
-          options: {
-          }
+          options: {}
         }, {
           loader: require.resolve('~webpack5/css-loader'),
           options: {

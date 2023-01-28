@@ -16,10 +16,10 @@ div
       ul.navbar-nav.ml-auto(v-if="auth.uid")
         li.nav-item
           b-dropdown(right size="sm" variant="link")
-            template(slot="button-content")
+            template(v-slot:button-content)
               .navbar-text {{auth.uid}}
             b-dropdown-header.m-0.mx-2.p-0.px-1
-              p.m-0.p-0.px-1
+              .m-0.p-0.px-1
                 h6.m-0 {{auth.uid}}
                 | {{auth.uid}}
             b-dropdown-divider

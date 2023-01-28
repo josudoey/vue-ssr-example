@@ -1,4 +1,4 @@
-import { renderToString } from 'vue/server-renderer'
+import { renderToString } from '@vue/server-renderer'
 import { renderPiniaToString } from './pinia/render.js'
 import { renderStoreStateToString } from './store/render.js'
 

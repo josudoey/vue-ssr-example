@@ -5,7 +5,7 @@ div
   p.pb-0(:class='[css.red]') red text class name: {{css.red}}
   p.pb-0(class='blue') blue text class name: blue
   p example image
-    div(:class='[css.exampleImg]')
+  div(:class='[css.exampleImg]')
   br
   b-button(@click='makeToast(true)') Show Toast (appended)
   br
@@ -15,4 +15,3 @@ div
       p.mb-0 auth.uid: {{auth.uid}}
     .list-group-item.border-bottom.rounded-0
       p.mb-0 this2 {{text}} is: {{now}}
-

@@ -82,7 +82,7 @@ export default function (env) {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
       }, {
-        test: /\.css$/,
+        test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
@@ -95,16 +95,30 @@ export default function (env) {
               namedExport: true,
               localIdentName: '__[hash:base64:5]'
             },
-            importLoaders: 1
+            importLoaders: 0
+          }
+        }]
+      }, {
+        test: /\.css$/,
+        exclude: /module\.css$/,
+        use: [{
+          loader: MiniCssExtractPlugin.loader,
+          options: {
+            emit: false
+          }
+        }, {
+          loader: require.resolve('~webpack5/css-loader'),
+          options: {
+            importLoaders: 0
           }
         }]
       }]
     },
     plugins: [
-      // new webpack.DefinePlugin({
-      //   __VUE_OPTIONS_API__: true,
-      //   __VUE_PROD_DEVTOOLS__: false
-      // }),
+      new webpack.DefinePlugin({
+        __VUE_OPTIONS_API__: true,
+        __VUE_PROD_DEVTOOLS__: false
+      }),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'

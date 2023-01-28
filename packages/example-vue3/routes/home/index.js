@@ -8,9 +8,10 @@ const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
   ...render,
+  compatConfig: { MODE: 2 },
   // see https://vuejs.org/v2/api/#provide-inject
   inject: ['auth', 'toggleSidenav'],
-  data: function () {
+  data () {
     return {
       socket: null,
       text: 'server time',
@@ -31,17 +32,16 @@ export default {
       })
     }
   },
-  beforeCreate: function () {
+  beforeCreate () {
     debug('beforeCreate')
   },
-  created: function () {
+  created () {
     debug('created')
   },
-  beforeMount: function () {
+  beforeMount () {
     debug('home: beforeMount')
-    this.text = 'browser time'
   },
-  mounted: function () {
+  mounted () {
     debug('mounted')
     const namespace = '/'
     const socket = this.socket = new SocketIo(namespace, {})
@@ -62,11 +62,11 @@ export default {
       console.log('socket disconnect')
     })
   },
-  beforeDestroy: function () {
-    debug('beforeDestroy')
+  beforeUnmounted () {
+    debug('beforeUnmounted')
   },
-  destroyed: function () {
+  unmounted () {
     this.socket.disconnect()
-    debug('destroyed')
+    debug('unmounted')
   }
 }
