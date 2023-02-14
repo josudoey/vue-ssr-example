@@ -5,7 +5,7 @@ const debug = createDebug('app:outlet')
 
 export default {
   ...render,
-  compatConfig: { MODE: 2 },
+  // compatConfig: { MODE: 2 },
   components: {
     layout
   },

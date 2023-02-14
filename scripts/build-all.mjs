@@ -1,5 +1,6 @@
 import env from '../env.mjs'
-import { exampleVue2Build, exampleVue3Build } from './build.mjs'
+import { exampleVue2Build } from './build-example-vue2.mjs'
+import { exampleVue3Build } from './build-example-vue3.mjs'
 
 (async function () {
   await Promise.all([

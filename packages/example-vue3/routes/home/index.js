@@ -8,7 +8,7 @@ const debug = createDebug('app:view:home')
 debug('home module loaded')
 export default {
   ...render,
-  compatConfig: { MODE: 2 },
+  // compatConfig: { MODE: 2 },
   // see https://vuejs.org/v2/api/#provide-inject
   inject: ['auth', 'toggleSidenav'],
   data () {

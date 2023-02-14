@@ -1,8 +1,8 @@
-import { pack } from 'msgpackr/pack'
+import InitalStateStringify from '~inital-state/stringify.js'
 import entryServerBasicRenderer from 'vue-server-renderer/basic.js'
 
 export function renderStoreStateToString (app) {
-  const initalState = pack(app.$store.state).toString('base64')
+  const initalState = InitalStateStringify(app.$store.state)
   return `<script>window.__INITIAL_STATE__='${initalState}'</script>`
 }
 

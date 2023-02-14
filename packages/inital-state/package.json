@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "~inital-state",
+  "version": "0.0.0",
+  "main": "index.js",
+  "type": "module",
+  "peerDependencies": {},
+  "devDependencies": {
+    "base64-js": "^1.5.1",
+    "msgpackr": "^1.5.5"
+  }
+}

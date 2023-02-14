@@ -1,10 +1,10 @@
-import { pack } from 'msgpackr/pack'
+import InitalStateStringify from '~inital-state/stringify.js'
 
 export function renderPiniaToString (app, ctx) {
   const { $pinia } = app.config.globalProperties
   if (!$pinia) {
     return
   }
-  const piniaState = pack($pinia.state.value).toString('base64')
+  const piniaState = InitalStateStringify($pinia.state.value)
   ctx.pinia = `<script>window.__pinia='${piniaState}'</script>`
 }

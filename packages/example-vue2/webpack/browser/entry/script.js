@@ -8,7 +8,7 @@ import { createApp, createRouter } from '../../../index.js'
 import { createStore, createStoreOptions } from '../../../store.js'
 
 import createDebug from 'debug'
-import state from './inital-state.js'
+import InitalStateParse from '~inital-state/parse.js'
 import { createAxiosRpcAdapter } from './rpc/adapter.js'
 
 const debug = createDebug('app:vue:outlet:browser')
@@ -67,5 +67,7 @@ const main = function (state) {
 }
 
 ;(async function () {
-  main(state)
+  const initalState = InitalStateParse(window.__INITIAL_STATE__)
+  delete window.__INITIAL_STATE__
+  main(initalState)
 })()
