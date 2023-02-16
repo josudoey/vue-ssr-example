@@ -8,7 +8,7 @@ import { createApp, createRouter } from '../../../index.js'
 import { createStore, createStoreOptions } from '../../../store.js'
 
 import createDebug from 'debug'
-import InitalStateParse from '~inital-state/parse.js'
+import InitalStateParse from '~initial-state/parse.js'
 import { createAxiosRpcAdapter } from './rpc/adapter.js'
 
 const debug = createDebug('app:vue:outlet:browser')

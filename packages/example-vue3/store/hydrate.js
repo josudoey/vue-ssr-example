@@ -1,6 +1,6 @@
 import { createStore, createStoreOptions } from '../store/index.js'
 import { createAxiosRpcAdapter } from './rpc/adapter.js'
-import InitalStateParse from '~inital-state/parse.js'
+import InitalStateParse from '~initial-state/parse.js'
 
 export function getHydrateStore (window) {
   const rpc = createAxiosRpcAdapter('/')

@@ -75,7 +75,7 @@ importers:
 
   packages/example-vue2:
     specifiers:
-      ~inital-state: workspace:^0.0.0
+      ~initial-state: workspace:^0.0.0
       ~vue2-template-loader: workspace:*
       ~webpack5: workspace:*
       axios: ^0.24.0
@@ -99,7 +99,7 @@ importers:
       vuex: ^3.6.2
       vuex-router-sync: ^5.0.0
     devDependencies:
-      ~inital-state: link:../inital-state
+      ~initial-state: link:../initial-state
       ~vue2-template-loader: link:../vue2-template-loader
       ~webpack5: link:../webpack5
       axios: 0.24.0_debug@4.3.4
@@ -127,7 +127,7 @@ importers:
     specifiers:
       '@vue/compat': ^3.2.47
       '@vue/server-renderer': ^3.2.47
-      ~inital-state: workspace:^0.0.0
+      ~initial-state: workspace:^0.0.0
       ~vue3-template-loader: workspace:*
       ~webpack5: workspace:*
       axios: ^0.24.0
@@ -147,7 +147,7 @@ importers:
     devDependencies:
       '@vue/compat': 3.2.47_vue@3.2.47
       '@vue/server-renderer': 3.2.47_vue@3.2.47
-      ~inital-state: link:../inital-state
+      ~initial-state: link:../initial-state
       ~vue3-template-loader: link:../vue3-template-loader
       ~webpack5: link:../webpack5
       axios: 0.24.0_debug@4.3.4
@@ -165,7 +165,7 @@ importers:
       vue-router: 4.1.6_vue@3.2.47
       vuex: 4.1.0_vue@3.2.47
 
-  packages/inital-state:
+  packages/initial-state:
     specifiers:
       base64-js: ^1.5.1
       msgpackr: ^1.5.5

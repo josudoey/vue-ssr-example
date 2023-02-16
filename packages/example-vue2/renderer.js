@@ -1,4 +1,4 @@
-import InitalStateStringify from '~inital-state/stringify.js'
+import InitalStateStringify from '~initial-state/stringify.js'
 import entryServerBasicRenderer from 'vue-server-renderer/basic.js'
 
 export function renderStoreStateToString (app) {

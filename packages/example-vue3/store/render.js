@@ -1,4 +1,4 @@
-import InitalStateStringify from '~inital-state/stringify.js'
+import InitalStateStringify from '~initial-state/stringify.js'
 
 export function renderStoreStateToString (app) {
   if (!app.config.globalProperties.$store.state) {

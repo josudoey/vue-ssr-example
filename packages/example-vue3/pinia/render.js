@@ -1,4 +1,4 @@
-import InitalStateStringify from '~inital-state/stringify.js'
+import InitalStateStringify from '~initial-state/stringify.js'
 
 export function renderPiniaToString (app, ctx) {
   const { $pinia } = app.config.globalProperties

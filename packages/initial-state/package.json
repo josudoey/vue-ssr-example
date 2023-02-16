@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "~inital-state",
+  "name": "~initial-state",
   "version": "0.0.0",
   "main": "index.js",
   "type": "module",
