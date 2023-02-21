@@ -24,7 +24,7 @@ async function createServer (env) {
     .use(function (app) {
       extendKoaStore(app.context)
     })
-    .context().app
+    .instance()
 
   const router = createRouter()
   koaApp.use(router.routes())
@@ -64,7 +64,7 @@ async function createServer (env) {
 }
 
 function setupSocketIo (io) {
-  const app = getCurrentInstance().app
+  const app = getCurrentInstance()
   const koaSession = useSession()
 
   async function getKoaSession (socket) {
