@@ -1,5 +1,5 @@
 import Koa from 'koa'
-import { createUseableContext } from './useable.js'
+import { createComposable } from 'composable-hook'
 
 export function warn (message) {
   console.error(message)
@@ -10,7 +10,7 @@ const {
   provide,
   inject,
   createUseable
-} = createUseableContext({ warn })
+} = createComposable()
 
 export { getCurrentInstance, provide, inject }
 
