@@ -6,8 +6,7 @@ function createSSR ({ ssrPath }) {
 }
 
 function createManifest ({ manifestPath }) {
-  const manifest = createRequire(import.meta.url)(manifestPath)
-  return manifest
+  return createRequire(import.meta.url)(manifestPath)
 }
 
 export function createRoute (ssr) {
@@ -43,35 +42,33 @@ export function createRoute (ssr) {
   }
 }
 
-export default {
-  install (app, modulePaths) {
-    const {
-      manifestPath,
-      ssrPath
-    } = modulePaths
+export function createExample3VuePlugin ({
+  manifestPath,
+  ssrPath
+}) {
+  const ssr = createSSR({ ssrPath })
+  const { existsRoute } = ssr
+  const manifest = createManifest({ manifestPath })
 
-    const ssr = createSSR({ ssrPath })
-    const {
-      existsRoute
-    } = ssr
-    const manifest = createManifest({ manifestPath })
-
-    const existsSsrRoute = async function (ctx, next) {
-      // see https://next.router.vuejs.org/api/#resolve
-      //     https://next.router.vuejs.org/api/#routelocationnormalized
-      if (!existsRoute(ctx.path)) {
-        return
+  return {
+    install (app) {
+      const existsSsrRoute = async function (ctx, next) {
+        // see https://next.router.vuejs.org/api/#resolve
+        //     https://next.router.vuejs.org/api/#routelocationnormalized
+        if (!existsRoute(ctx.path)) {
+          return
+        }
+        await next()
       }
-      await next()
+
+      const ssrRoute = createRoute({
+        ...ssr,
+        manifest
+      })
+
+      const router = new KoaRouter()
+      router.get('/v3(.*)', existsSsrRoute, ssrRoute)
+      app.use(router.routes())
     }
-
-    const ssrRoute = createRoute({
-      ...ssr,
-      manifest
-    })
-
-    const router = new KoaRouter()
-    router.get('/v3(.*)', existsSsrRoute, ssrRoute)
-    app.use(router.routes())
   }
 }

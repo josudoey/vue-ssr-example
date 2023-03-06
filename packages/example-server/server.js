@@ -1,10 +1,11 @@
 import http from 'http'
-import ExampleVue2 from './example-vue2.js'
-import ExampleVue3 from './example-vue3.js'
-import { createApp, createSessionPlugin, useSession, getCurrentInstance } from './koa/composable/index.js'
-import { createSocketIoPlugin } from './koa/composable/socket-io.js'
+import { createExample2VuePlugin } from './example-vue2.js'
+import { createExample3VuePlugin } from './example-vue3.js'
+import { createCoreApp, createSessionPlugin, createKoaStaticCachePlugin, useSession } from '~core/app/index.js'
+import { createSocketIoPlugin, useSocketIoServer } from '~core/app/socket-io.js'
+// import { createSocketIoPlugin } from './koa/composable/socket-io.js'
 import {
-  createRouter, createBrowserStatic
+  createRouter
 } from './koa/app.js'
 import { extendKoaStore } from './koa/store/index.js'
 
@@ -14,45 +15,40 @@ async function createServer (env) {
     key: 's',
     maxAge: 60 * 60 * 1000
   })
-
-  const app = createApp({
+  const router = createRouter()
+  const core = createCoreApp({
     keys: ['vue-ssr-example-secret']
-  })
-
-  const koaApp = app
-    .use(sessionPlugin)
+  }).use(sessionPlugin)
     .use(function (app) {
       extendKoaStore(app.context)
+      app.use(router.routes())
+      return this
     })
-    .instance()
+    .use(createKoaStaticCachePlugin(exampleVue3.browserOutputPath, {
+      prefix: publicPath
+    }))
+    .use(createKoaStaticCachePlugin(exampleVue2.browserOutputPath, {
+      prefix: publicPath
+    }))
+    .use(createExample3VuePlugin({
+      ssrPath: env.exampleVue3.ssrPath,
+      manifestPath: env.exampleVue3.manifestPath
+    }))
+    .use(createExample2VuePlugin({
+      ssrPath: env.exampleVue2.ssrPath,
+      manifestPath: env.exampleVue2.manifestPath
+    }))
+    .use(function (app) {
+      app.use(router.allowedMethods())
+    })
 
-  const router = createRouter()
-  koaApp.use(router.routes())
-  koaApp.use(createBrowserStatic({
-    browserOutputPath: exampleVue3.browserOutputPath,
-    publicPath
-  }))
+  const app = core.instance()
 
-  koaApp.use(createBrowserStatic({
-    browserOutputPath: exampleVue2.browserOutputPath,
-    publicPath
-  }))
-
-  ExampleVue3.install(koaApp, {
-    ssrPath: env.exampleVue3.ssrPath,
-    manifestPath: env.exampleVue3.manifestPath
-  })
-
-  ExampleVue2.install(koaApp, {
-    ssrPath: env.exampleVue2.ssrPath,
-    manifestPath: env.exampleVue2.manifestPath
-  })
-
-  koaApp.use(router.allowedMethods())
-
-  const server = http.createServer(koaApp.callback())
-  const socketIoPlugin = createSocketIoPlugin(server).use(setupSocketIo)
-  app.use(socketIoPlugin)
+  const server = http.createServer(app.callback())
+  const socketIoPlugin = createSocketIoPlugin(server)
+  core
+    .use(socketIoPlugin)
+    .use(setupSocketIo)
 
   server.on('listening', async function () {
     const address = server.address()
@@ -63,22 +59,17 @@ async function createServer (env) {
   return server
 }
 
-function setupSocketIo (io) {
-  const app = getCurrentInstance()
-  const koaSession = useSession()
-
-  async function getKoaSession (socket) {
-    const response = {
-      setHeader () {},
-      getHeader () {}
-    }
-    const ctx = app.createContext(socket.request, response)
-    await koaSession(ctx, function () {})
-    return ctx.session
-  }
+function setupSocketIo (app) {
+  const io = useSocketIoServer()
+  const resolveSession = useSession()
+  const nop = function () {}
 
   io.use(async (socket, next) => {
-    const session = await getKoaSession(socket)
+    const { request } = socket
+    const ctx = app.createContext(request)
+    await resolveSession(ctx, nop)
+
+    const { session } = ctx
     const { auth } = session
     if (!auth) {
       const err = new Error('unauthorized')

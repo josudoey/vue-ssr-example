@@ -31,7 +31,7 @@ export async function List (ctx, next) {
   ctx.status = 200
   ctx.body = {
     start: skip,
-    limit: limit,
+    limit,
     total: items.length,
     items: items.slice(skip, skip + limit)
   }

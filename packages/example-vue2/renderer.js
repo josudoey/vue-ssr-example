@@ -6,7 +6,7 @@ export function renderStoreStateToString (app) {
   return `<script>window.__INITIAL_STATE__='${initalState}'</script>`
 }
 
-const createRenderer = function (manifest) {
+export function createRenderer (manifest) {
   return {
     async renderToString (app) {
       const ctx = {}
@@ -36,5 +36,3 @@ const createRenderer = function (manifest) {
     }
   }
 }
-
-export { createRenderer }

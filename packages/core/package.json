@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "name": "~core",
+  "version": "0.0.0",
+  "main": "index.mjs",
+  "type": "module",
+  "dependencies": {
+    "composable-hooks": "^0.0.22-1",
+    "dotenv": "^16.0.3",
+    "koa": "^2.13.4",
+    "koa-bodyparser": "^4.3.0",
+    "koa-session": "^6.2.0",
+    "koa-static-cache": "^5.1.4",
+    "npmlog": "^7.0.1",
+    "socket.io": "^4.4.1"
+  }
+}
