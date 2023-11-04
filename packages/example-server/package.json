@@ -1,12 +1,18 @@
 {
   "private": true,
-  "name": "~example-server",
+  "name": "@vue-ssr-example/example-server",
   "version": "0.0.0",
   "main": "server.js",
   "type": "module",
+  "scripts": {
+    "start": "NODE_ENV=production node ./start.js"
+  },
   "dependencies": {
+    "@vue-ssr-example/example-vue2": "workspace:*",
+    "@vue-ssr-example/example-vue3": "workspace:*",
     "axios": "^0.24.0",
     "basic-auth": "^2.0.1",
+    "composable-hook": "^0.0.3",
     "csrf": "^3.1.0",
     "debug": "^4.3.3",
     "fflate": "^0.7.3",
@@ -17,7 +23,6 @@
     "koa-static-cache": "^5.1.4",
     "lru-cache": "^6.0.0",
     "socket.io": "^4.4.1",
-    "yup": "^0.32.11",
-    "~core": "workspace:^*"
+    "yup": "^0.32.11"
   }
 }

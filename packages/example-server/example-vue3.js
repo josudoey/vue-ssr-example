@@ -1,12 +1,13 @@
 import KoaRouter from 'koa-router'
 import { createRequire } from 'module'
 
-function createSSR ({ ssrPath }) {
-  return createRequire(import.meta.url)(ssrPath)
+function createSSR ({ ssrModulePath }) {
+  return createRequire(import.meta.url)(ssrModulePath)
 }
 
 function createManifest ({ manifestPath }) {
-  return createRequire(import.meta.url)(manifestPath)
+  const manifest = createRequire(import.meta.url)(manifestPath)
+  return manifest
 }
 
 export function createRoute (ssr) {
@@ -42,33 +43,35 @@ export function createRoute (ssr) {
   }
 }
 
-export function createExample3VuePlugin ({
-  manifestPath,
-  ssrPath
-}) {
-  const ssr = createSSR({ ssrPath })
-  const { existsRoute } = ssr
-  const manifest = createManifest({ manifestPath })
+export default {
+  install (app, modulePaths) {
+    const {
+      manifestPath,
+      ssrModulePath
+    } = modulePaths
 
-  return {
-    install (app) {
-      const existsSsrRoute = async function (ctx, next) {
-        // see https://next.router.vuejs.org/api/#resolve
-        //     https://next.router.vuejs.org/api/#routelocationnormalized
-        if (!existsRoute(ctx.path)) {
-          return
-        }
-        await next()
+    const ssr = createSSR({ ssrModulePath })
+    const {
+      existsRoute
+    } = ssr
+    const manifest = createManifest({ manifestPath })
+
+    const existsSsrRoute = async function (ctx, next) {
+      // see https://next.router.vuejs.org/api/#resolve
+      //     https://next.router.vuejs.org/api/#routelocationnormalized
+      if (!existsRoute(ctx.path)) {
+        return
       }
-
-      const ssrRoute = createRoute({
-        ...ssr,
-        manifest
-      })
-
-      const router = new KoaRouter()
-      router.get('/v3(.*)', existsSsrRoute, ssrRoute)
-      app.use(router.routes())
+      await next()
     }
+
+    const ssrRoute = createRoute({
+      ...ssr,
+      manifest
+    })
+
+    const router = new KoaRouter()
+    router.get('/v3(.*)', existsSsrRoute, ssrRoute)
+    app.use(router.routes())
   }
 }

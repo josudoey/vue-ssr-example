@@ -1,16 +1,23 @@
+import path from 'path'
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
 import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
 import TerserPlugin from '~webpack5/plugins/terser.js'
 import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
 import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
+import { fileURLToPath } from 'url'
 
 import { createRequire } from 'module'
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 const require = createRequire(import.meta.url)
 
 export default function (env) {
-  const { outputPath, publicPath, manifestPath } = env
+  const distPath = path.join(__dirname, 'dist')
+  const publicPath = '/_/'
+  const outputPath = path.join(distPath, 'example-vue2-browser', publicPath)
+  const manifestPath = path.join(distPath, 'example-vue2-browser', 'manifest.json')
   const config = {
-    entry: require.resolve('./entry/main.js'),
+    entry: require.resolve('./webpack/browser/entry/main.js'),
     output: {
       clean: true,
       assetModuleFilename: '_/[contenthash][ext]',

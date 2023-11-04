@@ -3,6 +3,6 @@
 *.swo
 node_modules
 package-lock.json
+release
 .DS_Store
-dist*
-play*
+dist

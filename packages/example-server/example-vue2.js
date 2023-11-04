@@ -4,12 +4,14 @@ import * as xsrfToken from './koa/route/xsrf-token.js'
 
 import { createRequire } from 'module'
 const debug = createDebug('app:example-vue2')
-function createSSR ({ ssrPath }) {
-  return createRequire(import.meta.url)(ssrPath)
+function createSSR ({ ssrModulePath }) {
+  const ssrModuleExports = createRequire(import.meta.url)(ssrModulePath)
+  return ssrModuleExports
 }
 
 function createManifest ({ manifestPath }) {
-  return createRequire(import.meta.url)(manifestPath)
+  const manifest = createRequire(import.meta.url)(manifestPath)
+  return manifest
 }
 
 export function createRoute (ssr) {
@@ -60,31 +62,27 @@ export function createRoute (ssr) {
   }
 }
 
-export function createExample2VuePlugin ({
-  manifestPath,
-  ssrPath
-}) {
-  const manifest = createManifest({ manifestPath })
-  const ssr = createSSR({ ssrPath })
+export default {
+  install (app, modulePaths) {
+    const { manifestPath, ssrModulePath } = modulePaths
+    const manifest = createManifest({ manifestPath })
+    const ssr = createSSR({ ssrModulePath })
 
-  return {
-    install (app) {
-      const { existsRoute } = ssr
-      const existsSsrRoute = async function (ctx, next) {
-        if (!existsRoute(ctx.path)) {
-          return
-        }
-        await next()
+    const { existsRoute } = ssr
+    const existsSsrRoute = async function (ctx, next) {
+      if (!existsRoute(ctx.path)) {
+        return
       }
-
-      const ssrRoute = createRoute({
-        ...ssr,
-        manifest
-      })
-
-      const router = new KoaRouter()
-      router.get('/(.*)', existsSsrRoute, xsrfToken.create, ssrRoute)
-      app.use(router.routes())
+      await next()
     }
+
+    const ssrRoute = createRoute({
+      ...ssr,
+      manifest
+    })
+
+    const router = new KoaRouter()
+    router.get('/(.*)', existsSsrRoute, xsrfToken.create, ssrRoute)
+    app.use(router.routes())
   }
 }

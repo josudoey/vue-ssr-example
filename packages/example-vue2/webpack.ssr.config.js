@@ -1,59 +1,55 @@
+import path from 'path'
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
-import TerserPlugin from '~webpack5/plugins/terser.js'
 import webpack from '~webpack5'
 import { createRequire } from 'module'
+import { fileURLToPath } from 'url'
 const require = createRequire(import.meta.url)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 export default function (env) {
-  const { outputPath } = env
+  const distPath = path.join(__dirname, 'dist')
+  const outputPath = path.join(distPath, 'example-vue2-ssr')
   return {
-    devtool: 'source-map',
-    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    entry: require.resolve('./entry/main.js'),
-    target: 'node',
-    externals: ['debug'],
-    externalsType: 'node-commonjs',
+    entry: require.resolve('./webpack/ssr/entry/main.js'),
     output: {
       clean: true,
       path: outputPath,
+      filename: 'main.cjs',
       libraryTarget: 'commonjs2'
     },
+    devtool: 'source-map',
+    mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
+    target: 'node',
+    externalsType: 'node-commonjs',
+    externals: ['debug'],
     resolve: {
-      alias: {
-        // see https://webpack.js.org/configuration/resolve/#resolvealias
+      alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
         axios: false, // return module.exports = {}
         'socket.io-client': false,
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
-        vue$: '@vue/compat'
+        vue$: 'vue/dist/vue.esm.js',
+        vuex$: 'vuex/dist/vuex.esm.js'
       }
     },
-    optimization: {
-      minimizer: [
-        new TerserPlugin({}),
-        new CssMinimizerPlugin({
-          minimizerOptions: {
-            preset: [
-              'default',
-              {
-                discardComments: { removeAll: true }
-              }
-            ]
-          }
-        })
-      ]
-    },
+    plugins: [
+      new webpack.DefinePlugin({}),
+      new MiniCssExtractPlugin({})
+    ],
     module: {
       rules: [{
         test: /\.(png|jpe?g|gif|svg)$/,
+        // see https://webpack.js.org/guides/asset-modules/
         type: 'asset/resource',
         generator: {
-          filename: 'img/[contenthash][ext]'
+          // see https://webpack.js.org/configuration/module/#rulegeneratoremit
+          emit: false
         }
       }, {
         test: /\.(woff2?|eot|ttf|otf)$/,
+        type: 'asset/resource',
         generator: {
-          filename: 'fonts/[contenthash][ext]'
+          emit: false
         }
       }, {
         test: /\.html$/,
@@ -64,8 +60,12 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('~vue3-template-loader'),
-          options: {}
+          loader: require.resolve('~vue2-template-loader'),
+          options: {
+            minimize: {
+              collapseBooleanAttributes: true
+            }
+          }
         }, {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
@@ -113,16 +113,6 @@ export default function (env) {
           }
         }]
       }]
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        __VUE_OPTIONS_API__: true,
-        __VUE_PROD_DEVTOOLS__: false
-      }),
-      new MiniCssExtractPlugin({
-        filename: 'css/[contenthash].css',
-        chunkFilename: 'css/[contenthash].css'
-      })
-    ]
+    }
   }
 }
