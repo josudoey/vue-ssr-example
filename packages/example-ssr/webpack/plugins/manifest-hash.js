@@ -1,4 +1,4 @@
-const { getCompilerHooks } = require('./manifest')
+import { getCompilerHooks } from './manifest.js'
 
 class ManifestHashPlugin {
   apply (compiler) {
@@ -20,4 +20,4 @@ class ManifestHashPlugin {
   }
 }
 
-module.exports = ManifestHashPlugin
+export default ManifestHashPlugin

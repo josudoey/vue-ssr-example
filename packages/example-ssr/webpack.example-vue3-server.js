@@ -1,7 +1,8 @@
-import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
-import TerserPlugin from '~webpack5/plugins/terser.js'
-import webpack from '~webpack5'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import webpack from 'webpack'
+
 import { createRequire } from 'module'
 import { exampleVue3Env } from './env.js'
 const { serverOutputPath } = exampleVue3Env
@@ -65,7 +66,7 @@ export default function (env) {
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('~webpack5/html-loader'),
+        loader: require.resolve('html-loader'),
         options: {
           minimize: true
         }
@@ -75,19 +76,19 @@ export default function (env) {
           loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/html-loader'),
+          loader: require.resolve('html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /module\.css$/,
@@ -97,7 +98,7 @@ export default function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -115,7 +116,7 @@ export default function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             importLoaders: 0
           }

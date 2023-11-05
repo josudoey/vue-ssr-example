@@ -1,8 +1,8 @@
-import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
-import TerserPlugin from '~webpack5/plugins/terser.js'
-import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
-import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin'
+import TerserPlugin from 'terser-webpack-plugin'
+import ManifestHashPlugin from './webpack/plugins/manifest-hash.js'
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 
 import { createRequire } from 'module'
 import { exampleVue2Env } from './env.js'
@@ -87,7 +87,7 @@ export default function (env) {
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('~webpack5/html-loader'),
+        loader: require.resolve('html-loader'),
         options: {
           minimize: true
         }
@@ -97,19 +97,19 @@ export default function (env) {
           loader: require.resolve('~vue2-template-loader'),
           options: {}
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/html-loader'),
+          loader: require.resolve('html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /module\.css$/,
@@ -117,7 +117,7 @@ export default function (env) {
           loader: MiniCssExtractPlugin.loader,
           options: {}
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -134,7 +134,7 @@ export default function (env) {
           options: {
           }
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             importLoaders: 0
           }

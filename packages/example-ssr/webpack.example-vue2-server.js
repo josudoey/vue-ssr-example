@@ -1,5 +1,6 @@
-import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import webpack from '~webpack5'
+import webpack from 'webpack'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+
 import { createRequire } from 'module'
 import { exampleVue2Env } from './env.js'
 const require = createRequire(import.meta.url)
@@ -56,7 +57,7 @@ export default function (env) {
         }
       }, {
         test: /\.html$/,
-        loader: require.resolve('~webpack5/html-loader'),
+        loader: require.resolve('html-loader'),
         options: {
           minimize: true
         }
@@ -70,19 +71,19 @@ export default function (env) {
             }
           }
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /template.pug$/,
         use: [{
-          loader: require.resolve('~webpack5/html-loader'),
+          loader: require.resolve('html-loader'),
           options: {
             minimize: {
               collapseBooleanAttributes: true
             }
           }
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('pug-plain-loader')
         }]
       }, {
         test: /module\.css$/,
@@ -92,7 +93,7 @@ export default function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             modules: {
               namedExport: true,
@@ -110,7 +111,7 @@ export default function (env) {
             emit: false
           }
         }, {
-          loader: require.resolve('~webpack5/css-loader'),
+          loader: require.resolve('css-loader'),
           options: {
             importLoaders: 0
           }
