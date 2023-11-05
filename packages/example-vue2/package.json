@@ -31,6 +31,6 @@
     "vue-server-renderer": "^2.7.14",
     "vuex": "^3.6.2",
     "vuex-router-sync": "^5.0.0",
-    "~initial-state": "workspace:^0.0.0"
+    "@vue-ssr-example/initial-state": "workspace:^*"
   }
 }

@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "npm-run-all --parallel build:*",
-    "build:ssr": "npm run -C packages/example-ssr run build",
-    "start": "npm run -C packages/example-server start",
-    "dev": "DEBUG=app:* nodemon --delay 1.5 --trace-warnings -e js,cjs,mjs,css,html,pug --ignore ./dist/** --exec 'npm run dev:build&&npm run start'",
-    "dev:build": "npm -C packages/example-ssr run dev:build"
+    "npm-run-all": "npm-run-all",
+    "build": "npm-run-all build:*",
+    "build:initial-state": "npm -C packages/initial-state run build",
+    "build:ssr": "npm -C packages/example-ssr run build",
+    "start": "npm -C packages/example-server run start",
+    "dev": "DEBUG=app:* nodemon --delay 1.5 --trace-warnings -e js,cjs,mjs,css,html,pug --ignore **/dist/** --exec 'npm run dev:build&&npm run start'",
+    "dev:build": "npm-run-all build:initial-state dev:build:ssr",
+    "dev:build:ssr": "npm -C packages/example-ssr run dev:build"
   },
   "repository": {
     "type": "git",

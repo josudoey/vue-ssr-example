@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "target": "ES6",
+    "allowJs": true,
+    "strict": true,
+    "outDir": "./dist"
+  },
+  "include": [
+    "src"
+  ]
+}

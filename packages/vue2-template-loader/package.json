@@ -1,12 +1,13 @@
 {
   "private": true,
-  "name": "~vue2-template-loader",
+  "name": "@vue-ssr-example/vue2-template-loader",
   "version": "0.0.0",
   "main": "index.js",
-  "peerDependencies": {},
   "devDependencies": {
-    "vue-template-compiler": "^2.7.14",
+    "css-loader": "^6.7.3",
+    "vue": "^2.7.14",
     "vue-loader": "^15.9.8",
-    "vue": "^2.7.14"
+    "vue-template-compiler": "^2.7.14",
+    "webpack": "^5.75.0"
   }
 }

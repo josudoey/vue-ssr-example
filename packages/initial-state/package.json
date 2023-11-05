@@ -1,8 +1,11 @@
 {
   "private": true,
-  "name": "~initial-state",
+  "name": "@vue-ssr-example/initial-state",
   "version": "0.0.0",
-  "main": "index.js",
+  "scripts": {
+    "build": "test -e dist || tsc"
+  },
+  "main": "dist/index.js",
   "type": "module",
   "peerDependencies": {},
   "devDependencies": {

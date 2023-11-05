@@ -1,5 +1,5 @@
 import { createPinia } from 'pinia'
-import InitalStateParse from '~initial-state/parse.js'
+import { parse as InitalStateParse } from '@vue-ssr-example/initial-state'
 
 export function getHydratePinia (window) {
   const pinia = createPinia()

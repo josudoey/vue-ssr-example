@@ -1,4 +1,4 @@
-import InitalStateStringify from '~initial-state/stringify.js'
+import { stringify as InitalStateStringify } from '@vue-ssr-example/initial-state'
 import entryServerBasicRenderer from 'vue-server-renderer/basic.js'
 
 export function renderStoreStateToString (app) {
@@ -13,7 +13,7 @@ const createRenderer = function (manifest) {
       const html = await new Promise(function (resolve, reject) {
         entryServerBasicRenderer(app, ctx, function (err, result) {
           if (err) {
-            return reject(err)
+            reject(err); return
           }
           resolve(result)
         })

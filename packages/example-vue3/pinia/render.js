@@ -1,4 +1,4 @@
-import InitalStateStringify from '~initial-state/stringify.js'
+import { stringify as InitalStateStringify } from '@vue-ssr-example/initial-state'
 
 export function renderPiniaToString (app, ctx) {
   const { $pinia } = app.config.globalProperties

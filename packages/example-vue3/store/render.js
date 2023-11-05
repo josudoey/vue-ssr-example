@@ -1,4 +1,4 @@
-import InitalStateStringify from '~initial-state/stringify.js'
+import { stringify } from '@vue-ssr-example/initial-state'
 
 export function renderStoreStateToString (app) {
   if (!app.config.globalProperties.$store.state) {
