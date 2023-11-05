@@ -1,55 +1,89 @@
-import path from 'path'
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
-import webpack from '~webpack5'
+import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
+import TerserPlugin from '~webpack5/plugins/terser.js'
+import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
+import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
+
 import { createRequire } from 'module'
-import { fileURLToPath } from 'url'
+import { exampleVue2Env } from './env.js'
+
 const require = createRequire(import.meta.url)
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 export default function (env) {
-  const distPath = path.join(__dirname, 'dist')
-  const outputPath = path.join(distPath, 'example-vue2-ssr')
-  return {
-    entry: require.resolve('./webpack/ssr/entry/main.js'),
+  const {
+    publicPath,
+    clientOutputPath,
+    manifestPath
+  } = exampleVue2Env
+
+  const config = {
+    entry: require.resolve('@vue-ssr-example/example-vue2/entry/client/main.js'),
     output: {
       clean: true,
-      path: outputPath,
-      filename: 'main.cjs',
-      libraryTarget: 'commonjs2'
+      assetModuleFilename: '_/[contenthash][ext]',
+      filename: '[contenthash].js',
+      chunkFilename: '[contenthash].js',
+      path: clientOutputPath,
+      publicPath
     },
     devtool: 'source-map',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    target: 'node',
-    externalsType: 'node-commonjs',
-    externals: ['debug'],
+    target: 'web',
     resolve: {
-      alias: { // see https://webpack.js.org/configuration/resolve/#resolvealias
-        axios: false, // return module.exports = {}
-        'socket.io-client': false,
+      alias: {
+        axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue$: 'vue/dist/vue.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js'
       }
     },
-    plugins: [
-      new webpack.DefinePlugin({}),
-      new MiniCssExtractPlugin({})
-    ],
+    optimization: {
+      splitChunks: { // see https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks
+        chunks: 'async',
+        minSize: 20000,
+        minRemainingSize: 0,
+        minChunks: 1,
+        maxAsyncRequests: 30,
+        maxInitialRequests: 30,
+        enforceSizeThreshold: 50000,
+        cacheGroups: {
+          defaultVendors: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            reuseExistingChunk: true
+          },
+          default: {
+            minChunks: 2,
+            priority: -20,
+            reuseExistingChunk: true
+          }
+        }
+      },
+      minimizer: [
+        new TerserPlugin({}),
+        new CssMinimizerPlugin({
+          minimizerOptions: {
+            preset: [
+              'default',
+              {
+                discardComments: { removeAll: true }
+              }
+            ]
+          }
+        })
+      ]
+    },
     module: {
       rules: [{
         test: /\.(png|jpe?g|gif|svg)$/,
-        // see https://webpack.js.org/guides/asset-modules/
         type: 'asset/resource',
         generator: {
-          // see https://webpack.js.org/configuration/module/#rulegeneratoremit
-          emit: false
+          filename: 'img/[contenthash][ext]'
         }
       }, {
         test: /\.(woff2?|eot|ttf|otf)$/,
-        type: 'asset/resource',
         generator: {
-          emit: false
+          filename: 'fonts/[contenthash][ext]'
         }
       }, {
         test: /\.html$/,
@@ -61,11 +95,7 @@ export default function (env) {
         test: /render.pug$/,
         use: [{
           loader: require.resolve('~vue2-template-loader'),
-          options: {
-            minimize: {
-              collapseBooleanAttributes: true
-            }
-          }
+          options: {}
         }, {
           loader: require.resolve('~webpack5/pug-plain-loader')
         }]
@@ -85,9 +115,7 @@ export default function (env) {
         test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
-          options: {
-            emit: false
-          }
+          options: {}
         }, {
           loader: require.resolve('~webpack5/css-loader'),
           options: {
@@ -104,7 +132,6 @@ export default function (env) {
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -113,6 +140,18 @@ export default function (env) {
           }
         }]
       }]
-    }
+    },
+    plugins: [
+      new WebpackManifestPlugin({
+        fileName: manifestPath
+      }),
+      new ManifestHashPlugin(),
+      new MiniCssExtractPlugin({
+        filename: 'css/[contenthash].css',
+        chunkFilename: 'css/[contenthash].css'
+      })
+    ]
   }
+
+  return config
 }

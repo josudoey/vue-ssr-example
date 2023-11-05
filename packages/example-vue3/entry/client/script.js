@@ -3,10 +3,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
-import { createWebRouter } from '../../../router.js'
-import { getHydratePinia } from '../../../pinia/hydrate.js'
-import { getHydrateStore } from '../../../store/hydrate.js'
-import { createApp } from '../../../app.js'
+import { createWebRouter } from '../../router.js'
+import { getHydratePinia } from '../../pinia/hydrate.js'
+import { getHydrateStore } from '../../store/hydrate.js'
+import { createApp } from '../../app.js'
 
 ;(async function () {
   const appId = `#_${__webpack_hash__}`

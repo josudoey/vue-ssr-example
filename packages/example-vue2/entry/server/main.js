@@ -1,16 +1,13 @@
-// ref https://v3.vuejs.org/guide/ssr/structure.html#entry-server-js
-// see https://github.com/vitejs/vite/blob/main/packages/playground/ssr-vue/src/entry-server.js
+import { createRouter } from '../../router.js'
+import { isNavigationFailure, NavigationFailureType } from '../../errors.js'
+import { createRenderer } from '../../renderer.js'
+import { createApp } from '../../app.js'
+import { createStore, createStoreOptions } from '../../store.js'
 
-import { createMemoryRouter, NavigationFailureType, isNavigationFailure } from '../../../router.js'
-import { createRenderer } from '../../../renderer.js'
-import { createStore, createStoreOptions } from '../../../store/index.js'
-import { createPinia } from 'pinia'
-import { createApp } from '../../../app.js'
-
-const memoryRouter = createMemoryRouter()
+const historyRouter = createRouter()
 export function existsRoute (path) {
-  const routeLocation = memoryRouter.resolve(path)
-  if (!routeLocation.matched.length) {
+  const matchedComponents = historyRouter.getMatchedComponents(path)
+  if (!matchedComponents.length) {
     return false
   }
   return true
@@ -26,17 +23,22 @@ export function createHtmlRenderer ({ manifest }) {
   return {
     async render (path, { rpc }) {
       const store = createStore(createStoreOptions(rpc))
-      const router = createMemoryRouter(store)
-      const pinia = createPinia()
-      const app = await createApp().use(pinia).use(store).use(router)
+      const router = createRouter(store)
+
       const failure = await router.push(path).catch((err) => err)
+      await new Promise((resolve) => {
+        return router.onReady(resolve)
+      })
 
       // see https://router.vuejs.org/guide/advanced/navigation-failures.html#navigation-failures-s-properties
       if (isNavigationFailure(failure, NavigationFailureType.redirected)) {
         throw new RedirectedError(router.currentRoute)
       }
 
-      await router.isReady()
+      const app = await createApp({
+        store,
+        router
+      })
 
       return await renderer.renderToString(app)
     }

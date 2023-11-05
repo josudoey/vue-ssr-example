@@ -1,77 +1,62 @@
 import KoaRouter from 'koa-router'
-import { createRequire } from 'module'
 
-function createSSR ({ ssrModulePath }) {
-  return createRequire(import.meta.url)(ssrModulePath)
+import {
+  createHtmlRenderer,
+  RedirectedError,
+  existsRoute,
+  manifest
+} from '@vue-ssr-example/example-ssr/example-vue3.js'
+
+const htmlRenderer = createHtmlRenderer({
+  manifest
+})
+
+async function onlySsrRoute (ctx, next) {
+  // see https://next.router.vuejs.org/api/#resolve
+  //     https://next.router.vuejs.org/api/#routelocationnormalized
+  if (!existsRoute(ctx.path)) {
+    return
+  }
+
+  await next()
 }
 
-function createManifest ({ manifestPath }) {
-  const manifest = createRequire(import.meta.url)(manifestPath)
-  return manifest
-}
+async function ssrRoute (ctx, next) {
+  const routeName = ctx._matchedRouteName
 
-export function createRoute (ssr) {
-  const {
-    RedirectedError,
-    createHtmlRenderer,
-    manifest
-  } = ssr
-  const htmlRenderer = createHtmlRenderer({
-    manifest
-  })
-  return async function (ctx, next) {
-    try {
-      const { rpc } = ctx
-      const html = await htmlRenderer.render(ctx.path, {
-        rpc
-      })
+  if (ctx.headers['x-xsrf-token']) {
+    // is api
+    return
+  }
 
-      ctx.status = 200
-      ctx.type = 'text/html'
-      ctx.body = html
-    } catch (err) {
-      if (err instanceof RedirectedError) {
-        if (!err.currentRoute.name) {
-          ctx.redirect('/')
-          return
-        }
-        ctx.redirect(err.currentRoute.fullPath)
+  try {
+    const { rpc } = ctx
+    const html = await htmlRenderer.render(ctx.path, {
+      rpc
+    })
+
+    ctx.status = 200
+    ctx.type = 'text/html'
+    ctx.body = html
+  } catch (err) {
+    if (err instanceof RedirectedError) {
+      if (!err.currentRoute.name) {
+        ctx.redirect('/')
         return
       }
-      ctx.throw(err)
+
+      ctx.redirect(err.currentRoute.fullPath)
+      return
     }
+
+    ctx.throw(err)
   }
 }
 
 export default {
-  install (app, modulePaths) {
-    const {
-      manifestPath,
-      ssrModulePath
-    } = modulePaths
-
-    const ssr = createSSR({ ssrModulePath })
-    const {
-      existsRoute
-    } = ssr
-    const manifest = createManifest({ manifestPath })
-
-    const existsSsrRoute = async function (ctx, next) {
-      // see https://next.router.vuejs.org/api/#resolve
-      //     https://next.router.vuejs.org/api/#routelocationnormalized
-      if (!existsRoute(ctx.path)) {
-        return
-      }
-      await next()
-    }
-
-    const ssrRoute = createRoute({
-      ...ssr,
-      manifest
-    })
-
+  install (app) {
     const router = new KoaRouter()
-    router.get('/v3(.*)', existsSsrRoute, ssrRoute)
+    router.get('/v3(.*)', onlySsrRoute, ssrRoute)
     app.use(router.routes())
   }
 }

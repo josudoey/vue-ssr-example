@@ -1,35 +1,43 @@
 import MiniCssExtractPlugin from '~webpack5/plugins/mini-css-extract.js'
 import CssMinimizerPlugin from '~webpack5/plugins/css-minimizer.js'
 import TerserPlugin from '~webpack5/plugins/terser.js'
+import ManifestHashPlugin from '~webpack5/plugins/manifest-hash.js'
 import webpack from '~webpack5'
+import { WebpackManifestPlugin } from '~webpack5/plugins/manifest.js'
 import { createRequire } from 'module'
-import { ssrOutputPath } from './webpack.env.js'
+import { exampleVue3Env } from './env.js'
 const require = createRequire(import.meta.url)
+
+const {
+  publicPath,
+  clientOutputPath,
+  manifestPath
+} = exampleVue3Env
 
 export default function (env) {
   return {
     devtool: 'source-map',
+    target: 'web',
     mode: (process.env.NODE_ENV === 'production') ? 'production' : 'development',
-    entry: require.resolve('./webpack/ssr/entry/main.js'),
-    target: 'node',
-    externals: ['debug'],
-    externalsType: 'node-commonjs',
-    output: {
-      clean: true,
-      filename: 'main.cjs',
-      path: ssrOutputPath,
-      libraryTarget: 'commonjs2'
-    },
+    entry: require.resolve('@vue-ssr-example/example-vue3/entry/client/main.js'),
     resolve: {
       alias: {
-        // see https://webpack.js.org/configuration/resolve/#resolvealias
-        axios: false, // return module.exports = {}
-        'socket.io-client': false,
+        axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
-        vue$: '@vue/compat'
+        vue: '@vue/compat'
       }
     },
+    output: {
+      clean: true,
+      filename: '[contenthash].js',
+      chunkFilename: '[contenthash].js',
+      path: clientOutputPath,
+      publicPath
+    },
     optimization: {
+      splitChunks: {
+        chunks: 'all'
+      },
       minimizer: [
         new TerserPlugin({}),
         new CssMinimizerPlugin({
@@ -68,7 +76,7 @@ export default function (env) {
           loader: require.resolve('~vue3-template-loader'),
           options: {}
         }, {
-          loader: require.resolve('~webpack5/pug-plain-loader')
+          loader: require.resolve('~webpack5/pug-plain-loader.js')
         }]
       }, {
         test: /template.pug$/,
@@ -86,9 +94,7 @@ export default function (env) {
         test: /module\.css$/,
         use: [{
           loader: MiniCssExtractPlugin.loader,
-          options: {
-            emit: false
-          }
+          options: {}
         }, {
           loader: require.resolve('~webpack5/css-loader'),
           options: {
@@ -105,7 +111,6 @@ export default function (env) {
         use: [{
           loader: MiniCssExtractPlugin.loader,
           options: {
-            emit: false
           }
         }, {
           loader: require.resolve('~webpack5/css-loader'),
@@ -120,6 +125,10 @@ export default function (env) {
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false
       }),
+      new WebpackManifestPlugin({
+        fileName: manifestPath
+      }),
+      new ManifestHashPlugin(),
       new MiniCssExtractPlugin({
         filename: 'css/[contenthash].css',
         chunkFilename: 'css/[contenthash].css'

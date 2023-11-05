@@ -1,6 +1,8 @@
 import http from 'http'
-import * as ExampleVue2Env from '@vue-ssr-example/example-vue2/webpack.env.js'
-import * as ExampleVue3Env from '@vue-ssr-example/example-vue3/webpack.env.js'
+import {
+  exampleVue2Env, exampleVue3Env
+} from '@vue-ssr-example/example-ssr/env.js'
+
 import ExampleVue2 from './example-vue2.js'
 import ExampleVue3 from './example-vue3.js'
 import { createApp, createSessionPlugin, useSession, getCurrentInstance } from './koa/composable/index.js'
@@ -31,24 +33,18 @@ async function createServer (env) {
   koaApp.use(router.routes())
 
   koaApp.use(createBrowserStatic({
-    browserOutputPath: ExampleVue3Env.browserOutputPath,
-    publicPath: ExampleVue3Env.publicPath
+    browserOutputPath: exampleVue3Env.clientOutputPath,
+    publicPath: exampleVue3Env.publicPath
   }))
 
-  ExampleVue3.install(koaApp, {
-    ssrModulePath: ExampleVue3Env.ssrModulePath,
-    manifestPath: ExampleVue3Env.manifestPath
-  })
+  ExampleVue3.install(koaApp)
 
   koaApp.use(createBrowserStatic({
-    browserOutputPath: ExampleVue2Env.browserOutputPath,
-    publicPath: ExampleVue2Env.publicPath
+    browserOutputPath: exampleVue2Env.clientOutputPath,
+    publicPath: exampleVue2Env.publicPath
   }))
 
-  ExampleVue2.install(koaApp, {
-    ssrModulePath: ExampleVue2Env.ssrModulePath,
-    manifestPath: ExampleVue2Env.manifestPath
-  })
+  ExampleVue2.install(koaApp)
 
   koaApp.use(router.allowedMethods())
 

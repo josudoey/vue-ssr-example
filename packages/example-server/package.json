@@ -8,6 +8,7 @@
     "start": "NODE_ENV=production node ./start.js"
   },
   "dependencies": {
+    "@vue-ssr-example/example-ssr": "workspace:*",
     "@vue-ssr-example/example-vue2": "workspace:*",
     "@vue-ssr-example/example-vue3": "workspace:*",
     "axios": "^0.24.0",
