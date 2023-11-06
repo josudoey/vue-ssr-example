@@ -34,6 +34,14 @@ export default function (env) {
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue$: 'vue/dist/vue.esm.js',
         vuex$: 'vuex/dist/vuex.esm.js'
+      },
+      // Add `.ts` and `.tsx` as a resolvable extension.
+      extensions: ['.ts', '.tsx', '.js'],
+      // Add support for TypeScripts fully qualified ESM imports.
+      extensionAlias: {
+        '.js': ['.js', '.ts'],
+        '.cjs': ['.cjs', '.cts'],
+        '.mjs': ['.mjs', '.mts']
       }
     },
     plugins: [
@@ -42,6 +50,9 @@ export default function (env) {
     ],
     module: {
       rules: [{
+        test: /\.([cm]?ts|tsx)$/,
+        loader: 'ts-loader'
+      }, {
         test: /\.(png|jpe?g|gif|svg)$/,
         // see https://webpack.js.org/guides/asset-modules/
         type: 'asset/resource',

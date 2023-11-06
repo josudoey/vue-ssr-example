@@ -1,14 +1,19 @@
-import Vuex from 'vuex'
+import Vuex, { type Store, type Module, type ActionTree, type MutationTree } from 'vuex'
 import createDebug from 'debug'
 const name = 'auth'
 const debug = createDebug('app:outlet:auth')
 
-export const state = () => ({
+interface State {
+  uid: string
+  expire: number
+}
+
+export const state = (): State => ({
   uid: '',
   expire: 0
 })
 
-const module = {
+const module: Module<State, any> = {
   namespaced: true,
   state
 }
@@ -16,7 +21,7 @@ const module = {
 export const { uid } = Vuex.mapState(name, ['uid'])
 export const { getState, signIn } = Vuex.mapActions(name, ['signIn', 'getState'])
 
-export const actions = module.actions = {}
+export const actions: ActionTree<State, any> = module.actions = {}
 actions.getState = async function ({ commit, rootGetters }) {
   const res = await rootGetters.rpc('getAuthState')
   if (!/^2/.exec(res.status)) {
@@ -41,7 +46,7 @@ actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
   return res.data
 }
 
-const mutations = module.mutations = {}
+const mutations: MutationTree<State> = module.mutations = {}
 mutations.setAuth = function (state, payload) {
   debug('setAuth', payload)
   Object.assign(state, payload)
@@ -54,7 +59,8 @@ export default module
 // see https://ssr.vuejs.org/guide/data.html#store-code-splitting
 const STORE_REGISTER_COUNT = Symbol('store#module#' + name)
 
-export function register ($store) {
+// TODO: use Store<State>
+export function register ($store: any): any {
   if ($store.hasModule(name)) {
     $store[STORE_REGISTER_COUNT]++
     return true
@@ -67,7 +73,8 @@ export function register ($store) {
   return preserveState
 }
 
-export function unregister ($store) {
+// TODO: use Store<State>
+export function unregister ($store: any): any {
   if (!$store.hasModule(name)) {
     return
   }

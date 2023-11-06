@@ -26,6 +26,14 @@ export default function (env) {
         axios$: 'axios/dist/axios.js',
         'vue-flatpickr-component$': 'vue-flatpickr-component/src/index.js',
         vue: '@vue/compat'
+      },
+      // Add `.ts` and `.tsx` as a resolvable extension.
+      extensions: ['.ts', '.tsx', '.js'],
+      // Add support for TypeScripts fully qualified ESM imports.
+      extensionAlias: {
+        '.js': ['.js', '.ts'],
+        '.cjs': ['.cjs', '.cts'],
+        '.mjs': ['.mjs', '.mts']
       }
     },
     output: {
@@ -55,6 +63,9 @@ export default function (env) {
     },
     module: {
       rules: [{
+        test: /\.([cm]?ts|tsx)$/,
+        loader: 'ts-loader'
+      }, {
         test: /\.(png|jpe?g|gif|svg)$/,
         type: 'asset/resource',
         generator: {
