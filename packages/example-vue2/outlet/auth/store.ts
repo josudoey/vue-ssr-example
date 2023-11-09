@@ -1,7 +1,13 @@
 import Vuex, { type Store, type Module, type ActionTree, type MutationTree } from 'vuex'
 import createDebug from 'debug'
-const name = 'auth'
+const name: string = 'auth'
 const debug = createDebug('app:outlet:auth')
+
+// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
+const STORE_REGISTER_COUNT = Symbol('store#module#' + name)
+interface StoreRegister {
+  [STORE_REGISTER_COUNT]: number
+}
 
 interface State {
   uid: string
@@ -24,7 +30,7 @@ export const { getState, signIn } = Vuex.mapActions(name, ['signIn', 'getState']
 export const actions: ActionTree<State, any> = module.actions = {}
 actions.getState = async function ({ commit, rootGetters }) {
   const res = await rootGetters.rpc('getAuthState')
-  if (!/^2/.exec(res.status)) {
+  if (/^2/.exec(res.status) === null) {
     return
   }
   const auth = res.data || state()
@@ -39,7 +45,7 @@ actions.signIn = async function ({ commit, rootGetters }, { user, password }) {
       password
     }
   })
-  if (!/^2/.exec(res.status)) {
+  if (/^2/.exec(res.status) == null) {
     return
   }
   commit('setAuth', res.data || state())
@@ -56,31 +62,25 @@ module.getters = {}
 
 export default module
 
-// see https://ssr.vuejs.org/guide/data.html#store-code-splitting
-const STORE_REGISTER_COUNT = Symbol('store#module#' + name)
-
-// TODO: use Store<State>
-export function register ($store: any): any {
-  if ($store.hasModule(name)) {
-    $store[STORE_REGISTER_COUNT]++
+export function register ($store: Store<any> & StoreRegister): boolean {
+  if ($store.hasModule(name) === true) {
     return true
   }
   $store[STORE_REGISTER_COUNT] = 1
-  const preserveState = !!$store.state[name]
+  const preserveState = Boolean($store.state[name])
   $store.registerModule(name, module, {
     preserveState
   })
   return preserveState
 }
 
-// TODO: use Store<State>
-export function unregister ($store: any): any {
-  if (!$store.hasModule(name)) {
+export function unregister ($store: Store<any> & StoreRegister): void {
+  if ($store.hasModule(name) === false) {
     return
   }
   $store[STORE_REGISTER_COUNT]--
   if ($store[STORE_REGISTER_COUNT] > 0) {
     return
   }
-  return $store.unregisterModule(name, module)
+  return $store.unregisterModule(name)
 }
