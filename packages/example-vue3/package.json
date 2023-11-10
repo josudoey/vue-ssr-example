@@ -26,7 +26,6 @@
     "vue-meta": "^2.4.0",
     "vue-router": "^4.1.6",
     "vuex": "^4.1.0",
-    "@vue-ssr-example/initial-state": "workspace:^*",
-    "@vue-ssr-example/vue3-template-loader": "workspace:*"
+    "@vue-ssr-example/initial-state": "workspace:^*"
   }
 }

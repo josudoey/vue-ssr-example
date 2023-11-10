@@ -105,7 +105,7 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('@vue-ssr-example/vue2-template-loader'),
+          loader: require.resolve('@vue-ssr-example/vue2/template-loader.js'),
           options: {}
         }, {
           loader: require.resolve('pug-plain-loader')

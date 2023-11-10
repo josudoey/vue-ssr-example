@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@vue-ssr-example/vue2-template-loader",
+  "name": "@vue-ssr-example/vue2",
   "version": "0.0.0",
   "main": "index.js",
   "devDependencies": {

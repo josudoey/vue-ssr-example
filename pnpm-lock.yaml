@@ -76,8 +76,8 @@ importers:
     specifiers:
       '@vue-ssr-example/example-vue2': workspace:*
       '@vue-ssr-example/example-vue3': workspace:*
-      '@vue-ssr-example/vue2-template-loader': workspace:*
-      '@vue-ssr-example/vue3-template-loader': workspace:*
+      '@vue-ssr-example/vue2': workspace:*
+      '@vue-ssr-example/vue3': workspace:*
       css-loader: ^6.7.3
       css-minimizer-webpack-plugin: ^4.2.2
       html-loader: ^4.2.0
@@ -93,8 +93,8 @@ importers:
     devDependencies:
       '@vue-ssr-example/example-vue2': link:../example-vue2
       '@vue-ssr-example/example-vue3': link:../example-vue3
-      '@vue-ssr-example/vue2-template-loader': link:../vue2-template-loader
-      '@vue-ssr-example/vue3-template-loader': link:../vue3-template-loader
+      '@vue-ssr-example/vue2': link:../vue2
+      '@vue-ssr-example/vue3': link:../vue3
       css-loader: 6.8.1_webpack@5.89.0
       css-minimizer-webpack-plugin: 4.2.2_webpack@5.89.0
       html-loader: 4.2.0_webpack@5.89.0
@@ -163,7 +163,6 @@ importers:
   packages/example-vue3:
     specifiers:
       '@vue-ssr-example/initial-state': workspace:^*
-      '@vue-ssr-example/vue3-template-loader': workspace:*
       '@vue/compat': ^3.2.47
       '@vue/server-renderer': ^3.2.47
       axios: ^0.24.0
@@ -182,7 +181,6 @@ importers:
       vuex: ^4.1.0
     devDependencies:
       '@vue-ssr-example/initial-state': link:../initial-state
-      '@vue-ssr-example/vue3-template-loader': link:../vue3-template-loader
       '@vue/compat': 3.3.7_vue@3.3.7
       '@vue/server-renderer': 3.3.7_vue@3.3.7
       axios: 0.24.0
@@ -208,7 +206,7 @@ importers:
       base64-js: 1.5.1
       msgpackr: 1.9.9
 
-  packages/vue2-template-loader:
+  packages/vue2:
     specifiers:
       css-loader: ^6.7.3
       vue: ^2.7.14
@@ -222,7 +220,7 @@ importers:
       vue-template-compiler: 2.7.15
       webpack: 5.89.0
 
-  packages/vue3-template-loader:
+  packages/vue3:
     specifiers:
       lodash: ^4.17.21
       vue: ^3.2.45

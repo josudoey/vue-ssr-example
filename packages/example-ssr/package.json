@@ -14,8 +14,8 @@
   "devDependencies": {
     "@vue-ssr-example/example-vue2": "workspace:*",
     "@vue-ssr-example/example-vue3": "workspace:*",
-    "@vue-ssr-example/vue2-template-loader": "workspace:*",
-    "@vue-ssr-example/vue3-template-loader": "workspace:*",
+    "@vue-ssr-example/vue2": "workspace:*",
+    "@vue-ssr-example/vue3": "workspace:*",
     "css-loader": "^6.7.3",
     "css-minimizer-webpack-plugin": "^4.2.2",
     "html-loader": "^4.2.0",

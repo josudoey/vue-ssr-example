@@ -85,7 +85,7 @@ export default function (env) {
       }, {
         test: /render.pug$/,
         use: [{
-          loader: require.resolve('@vue-ssr-example/vue3-template-loader'),
+          loader: require.resolve('@vue-ssr-example/vue3/template-loader.js'),
           options: {}
         }, {
           loader: require.resolve('pug-plain-loader')
