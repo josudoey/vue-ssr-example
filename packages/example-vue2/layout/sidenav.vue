@@ -1,3 +1,32 @@
+<template lang="pug">
+span
+  .sidenav-overlay(v-if="show" @click="toggle")
+  transition(name="sidenav")
+    nav.sidenav.bg-light(v-if="show")
+      slot
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      show: false
+    }
+  },
+  methods: {
+    toggle () {
+      this.show = !this.show
+    },
+    open () {
+      this.show = true
+    },
+    close () {
+      this.show = false
+    }
+  }
+}
+</script>
+<style>
 /* ref https://bootstrapious.com/p/bootstrap-sidebar */
 .sidenav-overlay {
   display: block;
@@ -25,3 +54,4 @@
   transform: translateX(-250px);
   opacity: 0;
 }
+</style>

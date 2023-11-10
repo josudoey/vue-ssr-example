@@ -3,6 +3,8 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 
 import { createRequire } from 'module'
 import { exampleVue2Env } from './env.js'
+import VueLoaderPlugin from '@vue-ssr-example/vue2/loader-plugin.js'
+
 const require = createRequire(import.meta.url)
 
 export default function (env) {
@@ -45,11 +47,25 @@ export default function (env) {
       }
     },
     plugins: [
+      new VueLoaderPlugin(),
       new webpack.DefinePlugin({}),
       new MiniCssExtractPlugin({})
     ],
     module: {
       rules: [{
+        test: /\.vue$/,
+        loader: require.resolve('@vue-ssr-example/vue2/vue-loader.js')
+      }, {
+        // ref https://vue-loader.vuejs.org/guide/pre-processors.html#pug
+        test: /((?!render)(?!template)\w+)\.pug$/,
+        oneOf: [
+          // this applies to `<template lang="pug">` in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use: [require.resolve('pug-plain-loader')]
+          }
+        ]
+      }, {
         test: /\.([cm]?ts|tsx)$/,
         loader: 'ts-loader'
       }, {

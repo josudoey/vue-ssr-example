@@ -84,6 +84,7 @@ importers:
       mini-css-extract-plugin: ^2.7.2
       pug: ^3.0.2
       pug-plain-loader: ^1.1.0
+      raw-loader: ^4.0.2
       terser-webpack-plugin: ^5.3.6
       ts-loader: ^9.5.0
       typescript: ^5.2.2
@@ -101,6 +102,7 @@ importers:
       mini-css-extract-plugin: 2.7.6_webpack@5.89.0
       pug: 3.0.2
       pug-plain-loader: 1.1.0_pug@3.0.2
+      raw-loader: 4.0.2_webpack@5.89.0
       terser-webpack-plugin: 5.3.9_webpack@5.89.0
       ts-loader: 9.5.0_f4hgawfnjaxmyxuegmwdtssuwi
       typescript: 5.2.2
@@ -3316,6 +3318,12 @@ packages:
       minimist: 1.2.6
     dev: true
 
+  /json5/2.2.3:
+    resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
+    engines: {node: '>=6'}
+    hasBin: true
+    dev: true
+
   /jstransformer/1.0.0:
     resolution: {integrity: sha1-7Yvwkh4vPx7U1cGkT2hwntJHIsM=}
     dependencies:
@@ -3461,6 +3469,15 @@ packages:
       big.js: 5.2.2
       emojis-list: 3.0.0
       json5: 1.0.2
+    dev: true
+
+  /loader-utils/2.0.4:
+    resolution: {integrity: sha512-xXqpXoINfFhgua9xiqD8fPFHgkoq1mmmpE92WlDbm9rNRd/EbRb+Gqf908T2DMfuHjjJlksiK2RbHVOdD/MqSw==}
+    engines: {node: '>=8.9.0'}
+    dependencies:
+      big.js: 5.2.2
+      emojis-list: 3.0.0
+      json5: 2.2.3
     dev: true
 
   /locate-path/5.0.0:
@@ -4557,6 +4574,17 @@ packages:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
     dev: false
+
+  /raw-loader/4.0.2_webpack@5.89.0:
+    resolution: {integrity: sha512-ZnScIV3ag9A4wPX/ZayxL/jZH+euYb6FcUinPcgiQW0+UBtEv0O6Q3lGd3cqJ+GHH+rksEv3Pj99oxJ3u3VIKA==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.0.0 || ^5.0.0
+    dependencies:
+      loader-utils: 2.0.4
+      schema-utils: 3.3.0
+      webpack: 5.89.0_webpack-cli@5.1.4
+    dev: true
 
   /read-pkg/3.0.0:
     resolution: {integrity: sha512-BLq/cCO9two+lBgiTYNqD6GdtK8s4NpaWrl6/rCO9w0TUS8oJl7cmToOZfRYllKTISY6nt1U7jQ53brmKqY6BA==}

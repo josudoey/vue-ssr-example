@@ -1,6 +1,6 @@
 import './style.css'
 import * as render from './render.pug'
-import sidenav from './sidenav/index.js'
+import sidenav from './sidenav.vue'
 import { uid, signIn } from '../outlet/auth/store.js'
 import createDebug from 'debug'
 const debug = createDebug('app:layout')

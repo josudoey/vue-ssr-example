@@ -7,6 +7,8 @@ import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 
 import { createRequire } from 'module'
 import { exampleVue3Env } from './env.js'
+import VueLoaderPlugin from '@vue-ssr-example/vue3/loader-plugin.js'
+
 const require = createRequire(import.meta.url)
 
 const {
@@ -63,6 +65,19 @@ export default function (env) {
     },
     module: {
       rules: [{
+        test: /\.vue$/,
+        loader: require.resolve('@vue-ssr-example/vue3/vue-loader.js')
+      }, {
+        // ref https://vue-loader.vuejs.org/guide/pre-processors.html#pug
+        test: /((?!render)(?!template)\w+)\.pug$/,
+        oneOf: [
+          // this applies to `<template lang="pug">` in Vue components
+          {
+            resourceQuery: /^\?vue/,
+            use: [require.resolve('pug-plain-loader')]
+          }
+        ]
+      }, {
         test: /\.([cm]?ts|tsx)$/,
         loader: 'ts-loader'
       }, {
@@ -133,6 +148,7 @@ export default function (env) {
       }]
     },
     plugins: [
+      new VueLoaderPlugin(),
       new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false
